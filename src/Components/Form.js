@@ -1,6 +1,7 @@
 import React from 'react'
 import './CSS/FormCSS.css'
 import ReactDOM from 'react-dom'
+import Likert from "react-likert-scale";
 
 
 const ImgUpload = ({
@@ -9,7 +10,7 @@ const ImgUpload = ({
 }) =>
     <label htmlFor="photo-upload" className="custom-file-upload fas">
         <div className="img-wrap img-upload" >
-            <img for="photo-upload" src={src} alt ="profile" />
+            <img for="photo-upload" src={src} alt="profile" />
         </div>
         <input id="photo-upload" type="file" onChange={onChange} />
     </label>
@@ -69,38 +70,40 @@ const Password = ({
             required />
     </div>
 
-const Prom = ({
+const Scale = ({
     onChange,
     value
 }) =>
     <div className="field">
-        <label htmlFor="prom">
-            Programming Language:
-        </label>
-        <select
-            id="prom"
-            type="text"
-            onChange={onChange}
-            maxLength="35"
-            value={value}
-            required
-            defaultValue = "Select preferred programming language">
-            <option defaultValue>Select preferred programming language</option>
-            <option value="Java">Java</option>
-            <option value="Python">Python</option>
-            <option value="JavaScript">JavaScript</option>
-            <option value="C#">C#</option>
-        </select>
-
+        <form action="">
+            <label htmlFor="scale">Programming Experience in Java:</label>
+            <ul class='likert'>
+                <li>
+                    <input type="radio" name="likert" value="none" defaultChecked="true"/>
+                    <label class ="statement">None</label>
+                </li>
+                <li>
+                    <input type="radio" name="likert" value="beginner" />
+                    <label class ="statement">Beginner</label>
+                </li>
+                <li>
+                    <input type="radio" name="likert" value="intermediate" />
+                    <label class ="statement">Intermediate</label>
+                </li>
+                <li>
+                    <input type="radio" name="likert" value="advanced" />
+                    <label class ="statement">Advanced</label>
+                </li>
+            </ul>
+        </form>
     </div>
-
 
 const Profile = ({
     onSubmit,
     src,
     name,
     email,
-    prom,
+    scale,
 }) =>
     <div className="card">
         <form onSubmit={onSubmit}>
@@ -112,8 +115,8 @@ const Profile = ({
             </label>
             <div className="name">{name}</div>
             <div className="email">{email}</div>
-            
-            <div className="prom">{prom}</div>
+
+            <div className="scale">{scale}</div>
             <button type="submit" className="edit">Edit Details </button>
         </form>
     </div>
@@ -136,9 +139,9 @@ class CardProfile extends React.Component {
         file: '',
         imagePreviewUrl: 'https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true',
         name: '',
-        prom: '',
         email: '',
         password: '',
+        scale:'',
         active: 'edit'
     }
 
@@ -164,21 +167,21 @@ class CardProfile extends React.Component {
     editEmail = e => {
         const email = e.target.value;
         this.setState({
-                email,
+            email,
         });
     }
 
     editPassword = e => {
         const password = e.target.value;
         this.setState({
-                password,
+            password,
         });
     }
 
-    editProm = e => {
-        const prom = e.target.value;
+    editScale = e => {
+        const scale = e.target.value;
         this.setState({
-            prom,
+            scale,
         });
     }
 
@@ -193,20 +196,20 @@ class CardProfile extends React.Component {
     render() {
         const { imagePreviewUrl,
             name,
-            prom,
             email,
             password,
+            scale,
             active } = this.state;
         return (
             <div>
-                 
+
                 {(active === 'edit') ? (
                     <Edit onSubmit={this.handleSubmit}>
                         <ImgUpload onChange={this.photoUpload} src={imagePreviewUrl} />
                         <FullName onChange={this.editName} value={name} />
                         <Email onChange={this.editEmail} value={email} />
-                        <Password onChange={this.editPassword} value={password}/>
-                        <Prom onChange={this.editProm} value={prom} />
+                        <Password onChange={this.editPassword} value={password} />
+                        <Scale onChange={this.editScale} value={scale}/>
                     </Edit>
                 ) : (
                     <Profile
@@ -214,20 +217,20 @@ class CardProfile extends React.Component {
                         src={imagePreviewUrl}
                         name={name}
                         email={email}
-                        password={password}
-                        prom={prom} />)}
+                        password={password} 
+                        scale={scale} />)}
 
             </div>
         )
     }
-    
+
 }
 
 ReactDOM.render(
     <>
-    <CardProfile/>
+        <CardProfile />
     </>
-        ,
+    ,
     document.getElementById('root')
 )
 
