@@ -1,7 +1,6 @@
 import React from 'react'
 import './CSS/FormCSS.css'
 import ReactDOM from 'react-dom'
-import Likert from "react-likert-scale";
 
 
 const ImgUpload = ({
@@ -74,29 +73,30 @@ const Scale = ({
     onChange,
     value
 }) =>
-    <div className="field">
-        <form action="">
+    <div className="field" onChange={onChange} value = {value}>
+        
             <label htmlFor="scale">Programming Experience in Java:</label>
-            <ul class='likert'>
+            <ul class='likert' >
                 <li>
-                    <input type="radio" name="likert" value="none" defaultChecked="true"/>
-                    <label class ="statement">None</label>
+                    <input type="radio" name="likert"  value="Java - None"/>
+                    <label class ="statement" >None</label>
                 </li>
                 <li>
-                    <input type="radio" name="likert" value="beginner" />
+                    <input type="radio" name="likert" value="Java - Beginner" />
                     <label class ="statement">Beginner</label>
                 </li>
                 <li>
-                    <input type="radio" name="likert" value="intermediate" />
+                    <input type="radio" name="likert" value="Java - Intermediate" />
                     <label class ="statement">Intermediate</label>
                 </li>
                 <li>
-                    <input type="radio" name="likert" value="advanced" />
+                    <input type="radio" name="likert" value="Java - Advanced" />
                     <label class ="statement">Advanced</label>
                 </li>
             </ul>
-        </form>
+        
     </div>
+  
 
 const Profile = ({
     onSubmit,
@@ -133,6 +133,7 @@ const Edit = ({
             <button type="submit" className="save">Save </button>
         </form>
     </div>
+
 
 class CardProfile extends React.Component {
     state = {
