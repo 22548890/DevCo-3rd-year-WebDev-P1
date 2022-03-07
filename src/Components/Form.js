@@ -69,41 +69,121 @@ const Password = ({
             required />
     </div>
 
-const Scale = ({
+const ScaleJava = ({
     onChange,
     value
 }) =>
-    <div className="field" onChange={onChange} value = {value}>
-        
-            <label htmlFor="scale">Programming Experience in Java:</label>
-            <ul class='likert' >
-                <li>
-                    <input type="radio" name="likert"  value="Java - None"/>
-                    <label class ="statement" >None</label>
-                </li>
-                <li>
-                    <input type="radio" name="likert" value="Java - Beginner" />
-                    <label class ="statement">Beginner</label>
-                </li>
-                <li>
-                    <input type="radio" name="likert" value="Java - Intermediate" />
-                    <label class ="statement">Intermediate</label>
-                </li>
-                <li>
-                    <input type="radio" name="likert" value="Java - Advanced" />
-                    <label class ="statement">Advanced</label>
-                </li>
-            </ul>
-        
+    <div className="field" onChange={onChange} value={value}>
+
+        <label htmlFor="scale">Programming Experience in JavaScript:</label>
+        <ul class='likert' >
+            <li>
+                <input type="radio" name="likertJava" value="Java - None" />
+                <label class="statement" >None</label>
+            </li>
+            <li>
+                <input type="radio" name="likertJava" value="Java - Beginner" />
+                <label class="statement">Beginner</label>
+            </li>
+            <li>
+                <input type="radio" name="likertJava" value="Java - Intermediate" />
+                <label class="statement">Intermediate</label>
+            </li>
+            <li>
+                <input type="radio" name="likertJava" value="Java - Advanced" />
+                <label class="statement">Advanced</label>
+            </li>
+        </ul>
     </div>
-  
+
+const ScalePython = ({
+    onChange,
+    value
+}) => <div className="field" onChange={onChange} value={value}>
+        <label htmlFor="scale">Programming Experience in Python:</label>
+        <ul class='likert' >
+            <li>
+                <input type="radio" name="likertPython" value="Python - None" />
+                <label class="statement" >None</label>
+            </li>
+            <li>
+                <input type="radio" name="likertPython" value="Python - Beginner" />
+                <label class="statement">Beginner</label>
+            </li>
+            <li>
+                <input type="radio" name="likertPython" value="Python - Intermediate" />
+                <label class="statement">Intermediate</label>
+            </li>
+            <li>
+                <input type="radio" name="likertPython" value="Python - Advanced" />
+                <label class="statement">Advanced</label>
+            </li>
+        </ul>
+    </div>
+
+const ScaleC = ({
+    onChange,
+    value
+}) =>
+    <div className="field" onChange={onChange} value={value}>
+        <label htmlFor="scale">Programming Experience in C/C++:</label>
+        <ul class='likert' >
+            <li>
+                <input type="radio" name="likertC" value="C/C++ - None" />
+                <label class="statement" >None</label>
+            </li>
+            <li>
+                <input type="radio" name="likertC" value="C/C++ - Beginner" />
+                <label class="statement">Beginner</label>
+            </li>
+            <li>
+                <input type="radio" name="likertC" value="C/C++ - Intermediate" />
+                <label class="statement">Intermediate</label>
+            </li>
+            <li>
+                <input type="radio" name="likertC" value="C/C++ - Advanced" />
+                <label class="statement">Advanced</label>
+            </li>
+        </ul>
+    </div>
+
+const ScaleGo = ({
+    onChange,
+    value,
+}) =>
+    <div className="field" onChange={onChange} value={value} >
+        <label htmlFor="scale">Programming Experience in Go:</label>
+        <ul class='likert' >
+            <li>
+                <input type="radio" name="likertGo" value="Go - None" />
+                <label class="statement" >None</label>
+            </li>
+            <li>
+                <input type="radio" name="likertGo" value="Go - Beginner" />
+                <label class="statement">Beginner</label>
+            </li>
+            <li>
+                <input type="radio" name="likertGo" value="Go - Intermediate" />
+                <label class="statement">Intermediate</label>
+            </li>
+            <li>
+                <input type="radio" name="likertGo" value="Go - Advanced" />
+                <label class="statement">Advanced</label>
+            </li>
+        </ul>
+
+    </div>
+
 
 const Profile = ({
     onSubmit,
     src,
     name,
     email,
-    scale,
+    scaleJava,
+    scalePython,
+    scaleC,
+    scaleGo,
 }) =>
     <div className="card">
         <form onSubmit={onSubmit}>
@@ -115,8 +195,10 @@ const Profile = ({
             </label>
             <div className="name">{name}</div>
             <div className="email">{email}</div>
-
-            <div className="scale">{scale}</div>
+            <div className="scale">{scaleJava}</div>
+            <div className="scale">{scalePython}</div>
+            <div className="scale">{scaleC}</div>
+            <div className="scale">{scaleGo}</div>
             <button type="submit" className="edit">Edit Details </button>
         </form>
     </div>
@@ -142,7 +224,10 @@ class CardProfile extends React.Component {
         name: '',
         email: '',
         password: '',
-        scale:'',
+        scaleJava: '',
+        scalePython: '',
+        scaleC: '',
+        scaleGo: '',
         active: 'edit'
     }
 
@@ -179,10 +264,31 @@ class CardProfile extends React.Component {
         });
     }
 
-    editScale = e => {
-        const scale = e.target.value;
+    editScaleJava = e => {
+        const scaleJava = e.target.value;
         this.setState({
-            scale,
+            scaleJava,
+        });
+    }
+
+    editScalePython = e => {
+        const scalePython = e.target.value;
+        this.setState({
+            scalePython,
+        });
+    }
+
+    editScaleC = e => {
+        const scaleC = e.target.value;
+        this.setState({
+            scaleC,
+        });
+    }
+
+    editScaleGo = e => {
+        const scaleGo = e.target.value;
+        this.setState({
+            scaleGo,
         });
     }
 
@@ -199,7 +305,10 @@ class CardProfile extends React.Component {
             name,
             email,
             password,
-            scale,
+            scaleJava,
+            scalePython,
+            scaleC,
+            scaleGo,
             active } = this.state;
         return (
             <div>
@@ -210,7 +319,10 @@ class CardProfile extends React.Component {
                         <FullName onChange={this.editName} value={name} />
                         <Email onChange={this.editEmail} value={email} />
                         <Password onChange={this.editPassword} value={password} />
-                        <Scale onChange={this.editScale} value={scale}/>
+                        <ScaleJava onChange={this.editScaleJava} value={scaleJava} />
+                        <ScalePython onChange={this.editScalePython} value={scalePython} />
+                        <ScaleC onChange={this.editScaleC} value={scaleC} />
+                        <ScaleGo onChange={this.editScaleGo} value={scaleGo} />
                     </Edit>
                 ) : (
                     <Profile
@@ -218,9 +330,13 @@ class CardProfile extends React.Component {
                         src={imagePreviewUrl}
                         name={name}
                         email={email}
-                        password={password} 
-                        scale={scale} />)}
-
+                        password={password}
+                        scaleJava={scaleJava} 
+                        scalePython={scalePython}
+                        scaleC={scaleC}
+                        scaleGo={scaleGo}
+                        />)}
+                        
             </div>
         )
     }
