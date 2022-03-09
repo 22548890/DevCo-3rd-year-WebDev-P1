@@ -1,5 +1,5 @@
 import React from 'react'
-import './CSS/FormCSS.css'
+import './CSS/DevRegCSS.css'
 import ReactDOM from 'react-dom'
 
 
@@ -99,11 +99,11 @@ const ScaleJava = ({
 const ScalePython = ({
     onChange,
     value
-}) => <div className="field" onChange={onChange} value={value}>
+}) => <div className="field" onChange={onChange} value={value} >
         <label htmlFor="scale">Programming Experience in Python:</label>
         <ul class='likert' >
             <li>
-                <input type="radio" name="likertPython" value="Python - None" />
+                <input type="radio" name="likertPython" value="Python - None"/>
                 <label class="statement" >None</label>
             </li>
             <li>
@@ -217,7 +217,7 @@ const Edit = ({
     </div>
 
 
-class CardProfile extends React.Component {
+class DevReg extends React.Component {
     state = {
         file: '',
         imagePreviewUrl: 'https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true',
@@ -345,10 +345,10 @@ class CardProfile extends React.Component {
 
 ReactDOM.render(
     <>
-        <CardProfile />
+        <DevReg />
     </>
     ,
     document.getElementById('root')
 )
 
-export default CardProfile;
+export default DevReg;
