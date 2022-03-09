@@ -1,6 +1,7 @@
 import React from 'react'
 import './CSS/FormCSS.css'
 import ReactDOM from 'react-dom'
+import { useState } from 'react'
 
 
 const ImgUpload = ({
@@ -9,7 +10,7 @@ const ImgUpload = ({
 }) =>
     <label htmlFor="photo-upload" className="custom-file-upload fas">
         <div className="img-wrap img-upload" >
-            <img for="photo-upload" src={src} alt="profile" />
+            <img htmlFor="photo-upload" src={src} alt="profile" />
         </div>
         <input id="photo-upload" type="file" onChange={onChange} />
     </label>
@@ -27,7 +28,7 @@ const FullName = ({
             id="name"
             type="text"
             onChange={onChange}
-            maxlength="25"
+            maxLength="25"
             value={value}
             placeholder="Alexa"
             required />
@@ -45,7 +46,7 @@ const Email = ({
             id="email"
             type="email"
             onChange={onChange}
-            maxlength="25"
+            maxLength="25"
             value={value}
             placeholder="jbloggs@mail.com"
             required />
@@ -63,7 +64,7 @@ const Password = ({
             id="password"
             type="password"
             onChange={onChange}
-            maxlength="25"
+            maxLength="25"
             value={value}
             placeholder="password"
             required />
@@ -76,22 +77,22 @@ const Scale = ({
     <div className="field" onChange={onChange} value = {value}>
         
             <label htmlFor="scale">Programming Experience in Java:</label>
-            <ul class='likert' >
+            <ul className='likert' >
                 <li>
                     <input type="radio" name="likert"  value="Java - None"/>
-                    <label class ="statement" >None</label>
+                    <label className ="statement" >None</label>
                 </li>
                 <li>
                     <input type="radio" name="likert" value="Java - Beginner" />
-                    <label class ="statement">Beginner</label>
+                    <label className ="statement">Beginner</label>
                 </li>
                 <li>
                     <input type="radio" name="likert" value="Java - Intermediate" />
-                    <label class ="statement">Intermediate</label>
+                    <label className ="statement">Intermediate</label>
                 </li>
                 <li>
                     <input type="radio" name="likert" value="Java - Advanced" />
-                    <label class ="statement">Advanced</label>
+                    <label className ="statement">Advanced</label>
                 </li>
             </ul>
         
@@ -133,7 +134,6 @@ const Edit = ({
             <button type="submit" className="save">Save </button>
         </form>
     </div>
-
 
 class CardProfile extends React.Component {
     state = {
@@ -188,6 +188,21 @@ class CardProfile extends React.Component {
 
     handleSubmit = e => {
         e.preventDefault();
+
+        let data = {
+            'username':this.state.name,
+            'password':this.state.password,
+            'email':this.state.email
+        };
+        const requestOpt = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data),
+        }
+        fetch('http://127.0.0.1:5000/registration', requestOpt)
+        .then(response => response.json())
+        .catch(error => console.log(error));
+
         let activeP = this.state.active === 'edit' ? 'profile' : 'edit';
         this.setState({
             active: activeP,
@@ -211,6 +226,7 @@ class CardProfile extends React.Component {
                         <Email onChange={this.editEmail} value={email} />
                         <Password onChange={this.editPassword} value={password} />
                         <Scale onChange={this.editScale} value={scale}/>
+                        
                     </Edit>
                 ) : (
                     <Profile
