@@ -3,6 +3,7 @@ import './CSS/DevRegCSS.css'
 import ReactDOM from 'react-dom'
 
 
+
 const ImgUpload = ({
     onChange,
     src
@@ -78,7 +79,7 @@ const ScaleJava = ({
         <label htmlFor="scale">Programming Experience in JavaScript:</label>
         <ul class='likert' >
             <li>
-                <input type="radio" name="likertJava" value="Java - None" />
+                <input type="radio" name="likertJava" value="Java - None" defaultChecked/>
                 <label class="statement" >None</label>
             </li>
             <li>
@@ -101,9 +102,9 @@ const ScalePython = ({
     value
 }) => <div className="field" onChange={onChange} value={value} >
         <label htmlFor="scale">Programming Experience in Python:</label>
-        <ul class='likert' >
+        <ul class='likert'>
             <li>
-                <input type="radio" name="likertPython" value="Python - None"/>
+                <input type="radio" name="likertPython" value="Python - None" defaultChecked/>
                 <label class="statement" >None</label>
             </li>
             <li>
@@ -129,7 +130,7 @@ const ScaleC = ({
         <label htmlFor="scale">Programming Experience in C/C++:</label>
         <ul class='likert' >
             <li>
-                <input type="radio" name="likertC" value="C/C++ - None" />
+                <input type="radio" name="likertC" value="C/C++ - None" defaultChecked/>
                 <label class="statement" >None</label>
             </li>
             <li>
@@ -155,7 +156,7 @@ const ScaleGo = ({
         <label htmlFor="scale">Programming Experience in Go:</label>
         <ul class='likert' >
             <li>
-                <input type="radio" name="likertGo" value="Go - None" />
+                <input type="radio" name="likertGo" value="Go - None" defaultChecked/>
                 <label class="statement" >None</label>
             </li>
             <li>
@@ -224,10 +225,10 @@ class DevReg extends React.Component {
         name: '',
         email: '',
         password: '',
-        scaleJava: '',
-        scalePython: '',
-        scaleC: '',
-        scaleGo: '',
+        scaleJava: 'Java - None',
+        scalePython: 'Python - None',
+        scaleC: 'C - None',
+        scaleGo: 'Go - None',
         active: 'edit'
     }
 

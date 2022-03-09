@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom'
 import logo from '../DevCo.gif'
 
 
+
+
 const ImgUpload = ({
     onChange,
     src
@@ -25,7 +27,7 @@ const Email = ({
         </label>
         <input
             id="email"
-            type="email"
+            type="text"
             onChange={onChange}
             maxlength="25"
             value={value}
@@ -51,9 +53,37 @@ const Password = ({
             required />
     </div>
 
+const Edit = ({
+    onSubmit,
+    children,
+}) =>
+    <div className="card">
+        <form onSubmit={onSubmit}>
+            {children}
+            <button type="submit" className="login">LOGIN </button>
+        </form>
+    </div>
+
+const Profile = ({
+    onSubmit,
+    email,
+    password,
+}) =>
+    <div className="card">
+        <form onSubmit={onSubmit}>
+            <h1>Successfully Logged in</h1>
+            <div className="email">{email}</div>
+            <div className="password">{password}</div>
+            
+        </form>
+    </div>
+
+
 class Login extends React.Component {
     state = {
-
+        email: '',
+        password: '',
+        active: 'edit'
     }
 
     editEmail = e => {
@@ -70,29 +100,39 @@ class Login extends React.Component {
         });
     }
 
-    render() {
-        const {
-            email,
-            password,
-        } = this.state;
-        return (
-            <div className='card'>
-                <form>
+    handleSubmit = e => {
+        e.preventDefault();
+        let activeP = this.state.active === 'edit' ? 'profile' : 'edit';
+        this.setState({
+            active: activeP,
+        })
+    }
 
+render() {
+    const {
+        email,
+        password,
+        active } = this.state;
+    return (
+        <div>
+
+            {(active === 'edit') ? (
+                <Edit onSubmit={this.handleSubmit}>
                     <ImgUpload src={logo} className="loginimg" />
                     <Email onChange={this.editEmail} value={email} />
                     <Password onChange={this.editPassword} value={password} />
-                    <button type="button" className="login">LOGIN</button>
-
-                </form>
-
-            </div>
-        )
-    }
-
+                </Edit>
+            ) : (
+                <Profile
+                    onSubmit={this.handleSubmit}
+                    email={email}
+                    password={password}
+                    />)}
+                    
+        </div>
+    )
 }
-
-
+}
 
 ReactDOM.render(
     <>

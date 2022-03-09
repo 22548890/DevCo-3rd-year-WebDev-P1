@@ -1,16 +1,25 @@
 import React from 'react';
 import './App.css';
 import DevReg from './Components/Dev_Registration';
-import Login from './Components/Login';
+import Login from './Components/Login'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 
 
 function App() {
 
   return (
-    <>
-    {/* <Login/> */}
-    <DevReg/> 
-    </>
+    <Router>
+      <Switch>
+        <Route exact path={"/login"}>
+          <Login/>
+        </Route>
+        <Route  exact path={"/Dsignup"} component={DevReg}>
+          <DevReg/>
+        </Route>
+      </Switch>
+      {/* <Login/> */}
+      {/* <DevReg/>  */}
+    </Router>
   );
 }
 export default App;
