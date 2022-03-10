@@ -1,8 +1,9 @@
 from click import password_option
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, json
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_cors import cross_origin, CORS
+from numpy import real
 
 app = Flask(__name__)
 CORS(app)
@@ -13,24 +14,83 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
-# table in database for Developers
-class Developers(db.Model):
-    username = db.Column(db.String(25), primary_key=True)
-    password = db.Column(db.String(25))
-    email = db.Column(db.String(25))
+####################################
+# Developers table and routes
+####################################
 
-    def __init__(self, username, password, email):
-        self.username = username
+class Developers(db.Model):
+    name = db.Column(db.String(25))
+    password = db.Column(db.String(25))
+    email = db.Column(db.String(25), primary_key=True)
+    scaleJava = db.Column(db.String(25))
+    scalePython = db.Column(db.String(25))
+    scaleC = db.Column(db.String(25))
+    scaleGo = db.Column(db.String(25))
+
+    def __init__(self, name, password, email, scaleJava, scalePython, scaleC, scaleGo):
+        self.name = name
         self.password = password
         self.email = email
-
+        self.scaleJava = scaleJava
+        self.scalePython = scalePython
+        self.scaleC = scaleC
+        self.scaleGo = scaleGo
 
 class DeveloperSchema(ma.Schema):
     class Meta:
-        fields = ('username', 'password', 'email')
+        fields = ('name', 'password', 'email', 'scaleJava', 'scalePython', 'scaleC', 'scaleGo')
 
 dev_schema = DeveloperSchema()
 devs_schema = DeveloperSchema(many=True)
+
+@app.route('/devReg', methods = ['POST'])
+@cross_origin()
+def devReg():
+    name = request.json['name']
+    password = request.json['password']
+    email = request.json['email']
+    scaleJava = request.json['scaleJava']
+    scalePython = request.json['scalePython']
+    scaleC = request.json['scaleC']
+    scaleGo = request.json['scaleGo']
+
+    dev = Developers(name, password, email, scaleJava, scalePython, scaleC, scaleGo)
+    db.session.add(dev)
+    db.session.commit()
+
+    return dev_schema.jsonify(dev)
+
+@app.route('/login', methods = ['POST'])
+@cross_origin()
+def login():
+
+    email = request.json['email']
+    password = request.json['password']
+
+
+    user_exist = Developers.query.filter_by(email=email).first()
+
+    if not user_exist:
+        return {
+            'msg': 'This username does not exist',
+            'success':False
+        }
+
+    dev = Developers.query.get(email)
+    check_password = dev.password == password
+
+    if not check_password:
+            return {
+                'msg': 'Incorrect password',
+                'success':False
+            }
+
+    return {
+        'msg':'',
+        'success':True
+    }
+
+
 
 @app.route('/get', methods = ['GET'])
 def get():
@@ -42,20 +102,6 @@ def get():
 def details(username):
     dev = Developers.query.get(username)
     return dev_schema.jsonify(dev)
-
-@app.route('/registration', methods = ['POST'])
-@cross_origin()
-def registration():
-    username = request.json['username']
-    password = request.json['password']
-    email = request.json['email']
-
-    devs = Developers(username, password, email)
-    db.session.add(devs)
-    db.session.commit()
-
-    response = dev_schema.jsonify(devs)
-    return response
 
 @app.route('/update/<username>', methods = ['PUT'])
 def update(username):

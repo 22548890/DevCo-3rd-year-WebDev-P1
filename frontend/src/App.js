@@ -1,12 +1,16 @@
 import React from 'react';
 import './App.css';
-import CardProfile from './Components/Form';
+import DevReg from './Components/Dev_Registration';
+import Login from './Components/Login';
+
+
 
 function App() {
 
   return (
     <>
-    <CardProfile/>
+    <Login/>
+    {/* <DevReg/> */}
     </>
   );
 }
