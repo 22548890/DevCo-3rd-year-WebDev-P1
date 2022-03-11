@@ -2,7 +2,7 @@ import React from 'react'
 import './CSS/LoginCSS.css'
 import ReactDOM from 'react-dom'
 import logo from '../DevCo.gif'
-
+import { Redirect, Route} from 'react-router-dom';
 
 
 
@@ -105,6 +105,7 @@ class Login extends React.Component {
         let activeP = this.state.active === 'edit' ? 'profile' : 'edit';
         this.setState({
             active: activeP,
+            
         })
     }
 
@@ -123,23 +124,22 @@ render() {
                     <Password onChange={this.editPassword} value={password} />
                 </Edit>
             ) : (
-                <Profile
-                    onSubmit={this.handleSubmit}
-                    email={email}
-                    password={password}
-                    />)}
+                
+                <Redirect to='/ComReg' />
+                
+                )}
                     
         </div>
     )
 }
 }
 
-ReactDOM.render(
-    <>
-        <Login />
-    </>
-    ,
-    document.getElementById('root')
-)
+// ReactDOM.render(
+//     <>
+//         <Login />
+//     </>
+//     ,
+//     document.getElementById('root')
+// )
 
 export default Login;

@@ -344,12 +344,12 @@ class DevReg extends React.Component {
 
 }
 
-ReactDOM.render(
-    <>
-        <DevReg />
-    </>
-    ,
-    document.getElementById('root')
-)
+// ReactDOM.render(
+//     <>
+//         <DevReg />
+//     </>
+//     ,
+//     document.getElementById('root')
+// )
 
 export default DevReg;
