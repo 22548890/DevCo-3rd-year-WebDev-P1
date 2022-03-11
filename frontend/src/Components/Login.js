@@ -120,7 +120,7 @@ class Login extends React.Component {
         }
         (async () => {
             let info = await fetchFunc();
-            if (info.success) {
+            if (info.success) { // correct login info
                 let activeP = data.active === 'edit' ? 'profile' : 'edit';
                 this.setState({
                     active: activeP,

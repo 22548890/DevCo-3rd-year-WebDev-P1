@@ -14,8 +14,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
+
 ####################################
-# Developers table and routes
+#       Developers table
 ####################################
 
 class Developers(db.Model):
@@ -43,6 +44,7 @@ class DeveloperSchema(ma.Schema):
 dev_schema = DeveloperSchema()
 devs_schema = DeveloperSchema(many=True)
 
+
 @app.route('/devReg', methods = ['POST'])
 @cross_origin()
 def devReg():
@@ -60,24 +62,70 @@ def devReg():
 
     return dev_schema.jsonify(dev)
 
+
+####################################
+#       Companies table
+####################################
+
+class Companies(db.Model):
+    name = db.Column(db.String(25), primary_key=True)
+    password = db.Column(db.String(25))
+    industry = db.Column(db.String(50))
+
+    def __init__(self, name, password, industry):
+        self.name = name
+        self.password = password
+        self.industry = industry
+
+class CompanySchema(ma.Schema):
+    class Meta:
+        fields = ('name', 'password', 'industry')
+
+com_schema = CompanySchema()
+coms_schema = CompanySchema(many=True)
+
+
+@app.route('/comReg', methods = ['POST'])
+@cross_origin()
+def comReg():
+    name = request.json['name']
+    password = request.json['password']
+    industry = request.json['industry']
+
+    dev = Companies(name, password, industry)
+    db.session.add(dev)
+    db.session.commit()
+
+    return dev_schema.jsonify(dev)
+
+
+####################################
+#           Routes
+####################################
+
 @app.route('/login', methods = ['POST'])
 @cross_origin()
 def login():
 
-    email = request.json['email']
+    username = request.json['email']
     password = request.json['password']
 
 
-    user_exist = Developers.query.filter_by(email=email).first()
+    dev_exist = Developers.query.filter_by(email=username).first()
+    com_exist = Companies.query.filter_by(name=username).first()
 
-    if not user_exist:
+    if not dev_exist and not com_exist:
         return {
-            'msg': 'This username does not exist',
+            'msg': 'This name/email does not exist',
             'success':False
         }
+    user = ''
+    if dev_exist:
+        user = Developers.query.get(username)
+    else:
+        user = Companies.query.get(username)
 
-    dev = Developers.query.get(email)
-    check_password = dev.password == password
+    check_password = user.password == password
 
     if not check_password:
             return {
@@ -89,6 +137,9 @@ def login():
         'msg':'',
         'success':True
     }
+
+
+
 
 
 
