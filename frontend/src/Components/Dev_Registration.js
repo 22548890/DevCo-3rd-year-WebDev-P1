@@ -352,20 +352,17 @@ class DevReg extends React.Component {
                         scaleC={scaleC}
                         scaleGo={scaleGo}
                         />)}
-
-
             </div>
         )
     }
 
 }
-
-ReactDOM.render(
-    <>
-        <DevReg />
-    </>
-    ,
-    document.getElementById('root')
-)
+// ReactDOM.render(
+//     <>
+//         <DevReg />
+//     </>
+//     ,
+//     document.getElementById('root')
+// )
 
 export default DevReg;

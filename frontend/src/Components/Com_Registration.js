@@ -202,13 +202,11 @@ class ComReg extends React.Component {
     }
 
 }
-
-ReactDOM.render(
-    <>
-        <ComReg />
-    </>
-    ,
-    document.getElementById('root')
-)
-
+// ReactDOM.render(
+//     <>
+//         <ComReg />
+//     </>
+//     ,
+//     document.getElementById('root')
+// )
 export default ComReg;
