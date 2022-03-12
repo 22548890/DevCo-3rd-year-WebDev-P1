@@ -55,8 +55,9 @@ def devReg():
     scaleGo = request.json['scaleGo']
 
     dev_exist = Developers.query.filter_by(email=email).first()
+    com_exist = Companies.query.filter_by(name=email).first()
 
-    if dev_exist:
+    if dev_exist or com_exist:
         return {
             'msg': 'This email already exists',
             'success':False
@@ -102,8 +103,9 @@ def comReg():
     industry = request.json['industry']
 
     com_exist = Companies.query.filter_by(name=name).first()
+    dev_exist = Developers.query.filter_by(email=name).first()
 
-    if com_exist:
+    if com_exist or dev_exist:
         return {
             'msg': 'This name already exists',
             'success':False
@@ -157,6 +159,9 @@ def login():
         'msg':'',
         'success':True
     }
+
+
+
 
 
 
