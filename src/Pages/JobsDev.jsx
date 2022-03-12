@@ -1,10 +1,15 @@
-import React, { Component } from "react";
-function Jobs() {
+import { Link } from "react-router-dom";
+import "../App.css";
+import NavBar from "../Components/NavBar";
+
+const JobsDev = () => {
   return (
     <body>
-      <div class="containerJobs">
-        <div id="Jobs" class="jobContainer">
-          <h1>Amassed income: R1</h1>
+      <NavBar />
+      <section id="Jobs">
+        <h1>Amassed income: R1</h1>
+
+        <div class="lhsContainer">
           <div class="boxes">
             <h2>Job 1</h2>
             <p>
@@ -33,13 +38,14 @@ function Jobs() {
             </p>
           </div>
         </div>
+
         <div class="rhsContainer">
           <div class="donut-chart-block block">
             <h2 class="titular">WORK STATS</h2>
             <div class="donut-chart">
               {/*
-                    <!-- DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL -->
-                    */}
+          <!-- DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL -->
+          */}
               <div id="porcion1" class="recorte">
                 <div class="quesito ios" data-rel="21"></div>
               </div>
@@ -53,8 +59,8 @@ function Jobs() {
                 <div class="quesito linux" data-rel="9"></div>
               </div>
               {/*
-                    <!-- END DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL -->
-                    */}
+          <!-- END DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL -->
+          */}
               <p class="center-date">R6969</p>
             </div>
             <ul class="os-percentages horizontal-list">
@@ -85,7 +91,9 @@ function Jobs() {
             </ul>
           </div>
         </div>
-      </div>
+      </section>
     </body>
   );
-}
+};
+
+export default JobsDev;

@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact</title>
-  </head>
-  <body>
-    <header>
-      <div id="Contact">
+import { Link } from "react-router-dom";
+import "../App.css";
+import NavBar from "../Components/NavBar";
+const ContactDev = () => {
+  return (
+    <body id="Contact">
+      <section>
+        <NavBar />
         <h2>Number: 0730009156</h2>
         <h2>Email: Ansar@gmail.com</h2>
         <h2>Website: www.deeznutz.com</h2>
@@ -24,7 +21,9 @@
           Reference: Lorem ipsum dolor sit amet consectetur, adipisicing elit.
           Earum, eos.
         </h2>
-      </div>
-    </header>
-  </body>
-</html>
+      </section>
+    </body>
+  );
+};
+
+export default ContactDev;
