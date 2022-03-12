@@ -1,9 +1,7 @@
-from click import password_option
 from flask import Flask, jsonify, request, json
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_cors import cross_origin, CORS
-from numpy import real
 
 app = Flask(__name__)
 CORS(app)
@@ -56,11 +54,22 @@ def devReg():
     scaleC = request.json['scaleC']
     scaleGo = request.json['scaleGo']
 
+    dev_exist = Developers.query.filter_by(email=email).first()
+
+    if dev_exist:
+        return {
+            'msg': 'This email already exists',
+            'success':False
+        }
+
     dev = Developers(name, password, email, scaleJava, scalePython, scaleC, scaleGo)
     db.session.add(dev)
     db.session.commit()
 
-    return dev_schema.jsonify(dev)
+    return {
+            'msg': '',
+            'success':True
+        }
 
 
 ####################################
@@ -92,11 +101,22 @@ def comReg():
     password = request.json['password']
     industry = request.json['industry']
 
+    com_exist = Companies.query.filter_by(name=name).first()
+
+    if com_exist:
+        return {
+            'msg': 'This name already exists',
+            'success':False
+        }
+
     dev = Companies(name, password, industry)
     db.session.add(dev)
     db.session.commit()
 
-    return dev_schema.jsonify(dev)
+    return {
+            'msg': '',
+            'success':True
+        }
 
 
 ####################################

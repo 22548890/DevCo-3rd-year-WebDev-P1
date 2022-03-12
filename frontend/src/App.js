@@ -10,9 +10,9 @@ function App() {
 
   return (
     <>
-    <Login/>
+    {/* <Login/> */}
     {/* <DevReg/> */}
-    {/* <ComReg/> */}
+    <ComReg/>
     </>
   );
 }
