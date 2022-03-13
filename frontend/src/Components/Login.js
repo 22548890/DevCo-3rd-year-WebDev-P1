@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import './CSS/LoginCSS.css'
 import ReactDOM from 'react-dom'
 import logo from '../DevCo.gif'
-import {Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
+import ComReg from './Com_Registration'
+import DevReg from './Dev_Registration'
 
 const ImgUpload = ({
     onChange,
@@ -49,6 +51,14 @@ const Password = ({
             required />
     </div>
 
+const handleDevReg = () => {
+    window.location.pathname = "/DevReg";
+};
+
+const handleComReg = () => {
+    window.location.pathname = "/ComReg";
+};
+
 const Edit = ({
     onSubmit,
     children,
@@ -57,6 +67,11 @@ const Edit = ({
         <form onSubmit={onSubmit}>
             {children}
             <button type="submit" className="login">LOGIN </button>
+            <div>
+                <button className="DRegBtn" onClick={handleDevReg}>Developer Registration</button>
+                <button className="CRegBtn" onClick={handleComReg}>Company Registration</button>
+            </div>
+
         </form>
     </div>
 
@@ -124,9 +139,10 @@ class Login extends React.Component {
                 <Redirect to="/" />
                 localStorage.setItem("isAuthenticated", "true");
                 window.location.pathname = "/";
-                
+
             } else {
                 alert(info.msg);
+                
             }
         })()
     }
@@ -136,15 +152,19 @@ class Login extends React.Component {
             email,
             password,
             active } = this.state;
+
         return (
             <div>
 
                 {(active === 'edit') ? (
+
                     <Edit onSubmit={this.handleSubmit}>
                         <ImgUpload src={logo} className="loginimg" />
                         <Email onChange={this.editEmail} value={email} />
                         <Password onChange={this.editPassword} value={password} />
                     </Edit>
+
+
                 ) : (
                     <Profile
                         onSubmit={this.handleSubmit}

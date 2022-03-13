@@ -13,8 +13,8 @@ function App() {
       <div>
         <Router>
           <Route exact path='/login' component={Login} />
-          <ProtectedRoute exact path='/DevReg' component={DevReg} />
-          <ProtectedRoute exact path='/ComReg' component={ComReg} />
+          <Route exact path='/DevReg' component={DevReg} />
+          <Route exact path='/ComReg' component={ComReg} />
           <ProtectedRoute exact path='/' component={Home} />
         </Router>
       </div>
