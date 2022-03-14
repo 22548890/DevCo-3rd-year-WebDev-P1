@@ -73,6 +73,31 @@ def devReg():
         }
 
 
+@app.route('/devUpdate', methods = ['PUT'])
+@cross_origin()
+def devUpdate():
+    name = request.json['name']
+    password = request.json['password']
+    email = request.json['email']
+    scaleJava = request.json['scaleJava']
+    scalePython = request.json['scalePython']
+    scaleC = request.json['scaleC']
+    scaleGo = request.json['scaleGo']
+
+    dev = Developers.query.get(email)
+
+    dev.name = name
+    dev.password = password
+    dev.email = email
+    dev.scaleJava = scaleJava
+    dev.scalePython = scalePython
+    dev.scaleC = scaleC
+    dev.scaleGo = scaleGo
+    
+    db.session.commit()
+    return dev_schema.jsonify(dev)
+
+
 ####################################
 #       Companies table
 ####################################
