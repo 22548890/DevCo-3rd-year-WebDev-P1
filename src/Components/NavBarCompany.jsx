@@ -72,7 +72,7 @@ const NavBar = () => {
       </div>
       <header>
         <nav>
-          <NavLink to={"/profiledev"}>
+          <NavLink to={"/profilecompany"}>
             <svg class="svg-icon" viewBox="0 0 19 19">
               <path
                 fill="none"
@@ -82,7 +82,7 @@ const NavBar = () => {
             <span> Profile </span>
           </NavLink>
 
-          <NavLink replace to={"/contactdev"}>
+          <NavLink replace to={"/contactcompany"}>
             <svg class="svg-icon" viewBox="0 0 19 19">
               <path
                 fill="none"
@@ -91,7 +91,7 @@ const NavBar = () => {
             </svg>
             <span> Contact </span>
           </NavLink>
-          <NavLink to={"/jobsdev"}>
+          <NavLink to={"/jobscompany"}>
             <svg class="svg-icon" viewBox="0 0 19 19">
               <path
                 fill="none"

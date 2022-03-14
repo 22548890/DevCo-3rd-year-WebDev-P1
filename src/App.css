@@ -344,7 +344,7 @@ p.center-date {
 
 /* by default include the background of the option for the home navigation */
 body {
-  /* background: #444444; */
+  background: #444444;
   color: #ffffff;
   /* center in the viewport */
   /* min-height: 100vh; */
