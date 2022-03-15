@@ -329,8 +329,6 @@ def login():
 
 
 
-
-
 @app.route('/comGetContracts<username>', methods = ['GET'])
 def comGetContracts(username):
     company = Company.query.get(username)
