@@ -3,64 +3,60 @@ import "../App.css";
 import { Link } from "react-router-dom";
 import App from "../App";
 import { NavLink } from "react-router-dom";
+//   const colourOptions = [
+//     {
+//       name: "profile",
+//       color: "#3dbbd1",
+//     },
+//     {
+//       name: "contact",
+//       color: "#713faa",
+//     },
+//     {
+//       name: "jobs",
+//       color: "#f13e3e",
+//     },
+//   ];
+// function myfunc(x) {
+//   if (x=="profile") {
 
+//     // const name = this.textContent.trim().toLowerCase();
+//     const { color } = colourOptions.find((item) => item.name === "profile");
+//     document.querySelector("body").style.background = color;
+//   } if (x==="contact") {
+
+//       // const name = this.textContent.trim().toLowerCase();
+//       const { color } = colourOptions.find((item) => item.name === "contact");
+//       document.querySelector("body").style.background = color;
+//     }if (x==="jobs") {
+
+//         // const name = this.textContent.trim().toLowerCase();
+//         const { color } = colourOptions.find((item) => item.name === "jobs");
+//         document.querySelector("body").style.background = color;
+
+//   }
+
+//   };
 const NavBar = () => {
-  // array describing the options of the navigation elements
-  // specifying the lower case option and the matching color
-  const navigationOptions = [
-    {
-      name: "profile",
-      color: "#3dbbd1",
-    },
-    {
-      name: "contact",
-      color: "#713faa",
-    },
-    {
-      name: "jobs",
-      color: "#f13e3e",
-    },
-  ];
-
-  // target all anchor link elements
-  const links = document.querySelectorAll("nav a");
-
-  // function called in response to a click event on the anchor link
-  function handleClick(e) {
-    // prevent the default behavior, but most importantly remove the class of .active from those elements with it
-    e.preventDefault();
-    links.forEach((link) => {
-      if (link.classList.contains("active")) {
-        link.classList.remove("active");
-      }
-    });
-
-    // retrieve the option described the link element
-    const name = this.textContent.trim().toLowerCase();
-    // find in the array the object with the matching name
-    // store a reference to its color
-    const { color } = navigationOptions.find((item) => item.name === name);
-
-    // retrieve the custom property for the --hover-c property, to make it so that the properties are updated only when necessary
-    const style = window.getComputedStyle(this);
-    const hoverColor = style.getPropertyValue("--hover-c");
-    // if the two don't match, update the custom property to show the hue with the text and the semi transparent background
-    if (color !== hoverColor) {
-      this.style.setProperty("--hover-bg", `${color}20`);
-      this.style.setProperty("--hover-c", color);
-    }
-
-    // apply the class of active to animate the svg an show the span element
-    this.classList.add("active");
-    // change the color of the background of the application to match
-    document.querySelector("body").style.background = color;
-  }
-
-  // listen for a click event on each and every anchor link
-  links.forEach((link) => link.addEventListener("click", handleClick));
+  // const name = "profile";
+  // // const name = this.textContent.trim().toLowerCase();
+  // const { color } = colourOptions.find((item) => item.name === name);
+  // document.querySelector("body").style.background = color;
 
   return (
     <header>
+      {/* <div class="profile-menu">
+        <p>
+          Me
+          <a href="#26">
+            <span class="entypo-down-open scnd-font-color"></span>
+          </a>
+        </p>
+      </div> */}
+      <div>
+        <button class="profile-menu">Edit Profile</button>
+        <button class="profile-menu">Preview</button>
+      </div>
       <div class="profile-picture big-profile-picture clear">
         <img width="150px" alt="Anne Hathaway picture" src={ppimg}></img>
       </div>
@@ -82,7 +78,7 @@ const NavBar = () => {
             <span> Profile </span>
           </NavLink>
 
-          <NavLink replace to={"/contactdev"}>
+          <NavLink to={"/contactdev"}>
             <svg class="svg-icon" viewBox="0 0 19 19">
               <path
                 fill="none"

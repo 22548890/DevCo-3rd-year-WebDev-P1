@@ -101,41 +101,6 @@ span {
   color: #9099b7;
 }
 
-.boxes {
-  background-color: rgb(32, 32, 32);
-  border-radius: 10px;
-  padding: 10px;
-  margin: 10px;
-  border-style: ridge;
-  /* display: block; */
-}
-#Jobs {
-  /* display: in; */
-  overflow: hidden;
-}
-.lhsContainer {
-  /* min-width: 50%; */
-  max-width: 800px;
-  padding: 10px;
-  float: left;
-  background-color: #363f61;
-  border-radius: 20px;
-  margin: 30px;
-  /* margin-right: 30px; */
-}
-.rhsContainer {
-  background-color: #363f61;
-  border-radius: 20px;
-  min-width: fit-content;
-  /* margin-left: 5%; */
-  margin: 30px;
-  overflow: hidden;
-  float: inherit;
-  padding: 10px;
-  /* min-width: 40%; */
-  /* display: grid; */
-}
-
 .input-icon {
   font-size: 22px;
   position: absolute;
@@ -334,8 +299,6 @@ p.center-date {
 /* N A V B A R ! ! ! */
 /* N A V B A R ! ! ! */
 
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:700");
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -344,79 +307,64 @@ p.center-date {
 
 /* by default include the background of the option for the home navigation */
 body {
-  background: #444444;
+  /* background: #5b37b7; */
   color: #ffffff;
   /* center in the viewport */
-  /* min-height: 100vh; */
-  display: flexbox;
+  min-height: 80vh;
+  display: grid;
   place-items: center;
   font-family: "Open Sans", sans-serif;
   /* transition for the change in bg color */
-  transition: background 0.5s ease-out;
+  transition: background 0.2s ease-out;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
 /* display the anchor link side by side  */
 nav {
   display: flex;
-  /* width: 50; */
-  background: #000000;
-  border-radius: 50px;
+  /* background: #000000; */
   /* considerable whitespace surrounding the navigation's items */
-  /* padding: 1%; */
-  width: 100%;
-  justify-content: center;
-
-  /* border-radius: 0 0 30px 30px; */
+  /* padding: 1rem 2.15rem; */
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-radius: 50px;
   /* box-shadow: 0 1px 15px rgba(0, 0, 0, 0.1); */
 }
 
 /* remove default style and slightly separate the anchor links from one another */
 a {
-  width: 100%;
   color: inherit;
   text-decoration: none;
-  /* background-color: #ff0f0f; */
   margin: 0 0.2rem;
   /* display the svg icon and span elements side by side, vertically aligned */
   display: flex;
   align-items: center;
-  /* overflow: hidden; */
   /* include padding for the background applied on the active item */
-  /* padding: 15px;
-  padding-left: 30px;
-  padding-right: 30px; */
-  /* margin: 1px; */
+  padding: 0.75rem 1.25rem;
   border-radius: 30px;
-
   /* position relative for the pseudo element */
   position: relative;
   /* custom properties for the colors picked up by the elements when clicked (and updated for each link in the script) */
-  --hover-bg: #5b37b720;
+  --hover-bg: #000000b7;
   --hover-c: #5b37b7;
 }
 
 /* include considerable negative margin to have the svg icon overlapping with the span element */
 a svg {
-  /* margin-left: 2.5em; */
-  /* width: 100%; */
-  /* background-color: #001a90; */
-  max-height: 60px;
+  margin-right: -2.5rem;
+  width: 28px;
+  height: 28px;
   pointer-events: none;
-  border-top-left-radius: 30px;
-  border-bottom-left-radius: 30px;
-  padding-left: 15px;
-  /* margin: 10%; */
   /* transition for the change in margin */
-  transition: margin 0.5s ease-out;
+  transition: margin 0.2s ease-out;
 }
 /* by default hide the span element */
 a span {
-  /* background-color: #4fc4f6; */
-  display: inline-block;
   opacity: 0;
   visibility: hidden;
   font-size: 0.9rem;
-  /* margin: 0.9rem; */
+  margin-left: 0.9rem;
 }
 /* include with a pseudo element relative to the anchor link a circle, with a fixed with and height */
 a:before {
@@ -426,7 +374,6 @@ a:before {
   left: 0;
   width: 70px;
   height: 70px;
-
   border-radius: 50%;
   /* positioned to the left of the anchor link and scaled to 0 */
   transform: translate(0%, -50%) scale(0);
@@ -442,7 +389,6 @@ a.active {
 /* using the color specified by the then updated custom property show the circle of the pseudo element increasing its size and highlighting it momentarily */
 a.active:before {
   background: var(--hover-c);
-
   opacity: 0;
   visibility: hidden;
   transform: translate(0%, -50%) scale(2);
@@ -457,20 +403,21 @@ a.active svg {
 a.active span {
   visibility: visible;
   opacity: 1;
-  transition: all 0.2s ease-out;
+  transition: all 0.8s ease-out;
+  width: 150px;
 }
 
 /* on smaller viewports show the navigation bar on the side, attached to the left of the screen */
 @media (max-width: 500px) {
   nav {
-    flex-direction: row;
+    flex-direction: column;
     justify-self: start;
-    /* border-radius: 0 30px 30px 0; */
-    /* padding: 2rem 1.15rem 2rem 0.75rem; */
+    border-radius: 0 30px 30px 0;
+    padding: 2rem 1.15rem 2rem 0.75rem;
   }
   /* change the margin separating the anchor link elements now dividing the elements vertically */
   nav a {
-    margin: 10px;
+    margin: 0.5rem 0;
   }
   /* remove the negative margin from the svg elements, as the width is to be taken in full */
   nav svg {
@@ -482,15 +429,88 @@ a.active span {
   width: 10;
   height: 10;
 }
+
 .svg-icon path,
 .svg-icon polygon,
 .svg-icon rect {
   fill: currentColor;
 }
+
 .svg-icon circle {
+  /*   stroke: #ffffff;
+stroke-width: 10; */
   stroke: currentColor;
   stroke-width: 10;
   fill: none;
   stroke-linejoin: round;
   stroke-linecap: round;
+}
+
+/* OUR CODE */
+
+.header {
+  padding: 15px;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 2.5%;
+  border-radius: 50px;
+  box-shadow: 0 1px 15px rgba(135, 111, 245, 0.801);
+  background-color: #000000a8;
+  display: grid;
+  place-items: center;
+}
+
+.boxes {
+  background-color: rgb(32, 32, 32);
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  border-style: ridge;
+  width: 65vw;
+  /* min-width: 80vw; */
+  /* display: block; */
+}
+.content {
+  /* display: in; */
+  overflow: hidden;
+  /* display: g; */
+}
+.lhsContainer {
+  /* min-width: 50%; */
+  max-width: 800px;
+  padding: 10px;
+  float: left;
+  background-color: #363f61;
+  border-radius: 20px;
+  margin: 30px;
+  /* margin-right: 30px; */
+}
+.rhsContainer {
+  background-color: #363f61;
+  border-radius: 20px;
+  min-width: fit-content;
+  /* margin-left: 5%; */
+  margin: 30px;
+  overflow: hidden;
+  float: inherit;
+  padding: 10px;
+  /* min-width: 40%; */
+  /* display: grid; */
+}
+
+.profile-menu {
+  float: right;
+  height: 20px;
+  padding: 5px;
+}
+.profile-menu p {
+  font-size: 17px;
+  display: inline-block;
+  line-height: 76px;
+  margin: 0;
+  padding-right: 10px;
+}
+
+.profile-menu a:hover {
+  text-decoration: none;
 }

@@ -3,10 +3,21 @@ import "../App.css";
 import NavBar from "../Components/NavBar";
 
 const ProfileDev = () => {
+  const colourOptions = [
+    {
+      name: "profile",
+      color: "#3dbbd1",
+    }
+  ];
+  const { color } = colourOptions.find((item) => item.name === "profile");
+        document.querySelector("body").style.background = color;
   return (
-    <body>
-      <NavBar />
-      <section id="Home">
+    <section>
+        <header class = "header">
+          <NavBar />
+        </header>
+        <body>
+      <section class = "content">
         <div class="boxes">
           <h2>About</h2>
           <p>
@@ -51,6 +62,8 @@ const ProfileDev = () => {
         </div>
       </section>
     </body>
+    </section>
+    
   );
 };
 
