@@ -3,7 +3,8 @@ import React from 'react';
 import 'reactjs-popup/dist/index.css';
 import Modal from './Modal.js'
 
-const Contract = ({ contract, onExpand , onDevs }) => {
+const Contract = ({ contract, onExpand }) => {
+
   return (
     <div className={`contract `}>
       {contract.expandContract ? (
@@ -21,9 +22,8 @@ const Contract = ({ contract, onExpand , onDevs }) => {
           {contract.open ? (
             <>
               {contract.contractDev.length > 0 ? 
-              
-                <Modal contract={contract} trigger={<button> Trigger</button>} position="right center">
-                  </Modal>
+                 <Modal trigger={<button> Trigger</button>} position="right center">
+                   </Modal>
             :
               <FaRegUser style={{ color: 'black', cursor: 'pointer' }}/>}
             </>
