@@ -13,7 +13,6 @@ import ContactCompany from "./Pages/ContactCompany";
 function App() {
   return (
     <main>
-      {/* <NavBar /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profiledev" element={<ProfileDev />} />

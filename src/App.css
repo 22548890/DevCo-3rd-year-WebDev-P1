@@ -346,8 +346,8 @@ a {
   /* position relative for the pseudo element */
   position: relative;
   /* custom properties for the colors picked up by the elements when clicked (and updated for each link in the script) */
-  --hover-bg: #000000b7;
-  --hover-c: #5b37b7;
+  --hover-bg: #0000008e;
+  --hover-c: #33ff00;
 }
 
 /* include considerable negative margin to have the svg icon overlapping with the span element */
@@ -404,7 +404,7 @@ a.active span {
   visibility: visible;
   opacity: 1;
   transition: all 0.8s ease-out;
-  width: 150px;
+  max-width: 150px;
 }
 
 /* on smaller viewports show the navigation bar on the side, attached to the left of the screen */
@@ -472,6 +472,8 @@ stroke-width: 10; */
 }
 .content {
   /* display: in; */
+
+  margin-top: 25px;
   overflow: hidden;
   /* display: g; */
 }
@@ -499,18 +501,16 @@ stroke-width: 10; */
 }
 
 .profile-menu {
-  float: right;
+  /* background-color: #fcb150; */
   height: 20px;
-  padding: 5px;
+  margin-left: 65%;
+
+  /* margin-right: 0%; */
 }
 .profile-menu p {
   font-size: 17px;
-  display: inline-block;
-  line-height: 76px;
-  margin: 0;
-  padding-right: 10px;
-}
+  /* line-height: 80px; */
 
-.profile-menu a:hover {
-  text-decoration: none;
+  margin: 0;
+  padding-left: 80px;
 }
