@@ -104,7 +104,7 @@ const ScalePython = ({
         <label htmlFor="scale">Programming Experience in Python:</label>
         <ul className='likert' >
             <li>
-                <input type="radio" name="likertPython" value="None"/>
+                <input type="radio" name="likertPython" value="None" />
                 <label className="statement" >None</label>
             </li>
             <li>
@@ -175,6 +175,14 @@ const ScaleGo = ({
 
     </div>
 
+const handleDelete = () => {
+    //delete accounts
+    alert("Deleted Account");
+    localStorage.clear();
+    window.location.pathname = "/login";
+
+};
+
 const Profile = ({
     onSubmit,
     src,
@@ -200,12 +208,16 @@ const Profile = ({
             <div className="scale">C/C++ - {scaleC}</div>
             <div className="scale">Go - {scaleGo}</div>
             <button type="submit" className="edit">Edit Details </button>
+            <button className="deleteBtn" onClick={handleDelete}>Delete Account </button>
         </form>
     </div>
 
-    const handleHome = () => {
+const handleHome = () => {
+    if (localStorage.getItem("isAuthenticated")) {
         window.location.pathname = "/";
-    };
+    }
+
+};
 
 const Edit = ({
     onSubmit,
@@ -314,12 +326,14 @@ class DevProfile extends React.Component {
         // fetch('http://127.0.0.1:5000/devReg', requestOpt)
         // .then(response => response.json())
         // .catch(error => console.log(error));
+        if (localStorage.getItem("isAuthenticated")) {
+            let activeP = this.state.active === 'edit' ? 'profile' : 'edit';
+            this.setState({
+                active: activeP,
+            });
+        }
 
-        let activeP = this.state.active === 'edit' ? 'profile' : 'edit';
-        this.setState({
-            active: activeP,
-        });
-        
+
     }
 
     render() {
@@ -342,21 +356,21 @@ class DevProfile extends React.Component {
                         name={name}
                         email={email}
                         password={password}
-                        scaleJava={scaleJava} 
+                        scaleJava={scaleJava}
                         scalePython={scalePython}
                         scaleC={scaleC}
                         scaleGo={scaleGo}
-                        />
+                    />
                 ) : (<Edit onSubmit={this.handleSubmit}>
-                        <ImgUpload onChange={this.photoUpload} src={imagePreviewUrl} />
-                        <FullName onChange={this.editName} value={name} />
-                        <Email onChange={this.editEmail} value={email} />
-                        <Password onChange={this.editPassword} value={password} />
-                        <ScaleJava onChange={this.editScaleJava} value={scaleJava} />
-                        <ScalePython onChange={this.editScalePython} value={scalePython} />
-                        <ScaleC onChange={this.editScaleC} value={scaleC} />
-                        <ScaleGo onChange={this.editScaleGo} value={scaleGo} />
-                    </Edit>)}
+                    <ImgUpload onChange={this.photoUpload} src={imagePreviewUrl} />
+                    <FullName onChange={this.editName} value={name} />
+                    <Email onChange={this.editEmail} value={email} />
+                    <Password onChange={this.editPassword} value={password} />
+                    <ScaleJava onChange={this.editScaleJava} value={scaleJava} />
+                    <ScalePython onChange={this.editScalePython} value={scalePython} />
+                    <ScaleC onChange={this.editScaleC} value={scaleC} />
+                    <ScaleGo onChange={this.editScaleGo} value={scaleGo} />
+                </Edit>)}
             </div>
         )
     }

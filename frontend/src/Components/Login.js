@@ -136,7 +136,7 @@ class Login extends React.Component {
                 // this.setState({
                 //     active: activeP,
                 // })
-                <Redirect to="/" />
+                //<Redirect to="/" />
                 localStorage.setItem("isAuthenticated", "true");
                 window.location.pathname = "/";
 

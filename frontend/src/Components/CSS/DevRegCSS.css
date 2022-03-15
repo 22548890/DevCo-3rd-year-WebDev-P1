@@ -242,6 +242,20 @@ body{
     background: #a2a3a3;
     color: #313131;
   }
-  .logolbl {
-    margin-bottom: 10px;
-}
+  .deleteBtn:hover{
+    left: 0;
+    color: #fff;
+    /* width: 180px; */
+    background: #d81515;
+    box-shadow: 0px 0px 20px 0px  #a2a3a3;
+  }
+  .deleteBtn:focus{
+    outline: none;
+  }
+  .deleteBtn{
+    width: 150px;
+    height: auto;
+    padding: 3%;
+    background: #d45a5a;
+    color: rgb(199, 179, 179);
+  }
