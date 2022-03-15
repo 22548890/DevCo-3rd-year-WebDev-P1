@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react'
+import './CSS/Home.css';
+
 
 function Home()
 {
@@ -7,10 +9,31 @@ function Home()
         window.location.pathname = "/login";
     };
     return (
-        <nav>
-            <h1>Home</h1>
+        <>
+      <nav id="navbar" class="">
+        <div class="nav-wrapper">
+          <div class="logo">
+          <label >DevCo</label>
+          
+          </div>
+
+          <ul id="menu">
+            <li>
+              <a href="#contracts">Contracts</a>
+            </li>
+            <li>
+              <a href="/DevProfile">Profile</a>
+            </li>
+            <li>
             <button onClick={handleLogout} >Logout </button>
-        </nav>
+            </li>
+          </ul>
+        </div>
+        
+      </nav>
+    </>
+            
+    
     )
 }
 

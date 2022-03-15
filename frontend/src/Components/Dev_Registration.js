@@ -103,7 +103,7 @@ const ScalePython = ({
         <label htmlFor="scale">Programming Experience in Python:</label>
         <ul className='likert' >
             <li>
-                <input type="radio" name="likertPython" value="None"/>
+                <input type="radio" name="likertPython" value="None" />
                 <label className="statement" >None</label>
             </li>
             <li>
@@ -295,20 +295,20 @@ class DevReg extends React.Component {
         let data = this.state;
         const requestOpt = {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                'name':data.name,
-                'password':data.password,
-                'email':data.email,
-                'scaleJava':data.scaleJava,
-                'scalePython':data.scalePython,
-                'scaleC':data.scaleC,
-                'scaleGo':data.scaleGo
+                'name': data.name,
+                'password': data.password,
+                'email': data.email,
+                'scaleJava': data.scaleJava,
+                'scalePython': data.scalePython,
+                'scaleC': data.scaleC,
+                'scaleGo': data.scaleGo
             }),
         }
         fetch('http://127.0.0.1:5000/devReg', requestOpt)
-        .then(response => response.json())
-        .catch(error => console.log(error));
+            .then(response => response.json())
+            .catch(error => console.log(error));
 
         let activeP = this.state.active === 'edit' ? 'profile' : 'edit';
         this.setState({
@@ -347,16 +347,17 @@ class DevReg extends React.Component {
                         name={name}
                         email={email}
                         password={password}
-                        scaleJava={scaleJava} 
+                        scaleJava={scaleJava}
                         scalePython={scalePython}
                         scaleC={scaleC}
                         scaleGo={scaleGo}
-                        />)}
+                    />)}
             </div>
         )
     }
 
 }
+
 // ReactDOM.render(
 //     <>
 //         <DevReg />

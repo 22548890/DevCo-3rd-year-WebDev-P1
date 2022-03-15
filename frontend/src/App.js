@@ -6,6 +6,7 @@ import Login from './Components/Login'
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 import Home from './Components/Home';
 import ProtectedRoute from './Components/ProtectedRoute';
+import DevProfile from './Components/Profile';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route exact path='/login' component={Login} />
           <Route exact path='/DevReg' component={DevReg} />
           <Route exact path='/ComReg' component={ComReg} />
+          <ProtectedRoute exact path='/DevProfile' component={DevProfile} />
           <ProtectedRoute exact path='/' component={Home} />
         </Router>
       </div>

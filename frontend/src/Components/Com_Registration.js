@@ -170,6 +170,7 @@ class ComReg extends React.Component {
         this.setState({
             active: activeP,
         })
+
     }
 
     render() {
@@ -180,7 +181,7 @@ class ComReg extends React.Component {
             active } = this.state;
         return (
             <div>
-
+                
                 {(active === 'edit') ? (
                     <Edit onSubmit={this.handleSubmit}>
                         <ImgUpload onChange={this.photoUpload} src={imagePreviewUrl} />
