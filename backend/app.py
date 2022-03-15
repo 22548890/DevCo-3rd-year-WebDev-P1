@@ -13,8 +13,15 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
+# Table for many to many relationship
+developer_contract = db.Table('developer_contract',
+    db.Column('developer_email', db.String(25), db.ForeignKey('developer.email')),
+    db.Column('contract_id', db.Integer, db.ForeignKey('contract.id'))
+)
+
+# Current Company name / Dev email and type = company/developer
 session_user = {
-    'username':'Banana',
+    'username':'',
     'type':''
 }
 
@@ -31,6 +38,8 @@ class Developer(db.Model):
     scaleC = db.Column(db.String(25))
     scaleGo = db.Column(db.String(25))
 
+    contracts_applied = db.relationship('Contract', secondary=developer_contract, backref='developers_applied', lazy=True)
+
     def __init__(self, name, password, email, scaleJava, scalePython, scaleC, scaleGo):
         self.name = name
         self.password = password
@@ -39,6 +48,7 @@ class Developer(db.Model):
         self.scalePython = scalePython
         self.scaleC = scaleC
         self.scaleGo = scaleGo
+        self.contracts_applied = []
 
 class DeveloperSchema(ma.Schema):
     class Meta:
@@ -81,9 +91,9 @@ def devReg():
         }
 
 
-@app.route('/devUpdate', methods = ['PUT'])
+@app.route('/devEdit', methods = ['PUT'])
 @cross_origin()
-def devUpdate():
+def devEdit():
     name = request.json['name']
     password = request.json['password']
     email = request.json['email']
@@ -171,9 +181,9 @@ def comReg():
             'success':True
         }
 
-@app.route('/comUpdate', methods = ['PUT'])
+@app.route('/comEdit', methods = ['PUT'])
 @cross_origin()
-def comUpdate():
+def comEdit():
     name = request.json['name']
     password = request.json['password']
     industry = request.json['industry']
@@ -229,7 +239,7 @@ class ContractSchema(ma.Schema):
         fields = ('id', 'company_name', 'contract_length', 'contract_value', 'contract_description', 'programming_language', 'location', 'date')
 
 contract_schema = ContractSchema()
-contract_schema = ContractSchema(many=True)
+contracts_schema = ContractSchema(many=True)
 
 
 @app.route('/createContract', methods = ['POST'])
@@ -254,6 +264,21 @@ def createContract():
             'msg': '',
             'success':True
         }    
+
+@app.route('/applyContract<contract_id>', methods = ['POST'])
+@cross_origin()
+def applyContract(contract_id):
+    developer = Developer.query.get(session_user['username'])
+    contract = Contract.query.get(contract_id)
+    developer.contracts_applied.append(contract)
+
+    db.session.commit()
+
+    return {
+            'msg': '',
+            'success':True
+        }    
+
 
 #######################################################
 #           Routes
@@ -306,12 +331,26 @@ def login():
 
 
 
-@app.route('/get<username>', methods = ['GET'])
-def getAll(username):
+@app.route('/comGetContracts<username>', methods = ['GET'])
+def comGetContracts(username):
     company = Company.query.get(username)
     contracts = company.contracts
-    results = contract_schema.dump(contracts)
+    results = contracts_schema.dump(contracts)
     return jsonify(results)    
+
+@app.route('/devGetContracts<email>', methods = ['GET'])
+def devGetContracts(email):
+    dev = Developer.query.get(email)
+    contracts = dev.contracts_applied
+    results = contracts_schema.dump(contracts)
+    return jsonify(results) 
+
+@app.route('/conGetDevs<id>', methods = ['GET'])
+def conGetDevs(id):
+    con = Contract.query.get(id)
+    devs = con.developers_applied
+    results = devs_schema.dump(devs)
+    return jsonify(results) 
 
 if __name__ == "__main__":
     app.run(debug=True)

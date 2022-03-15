@@ -306,14 +306,23 @@ class DevReg extends React.Component {
                 'scaleGo':data.scaleGo
             }),
         }
-        fetch('http://127.0.0.1:5000/devReg', requestOpt)
-        .then(response => response.json())
-        .catch(error => console.log(error));
 
-        let activeP = this.state.active === 'edit' ? 'profile' : 'edit';
-        this.setState({
-            active: activeP,
-        })
+        async function fetchFunc() {
+            return await fetch('http://127.0.0.1:5000/devReg', requestOpt)
+            .then(response => response.json())
+            .catch(error => console.log(error));
+        }
+        (async () => {
+            let info = await fetchFunc();
+            if (info.success) { 
+                let activeP = data.active === 'edit' ? 'profile' : 'edit';
+                this.setState({
+                    active: activeP,
+                })
+            } else {
+                alert(info.msg);
+            }
+        })()
     }
 
     render() {
