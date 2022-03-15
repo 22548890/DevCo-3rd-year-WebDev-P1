@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import "../App.css";
 import NavBar from "../Components/NavBar";
 
@@ -9,14 +8,9 @@ const JobsDev = () => {
       color: "#f13e3e",
     },
   ];
-  // this.classList.add("active");
+
   const { color } = colourOptions.find((item) => item.name === "jobs");
   document.querySelector("body").style.background = color;
-
-  // const style = window.getComputedStyle(this);
-  // const hoverColor = style.getPropertyValue("--hover-c");
-  // if the two don't match, update the custom property to show the hue with the text and the semi transparent background
-
   return (
     <section>
       <header class="header">

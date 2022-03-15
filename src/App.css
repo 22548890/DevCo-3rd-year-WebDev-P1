@@ -514,3 +514,7 @@ stroke-width: 10; */
   margin: 0;
   padding-left: 80px;
 }
+
+.homePage {
+  background-color: gold;
+}

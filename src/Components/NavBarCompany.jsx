@@ -4,67 +4,13 @@ import { Link } from "react-router-dom";
 import App from "../App";
 import { NavLink } from "react-router-dom";
 
-const NavBar = () => {
-  // array describing the options of the navigation elements
-  // specifying the lower case option and the matching color
-  const navigationOptions = [
-    {
-      name: "profile",
-      color: "#3dbbd1",
-    },
-    {
-      name: "contact",
-      color: "#713faa",
-    },
-    {
-      name: "jobs",
-      color: "#f13e3e",
-    },
-  ];
-
-  // target all anchor link elements
-  const links = document.querySelectorAll("nav a");
-
-  // function called in response to a click event on the anchor link
-  function handleClick(e) {
-    // prevent the default behavior, but most importantly remove the class of .active from those elements with it
-    e.preventDefault();
-    links.forEach((link) => {
-      if (link.classList.contains("active")) {
-        link.classList.remove("active");
-      }
-    });
-
-    // retrieve the option described the link element
-    const name = this.textContent.trim().toLowerCase();
-    // find in the array the object with the matching name
-    // store a reference to its color
-    const { color } = navigationOptions.find((item) => item.name === name);
-
-    // retrieve the custom property for the --hover-c property, to make it so that the properties are updated only when necessary
-    const style = window.getComputedStyle(this);
-    const hoverColor = style.getPropertyValue("--hover-c");
-    // if the two don't match, update the custom property to show the hue with the text and the semi transparent background
-    if (color !== hoverColor) {
-      this.style.setProperty("--hover-bg", `${color}20`);
-      this.style.setProperty("--hover-c", color);
-    }
-
-    // apply the class of active to animate the svg an show the span element
-    this.classList.add("active");
-    // change the color of the background of the application to match
-    document.querySelector("body").style.background = color;
-  }
-
-  // listen for a click event on each and every anchor link
-  links.forEach((link) => link.addEventListener("click", handleClick));
-
+const NavBarCompany = () => {
   return (
     <header>
       <div class="profile-picture big-profile-picture clear">
         <img width="150px" alt="Anne Hathaway picture" src={ppimg}></img>
       </div>
-      <h1 class="user-name">Anne Hathaway</h1>
+      <h1 class="user-name">DevCo</h1>
       <div class="profile-description">
         <p class="scnd-font-color">
           Lorem ipsum dolor sit amet consectetuer adipiscing
@@ -106,4 +52,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default NavBarCompany;

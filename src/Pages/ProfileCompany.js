@@ -1,13 +1,28 @@
-import { Link } from "react-router-dom";
 import "../App.css";
-import NavBar from "../Components/NavBarCompany";
+import NavBarCompany from "../Components/NavBarCompany";
 
 const ProfileCompany = () => {
+  const colourOptions = [
+    {
+      name: "profile",
+      color: "#3dbbd1",
+    },
+  ];
+  const { color } = colourOptions.find((item) => item.name === "profile");
+  document.querySelector("body").style.background = color;
   return (
-    <body>
-      <h1>Company</h1>
-      <NavBar />
-      <section id="Home">
+    <section>
+      <header class="header">
+        <div class="profile-menu">
+          <p>
+            <button>Edit Profile</button>
+            <button>Preview</button>
+          </p>
+        </div>
+        <NavBarCompany />
+      </header>
+
+      <section class="content">
         <div class="boxes">
           <h2>About</h2>
           <p>
@@ -18,8 +33,7 @@ const ProfileCompany = () => {
           </p>
         </div>
       </section>
-    </body>
+    </section>
   );
 };
-
 export default ProfileCompany;
