@@ -19,7 +19,7 @@ function Home()
 
           <ul id="menu">
             <li>
-              <a href="#contracts">Contracts</a>
+              <a href="#my-contracts">My Contracts</a>
             </li>
             <li>
               <a href="/DevProfile">Profile</a>
