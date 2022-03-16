@@ -1,7 +1,7 @@
 import Contract from './Contract'
 
 
-const Contracts = ({ contracts, onExpand, onDevs, all, open, closed }) => {
+const Contracts = ({ contracts, onExpand, all, open, closed }) => {
 
   return (
     <>

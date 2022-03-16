@@ -22,8 +22,6 @@ const AddContract = ({ onAdd }) => {
     const [expandContract] = useState(false)
     const [open] = useState(true)
     const [contractDate] = useState(getCurrentDate())
-    const [contractDev, setDev] = useState([])
-    const [showDevs] = useState(false)
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -38,7 +36,7 @@ const AddContract = ({ onAdd }) => {
             return
         }
 
-        onAdd({ contractName: contractName,contractLength: contractLength, contractValue: contractValue, contractDes: contractDes, contractLan: contractLan, office, remote , expandContract, open, contractDate, contractDev, showDevs})
+        onAdd({ contractName: contractName,contractLength: contractLength, contractValue: contractValue, contractDes: contractDes, contractLan: contractLan, office, remote , expandContract, open, contractDate })
 
         setName('')
         setLength('')
@@ -47,7 +45,6 @@ const AddContract = ({ onAdd }) => {
         setLan('')
         setOffice(false)
         setRemote(false)
-        setDev([])
 
     }
   return (

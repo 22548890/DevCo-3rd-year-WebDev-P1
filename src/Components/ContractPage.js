@@ -139,7 +139,7 @@ function ContractPage() {
          >
         </Menu>
         
-        {contracts.length > 0 ? (<Contracts contracts={contracts} onExpand={expandContract} onDevs={showDevelopers} all={showAllContracts} open={showOpenContracts} closed={showClosedContracts}
+        {contracts.length > 0 ? (<Contracts contracts={contracts} onExpand={expandContract} all={showAllContracts} open={showOpenContracts} closed={showClosedContracts}
         />) : ('No Contracts to Show')}
       </div>
       
