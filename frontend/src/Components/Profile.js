@@ -207,7 +207,7 @@ const Profile = ({
             <div className="scale">Python - {scalePython}</div>
             <div className="scale">C/C++ - {scaleC}</div>
             <div className="scale">Go - {scaleGo}</div>
-            <button type="submit" className="edit">Edit Details </button>
+            <button type="submit" className="styleBtn edit">Edit Details </button>
             <button className="deleteBtn" onClick={handleDelete}>Delete Account </button>
         </form>
     </div>
@@ -227,7 +227,7 @@ const Edit = ({
         <form onSubmit={onSubmit}>
             <h1>Edit Profile Details</h1>
             {children}
-            <button /*type="submit"*/ className="save" onClick={handleHome}>Save & Exit </button>
+            <button /*type="submit"*/ className="styleBtn save" onClick={handleHome}>Save & Exit </button>
         </form>
     </div>
 

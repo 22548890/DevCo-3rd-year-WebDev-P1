@@ -101,7 +101,7 @@ const Edit = ({
         <form onSubmit={onSubmit}>
             <h1>Company Registration</h1>
             {children}
-            <button type="submit" className="save">Save </button>
+            <button type="submit" className="styleBtn save">Save </button>
         </form>
     </div>
 
