@@ -1,6 +1,8 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
+   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}" />
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,7 +11,7 @@
       name="description"
       content="Web site created using create-react-app"
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="devtable" href="backend/app.py" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -24,11 +26,42 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>DEVCO</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
+    <table id="table">
+      <thead>
+    
+       <tr>
+
+        <th onclick="sortTable(0)">Name</th>
+        <th onclick="sortTable(1)">Location</th>
+        <th onclick="sortTable(2)">Contract Length</th>
+        <th onclick="sortTable(3)">Description</th>
+        <th onclick="sortTable(4)">Languages</th>
+        <th onclick="sortTable(5)">DOC</th>
+        <th onclick="sortTable(6)">Contract Value</th>
+       </tr>
+      </thead>
+    
+      <tbody>
+       {% for dev in users %}
+          <tr>
+            <td>{{ dev.firstname }}</td>
+            <td>{{ dev.locations }}</td>
+            <td>{{ dev.contractlength }}</td>
+            <td>{{ dev.descript }}</td>
+            <td>{{ dev.lang }}</td>
+            <td>{{ dev.docp}}</td>
+           <td>R{{ dev.contractval }}</td>
+          </tr>
+       {% endfor %}
+     </tbody>
+    </table>
+    
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
