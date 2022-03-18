@@ -309,31 +309,49 @@ class DevProfile extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
 
-        // let data = this.state;
-        // const requestOpt = {
-        //     method: 'POST',
-        //     headers: {'Content-Type': 'application/json'},
-        //     body: JSON.stringify({
-        //         'name':data.name,
-        //         'password':data.password,
-        //         'email':data.email,
-        //         'scaleJava':data.scaleJava,
-        //         'scalePython':data.scalePython,
-        //         'scaleC':data.scaleC,
-        //         'scaleGo':data.scaleGo
-        //     }),
-        // }
-        // fetch('http://127.0.0.1:5000/devReg', requestOpt)
-        // .then(response => response.json())
-        // .catch(error => console.log(error));
+        let data = this.state;
+        const requestOpt = {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                'name': data.name,
+                'password': data.password,
+                'email': data.email,
+                'scaleJava': data.scaleJava,
+                'scalePython': data.scalePython,
+                'scaleC': data.scaleC,
+                'scaleGo': data.scaleGo
+            }),
+        }
+        async function fetchFunc() {
+            return await fetch('http://127.0.0.1:5000/devEdit', requestOpt)
+            .then(response => response.json())
+            .catch(error => console.log(error));
+        }
+        (async () => {
+            let info = await fetchFunc();
+            if (info.success) { 
+                if (localStorage.getItem("isAuthenticated")) {
+                    let activeP = this.state.active === 'edit' ? 'profile' : 'edit';
+                    this.setState({
+                        active: activeP,
+                    });
+                }
+            } else {
+                alert(info.msg);
+            }
+        })()
+    }
+
+    handleEdit = e => {
+        e.preventDefault();
+
         if (localStorage.getItem("isAuthenticated")) {
             let activeP = this.state.active === 'edit' ? 'profile' : 'edit';
             this.setState({
                 active: activeP,
             });
         }
-
-
     }
 
     render() {
@@ -351,7 +369,7 @@ class DevProfile extends React.Component {
 
                 {(active === 'edit') ? (
                     <Profile
-                        onSubmit={this.handleSubmit}
+                        onSubmit={this.handleEdit}
                         src={imagePreviewUrl}
                         name={name}
                         email={email}
