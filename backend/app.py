@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, json
+from flask import Flask, jsonify, request, json, session
 from flask_sqlalchemy import SQLAlchemy 
 from flask_marshmallow import Marshmallow
 from flask_cors import cross_origin, CORS
@@ -21,7 +21,7 @@ developer_contract = db.Table('developer_contract',
 
 # Current Company name / Dev email and type = company/developer
 session_user = {
-    'username':'',
+    'username':'m@s',
     'type':''
 }
 
@@ -86,9 +86,9 @@ def devReg():
     session_user['type'] = 'dev'
 
     return {
-            'msg': '',
-            'success':True
-        }
+        'msg': '',
+        'success':True
+    }
 
 
 @app.route('/devEdit', methods = ['PUT'])
@@ -101,6 +101,16 @@ def devEdit():
     scalePython = request.json['scalePython']
     scaleC = request.json['scaleC']
     scaleGo = request.json['scaleGo']
+
+    if session_user['username'] != email:
+        dev_exist = Developer.query.filter_by(email=email).first()
+        com_exist = Company.query.filter_by(name=email).first()
+
+        if dev_exist or com_exist:
+            return {
+                'msg': 'This email already exists',
+                'success':False
+            }
 
     dev = Developer.query.get(session_user['username'])
 
@@ -116,7 +126,10 @@ def devEdit():
 
     session_user['username'] = email
 
-    return dev_schema.jsonify(dev)
+    return {
+        'msg': '',
+        'success':True
+    }
 
 @app.route('/devDelete', methods = ['DELETE'])
 @cross_origin()
@@ -163,11 +176,12 @@ def comReg():
     com_exist = Company.query.filter_by(name=name).first()
     dev_exist = Developer.query.filter_by(email=name).first()
 
-    if com_exist or dev_exist:
-        return {
-            'msg': 'This name already exists',
-            'success':False
-        }
+    if session_user['username'] != name:
+        if com_exist or dev_exist:
+            return {
+                'msg': 'This name already exists',
+                'success':False
+            }
 
     dev = Company(name, password, industry)
     db.session.add(dev)
@@ -177,9 +191,9 @@ def comReg():
     session_user['type'] = 'com'
 
     return {
-            'msg': '',
-            'success':True
-        }
+        'msg': '',
+        'success':True
+    }
 
 @app.route('/comEdit', methods = ['PUT'])
 @cross_origin()
@@ -187,6 +201,15 @@ def comEdit():
     name = request.json['name']
     password = request.json['password']
     industry = request.json['industry']
+
+    com_exist = Company.query.filter_by(name=name).first()
+    dev_exist = Developer.query.filter_by(email=name).first()
+
+    if com_exist or dev_exist:
+        return {
+            'msg': 'This name already exists',
+            'success':False
+        }
 
     com = Company.query.get(session_user['username'])
 
@@ -198,7 +221,10 @@ def comEdit():
 
     session_user['username'] = name
 
-    return com_schema.jsonify(com)
+    return {
+        'msg': '',
+        'success':True
+    }
 
 @app.route('/comDelete', methods = ['DELETE'])
 @cross_origin()
