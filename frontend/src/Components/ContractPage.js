@@ -23,63 +23,79 @@ function ContractPage() {
   }, [])
 
   //Fetch Contracts
-  const fetchContracts = async () => {
+  const fetchContracts = async (contract) => {
+
     const res = await fetch('http://localhost:5000/contracts')
     const data = await res.json()
 
     return data
+
+
+    // let data = null
+    // const requestOpt = {
+    //   method: 'GET',
+    //   headers: {'Content-Type': 'application/json'},
+    // }
+    // async function fetchFunc() {
+    //     return await fetch('http://127.0.0.1:5000/comGetContracts', requestOpt)
+    //     .then(response => response.json())
+    //     .catch(error => console.log(error));
+    // }
+    // (async () => {
+    //     data = await fetchFunc();
+    // })()
+
+    // return data
   }
 
-  const fetchContract = async (id) => {
+  const fetchContract = async (id) => { // FIXME: What id is this???
+
     const res = await fetch(`http://localhost:5000/contracts/${id}`)
     const data = await res.json()
 
     return data
+    // let data = null
+    // const requestOpt = {
+    //   method: 'GET',
+    //   headers: {'Content-Type': 'application/json'},
+    // }
+    // async function fetchFunc() {
+    //     return await fetch(`http://127.0.0.1:5000/getContract/${id}`, requestOpt)
+    //     .then(response => response.json())
+    //     .catch(error => console.log(error));
+    // }
+    // (async () => {
+    //     data = await fetchFunc();
+    // })()
+
+    // return data
   }
 
   //Add Contract
   const addContract = async (contract) => {
-    const res = await fetch('http://localhost:5000/contracts', {
+    let data = null
+    const requestOpt = {
       method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(contract),
-    })
-
-    const data = await res.json()
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+          'contract_name':contract.contractName,
+          'contract_length':contract.contractLength,
+          'contract_value':contract.contractValue,
+          'contract_description':contract.contractDes,
+          'programming_language':contract.contractLan,
+          'location':contract.location
+      }),
+    }
+    async function fetchFunc() {
+        return await fetch('http://127.0.0.1:5000/createContract', requestOpt)
+        .then(response => response.json())
+        .catch(error => console.log(error));
+    }
+    (async () => {
+        data = await fetchFunc();
+    })()
 
     setContracts([...contracts, data])
-
-  }
-
-  // Delete Contract
-  const deleteContract = async (id) => {
-    await fetch(`http://localhost:5000/contracts/${id}`, {
-      method: 'DELETE',
-    })
-    setContracts(contracts.filter((contract) => contract.id !== id))
-  }
-
-  // Expand Contract
-  const expandContract = async (id) => {
-    const contractToExpand = await fetchContract(id)
-    const updContract = {
-      ...contractToExpand,
-      expandContract: !contractToExpand.expandContract
-    }
-
-    const res = await fetch(`http://localhost:5000/contracts/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(updContract)
-    })
-
-    const data = await res.json()
-
-    setContracts(contracts.map((contract) => contract.id === id ? { ...contract, expandContract: data.expandContract } : contract))
   }
 
   const showDevelopers = async (id) => {
@@ -102,27 +118,6 @@ function ContractPage() {
     setContracts(contracts.map((contract) => contract.id === id ? { ...contract, showDevs: data.showDevs } : contract))
   }
 
-  // Toggle Reminder
-  const toggleExpand = async (id) => {
-    const contractToToggle = await fetchContract(id)
-    const updContract = {
-      ...contractToToggle,
-      expandContract: !contractToToggle.expandContract
-    }
-
-    const res = await fetch(`http://localhost:5000/contracts/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(updContract)
-    })
-
-    const data = await res.json()
-
-    setContracts(contracts.map((contract) => contract.id === id ? { ...contract, expandContract: data.expandContract } : contract))
-  }
-
   return (
     <Router>
       <div className="container">
@@ -139,7 +134,7 @@ function ContractPage() {
             closed={() => { setShowAllContracts(false); setShowOpenContracts(false); setShowClosedContracts(true) } }
           >
           </Menu>
-        {contracts.length > 0 ? (<Contracts contracts={contracts} onExpand={expandContract} all={showAllContracts} open={showOpenContracts} closed={showClosedContracts}
+        {contracts.length > 0 ? (<Contracts contracts={contracts} all={showAllContracts} open={showOpenContracts} closed={showClosedContracts}
         />) : ('No Contracts to Show')}</>
         ) : (
           <p></p>

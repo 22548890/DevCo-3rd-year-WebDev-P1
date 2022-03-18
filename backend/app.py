@@ -1,3 +1,4 @@
+from unittest import result
 from flask import Flask, jsonify, request, json, session
 from flask_sqlalchemy import SQLAlchemy 
 from flask_marshmallow import Marshmallow
@@ -21,7 +22,7 @@ developer_contract = db.Table('developer_contract',
 
 # Current Company name / Dev email and type = company/developer
 session_user = {
-    'id':'1',
+    'id':'',
     'username':'',
     'type':''
 }
@@ -262,9 +263,10 @@ class Contract(db.Model):
     contract_description = db.Column(db.Text())
     progamming_language = db.Column(db.String(25))
     location = db.Column(db.String(10))
+    open = db.Column(db.Boolean, default=True)
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
-    
+
 
     def __init__(self, contract_name, contract_length, contract_value, contract_description, programming_language, location):
         self.company_id = session_user['id']
@@ -277,7 +279,7 @@ class Contract(db.Model):
 
 class ContractSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'company_id', 'contract_name', 'contract_length', 'contract_value', 'contract_description', 'programming_language', 'location', 'date')
+        fields = ('id', 'company_id', 'contract_name', 'contract_length', 'contract_value', 'contract_description', 'programming_language', 'location', 'open', 'date')
 
 contract_schema = ContractSchema()
 contracts_schema = ContractSchema(many=True)
@@ -301,10 +303,8 @@ def createContract():
     db.session.add(contract)
     db.session.commit()
 
-    return {
-            'msg': '',
-            'success':True
-        }    
+    results = contract_schema.dump(contract)
+    return jsonify(results)   
 
 @app.route('/applyContract<contract_id>', methods = ['POST'])
 @cross_origin()
@@ -312,6 +312,7 @@ def applyContract(contract_id):
     developer = Developer.query.get(session_user['id'])
     contract = Contract.query.get(contract_id)
     developer.contracts_applied.append(contract)
+    contract.developers_applied.append(developer)
 
     db.session.commit()
 
@@ -319,6 +320,30 @@ def applyContract(contract_id):
             'msg': '',
             'success':True
         }    
+
+@app.route('/getContract/<id>', methods = ['GET'])
+@cross_origin()
+def getContract(id):
+    contract = Contract.query.get(id)
+    results = contract_schema.dump(contract)
+    return jsonify(results)
+
+@app.route('/getContracts', methods = ['GET'])
+@cross_origin()
+def getContracts():
+    contracts = Contract.query.all()
+    results = contracts_schema.dump(contracts)
+    return jsonify(results)
+
+
+@app.route('/comGetContracts', methods = ['GET'])
+@cross_origin()
+def comGetContracts():
+    company = Company.query.get(session_user['id'])
+    contracts = company.contracts
+    results = contracts_schema.dump(contracts)
+    return jsonify(results) 
+
 
 
 #######################################################
@@ -372,12 +397,12 @@ def login():
 
 
 
-@app.route('/comGetContracts<username>', methods = ['GET'])
-def comGetContracts(username):
-    company = Company.query.get(username)
-    contracts = company.contracts
-    results = contracts_schema.dump(contracts)
-    return jsonify(results)    
+# @app.route('/comGetContracts<username>', methods = ['GET'])
+# def comGetContracts(username):
+#     company = Company.query.get(username)
+#     contracts = company.contracts
+#     results = contracts_schema.dump(contracts)
+#     return jsonify(results)    
 
 @app.route('/devGetContracts<email>', methods = ['GET'])
 def devGetContracts(email):

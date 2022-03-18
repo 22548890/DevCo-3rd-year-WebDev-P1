@@ -3,17 +3,6 @@ import React from "react"
 import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import Button from './Button';
 
-
-export function getCurrentDate(separator='/'){
-
-    let newDate = new Date()
-    let date = newDate.getDate();
-    let month = newDate.getMonth() + 1;
-    let year = newDate.getFullYear();
-    
-    return `${date<10?`0${date}`:`${date}`}${separator}${month<10?`0${month}`:`${month}`}${separator}${year}`
-}
-
 const AddContract = ({ onAdd, showAdd }) => {
     const [contractName, setName] = useState('')
     const [contractLength, setLength] = useState('')
@@ -25,7 +14,6 @@ const AddContract = ({ onAdd, showAdd }) => {
     const [location, setLocation] = useState('')
     const [expandContract] = useState(false)
     const [open] = useState(true)
-    const [contractDate] = useState(getCurrentDate())
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -44,33 +32,12 @@ const AddContract = ({ onAdd, showAdd }) => {
             return
         }
 
-        onAdd({ contractName: contractName,contractLength: contractLength, contractValue: contractValue, contractDes: contractDes, contractLan: contractLan, location:location , expandContract, open, contractDate })
+        onAdd({ contractName: contractName,contractLength: contractLength, contractValue: contractValue, contractDes: contractDes, contractLan: contractLan, location:location , expandContract, open })
         
         // let location = 'office';
         // if (remote) {
         //     location = 'remote';
         // }
-        // Post to Database
-        const requestOpt = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                'contract_name':contractName,
-                'contract_length':contractLength,
-                'contract_value':contractValue,
-                'contract_description':contractDes,
-                'programming_language':contractLan,
-                'location':location
-            }),
-        }
-        async function fetchFunc() {
-            return await fetch('http://127.0.0.1:5000/createContract', requestOpt)
-            .then(response => response.json())
-            .catch(error => console.log(error));
-        }
-        (async () => {
-            let info = await fetchFunc();
-        })()
 
         // window.location.pathname = "/";
         
