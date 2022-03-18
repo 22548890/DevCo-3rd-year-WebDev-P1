@@ -15,13 +15,14 @@ ma = Marshmallow(app)
 
 # Table for many to many relationship
 developer_contract = db.Table('developer_contract',
-    db.Column('developer_email', db.String(25), db.ForeignKey('developer.email')),
+    db.Column('developer_id', db.Integer, db.ForeignKey('developer.id')),
     db.Column('contract_id', db.Integer, db.ForeignKey('contract.id'))
 )
 
 # Current Company name / Dev email and type = company/developer
 session_user = {
-    'username':'m@s',
+    'id':'1',
+    'username':'',
     'type':''
 }
 
@@ -30,9 +31,10 @@ session_user = {
 #######################################################
 
 class Developer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(25))
     password = db.Column(db.String(25))
-    email = db.Column(db.String(25), primary_key=True)
+    email = db.Column(db.String(25))
     scaleJava = db.Column(db.String(25))
     scalePython = db.Column(db.String(25))
     scaleC = db.Column(db.String(25))
@@ -52,7 +54,7 @@ class Developer(db.Model):
 
 class DeveloperSchema(ma.Schema):
     class Meta:
-        fields = ('name', 'password', 'email', 'scaleJava', 'scalePython', 'scaleC', 'scaleGo')
+        fields = ('id', 'name', 'password', 'email', 'scaleJava', 'scalePython', 'scaleC', 'scaleGo')
 
 dev_schema = DeveloperSchema()
 devs_schema = DeveloperSchema(many=True)
@@ -82,6 +84,7 @@ def devReg():
     db.session.add(dev)
     db.session.commit()
 
+    session_user['id'] = dev.id
     session_user['username'] = email
     session_user['type'] = 'dev'
 
@@ -112,7 +115,7 @@ def devEdit():
                 'success':False
             }
 
-    dev = Developer.query.get(session_user['username'])
+    dev = Developer.query.get(session_user['id'])
 
     dev.name = name
     dev.password = password
@@ -134,9 +137,13 @@ def devEdit():
 @app.route('/devDelete', methods = ['DELETE'])
 @cross_origin()
 def devDelete():
-    dev = Developer.query.get(session_user['username'])
+    dev = Developer.query.get(session_user['id'])
     db.session.delete(dev)
     db.session.commit()
+
+    session_user['id'] = ''
+    session_user['username'] = ''
+    session_user['type'] = ''
 
     return dev_schema.jsonify(dev) 
 
@@ -146,7 +153,8 @@ def devDelete():
 #######################################################
 
 class Company(db.Model):
-    name = db.Column(db.String(25), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(25))
     password = db.Column(db.String(25))
     industry = db.Column(db.String(50))
 
@@ -160,7 +168,7 @@ class Company(db.Model):
 
 class CompanySchema(ma.Schema):
     class Meta:
-        fields = ('name', 'password', 'industry')
+        fields = ('id', 'name', 'password', 'industry')
 
 com_schema = CompanySchema()
 coms_schema = CompanySchema(many=True)
@@ -176,17 +184,17 @@ def comReg():
     com_exist = Company.query.filter_by(name=name).first()
     dev_exist = Developer.query.filter_by(email=name).first()
 
-    if session_user['username'] != name:
-        if com_exist or dev_exist:
-            return {
-                'msg': 'This name already exists',
-                'success':False
-            }
+    if com_exist or dev_exist:
+        return {
+            'msg': 'This name already exists',
+            'success':False
+        }
 
-    dev = Company(name, password, industry)
-    db.session.add(dev)
+    com = Company(name, password, industry)
+    db.session.add(com)
     db.session.commit()
 
+    session_user['id'] = com.id
     session_user['username'] = name
     session_user['type'] = 'com'
 
@@ -205,13 +213,14 @@ def comEdit():
     com_exist = Company.query.filter_by(name=name).first()
     dev_exist = Developer.query.filter_by(email=name).first()
 
-    if com_exist or dev_exist:
-        return {
-            'msg': 'This name already exists',
-            'success':False
-        }
+    if session_user['username'] != name:
+        if com_exist or dev_exist:
+            return {
+                'msg': 'This name already exists',
+                'success':False
+            }
 
-    com = Company.query.get(session_user['username'])
+    com = Company.query.get(session_user['id'])
 
     com.name = name
     com.password = password
@@ -229,9 +238,13 @@ def comEdit():
 @app.route('/comDelete', methods = ['DELETE'])
 @cross_origin()
 def comDelete():
-    com = Company.query.get(session_user['username'])
+    com = Company.query.get(session_user['id'])
     db.session.delete(com)
     db.session.commit()
+
+    session_user['id'] = ''
+    session_user['username'] = ''
+    session_user['type'] = ''
 
     return com_schema.jsonify(com)
 
@@ -242,8 +255,9 @@ def comDelete():
 
 class Contract(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    company_name = db.Column(db.String(25), db.ForeignKey('company.name'))
-    contract_length = db.Column(db.Float)
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
+    contract_name = db.Column(db.String(25))
+    contract_length = db.Column(db.String(25))
     contract_value = db.Column(db.Float)
     contract_description = db.Column(db.Text())
     progamming_language = db.Column(db.String(25))
@@ -252,8 +266,9 @@ class Contract(db.Model):
 
     
 
-    def __init__(self, contract_length, contract_value, contract_description, programming_language, location):
-        self.company_name = session_user['username']
+    def __init__(self, contract_name, contract_length, contract_value, contract_description, programming_language, location):
+        self.company_id = session_user['id']
+        self.contract_name = contract_name
         self.contract_length = contract_length
         self.contract_value = contract_value
         self.contract_description = contract_description
@@ -262,7 +277,7 @@ class Contract(db.Model):
 
 class ContractSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'company_name', 'contract_length', 'contract_value', 'contract_description', 'programming_language', 'location', 'date')
+        fields = ('id', 'company_id', 'contract_name', 'contract_length', 'contract_value', 'contract_description', 'programming_language', 'location', 'date')
 
 contract_schema = ContractSchema()
 contracts_schema = ContractSchema(many=True)
@@ -271,16 +286,16 @@ contracts_schema = ContractSchema(many=True)
 @app.route('/createContract', methods = ['POST'])
 @cross_origin()
 def createContract():
-    # company_name = request.json['company_name']
+    contract_name = request.json['contract_name']
     contract_length = request.json['contract_length']
     contract_value= request.json['contract_value']
     contract_description = request.json['contract_description']
     programming_language = request.json['programming_language']
     location = request.json['location']
 
-    contract = Contract(contract_length, contract_value, contract_description, programming_language, location)
+    contract = Contract(contract_name, contract_length, contract_value, contract_description, programming_language, location)
 
-    company = Company.query.get(session_user['username'])
+    company = Company.query.get(session_user['id'])
     company.contracts.append(contract)
 
     db.session.add(contract)
@@ -294,7 +309,7 @@ def createContract():
 @app.route('/applyContract<contract_id>', methods = ['POST'])
 @cross_origin()
 def applyContract(contract_id):
-    developer = Developer.query.get(session_user['username'])
+    developer = Developer.query.get(session_user['id'])
     contract = Contract.query.get(contract_id)
     developer.contracts_applied.append(contract)
 
@@ -328,11 +343,13 @@ def login():
         }
     user = ''
     if dev_exist:
-        user = Developer.query.get(username)
+        user = Developer.query.get(dev_exist.id)
+        session_user['id'] = user.id
         session_user['username'] = username
         session_user['type'] = 'dev'
     else:
-        user = Company.query.get(username)
+        user = Company.query.get(com_exist.id)
+        session_user['id'] = user.id
         session_user['username'] = username
         session_user['type'] = 'com'
 

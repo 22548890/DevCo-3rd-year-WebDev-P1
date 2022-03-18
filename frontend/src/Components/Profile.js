@@ -176,7 +176,20 @@ const ScaleGo = ({
     </div>
 
 const handleDelete = () => {
+    alert("bomb")
     //delete accounts
+    const requestOpt = {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'},
+    }
+    async function fetchFunc() {
+        return await fetch('http://127.0.0.1:5000/devDelete', requestOpt)
+        .then(response => response.json())
+        .catch(error => console.log(error));
+    }
+    (async () => {
+        let info = await fetchFunc();
+    })()
     alert("Deleted Account");
     localStorage.clear();
     window.location.pathname = "/login";
@@ -207,7 +220,7 @@ const Profile = ({
             <div className="scale">Python - {scalePython}</div>
             <div className="scale">C/C++ - {scaleC}</div>
             <div className="scale">Go - {scaleGo}</div>
-            <button type="submit" className="edit">Edit Details </button>
+            <button type="submit" className="styleBtn edit">Edit Details </button>
             <button className="deleteBtn" onClick={handleDelete}>Delete Account </button>
         </form>
     </div>
@@ -227,7 +240,7 @@ const Edit = ({
         <form onSubmit={onSubmit}>
             <h1>Edit Profile Details</h1>
             {children}
-            <button /*type="submit"*/ className="save" onClick={handleHome}>Save & Exit </button>
+            <button /*type="submit"*/ className="styleBtn save" onClick={handleHome}>Save & Exit </button>
         </form>
     </div>
 

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import ContractPage from './ContractPage';
 import './CSS/Home.css';
 
 
@@ -19,18 +20,23 @@ function Home()
 
           <ul id="menu">
             <li>
-              <a href="#contracts">Contracts</a>
+              <a href="#my-contracts">My Contracts</a>
             </li>
             <li>
               <a href="/DevProfile">Profile</a>
             </li>
             <li>
-            <button onClick={handleLogout} >Logout </button>
+            <button className="styleBtn" onClick={handleLogout} >Logout </button>
             </li>
           </ul>
         </div>
         
       </nav>
+
+
+        <ContractPage/>
+      
+      
     </>
             
     

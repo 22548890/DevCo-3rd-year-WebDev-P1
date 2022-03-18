@@ -66,7 +66,7 @@ const Edit = ({
     <div className="card">
         <form onSubmit={onSubmit}>
             {children}
-            <button type="submit" className="login">LOGIN </button>
+            <button type="submit" className="styleBtn login">LOGIN </button>
             <div>
                 <button className="DRegBtn" onClick={handleDevReg}>Developer Registration</button>
                 <button className="CRegBtn" onClick={handleComReg}>Company Registration</button>

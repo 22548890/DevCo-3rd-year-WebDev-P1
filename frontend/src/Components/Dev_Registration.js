@@ -198,7 +198,7 @@ const Profile = ({
             <div className="scale">Python - {scalePython}</div>
             <div className="scale">C/C++ - {scaleC}</div>
             <div className="scale">Go - {scaleGo}</div>
-            <button type="submit" className="edit">Edit Details </button>
+            <button type="submit" className="styleBtn edit">Edit Details </button>
         </form>
     </div>
 
@@ -210,7 +210,7 @@ const Edit = ({
         <form onSubmit={onSubmit}>
             <h1>Developer Registration</h1>
             {children}
-            <button type="submit" className="save">Save </button>
+            <button type="submit" className="styleBtn save">Save </button>
         </form>
     </div>
 
