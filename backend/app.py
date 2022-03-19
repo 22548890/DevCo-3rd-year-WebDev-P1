@@ -1,9 +1,10 @@
-from unittest import result
 from flask import Flask, jsonify, request, json, session
 from flask_sqlalchemy import SQLAlchemy 
 from flask_marshmallow import Marshmallow
 from flask_cors import cross_origin, CORS
 from datetime import datetime
+
+from pyparsing import null_debug_action
 
 app = Flask(__name__)
 CORS(app)
@@ -15,14 +16,19 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 # Table for many to many relationship
-developer_contract = db.Table('developer_contract',
+developer_contract_applied = db.Table('developer_contract_applied',
+    db.Column('developer_id', db.Integer, db.ForeignKey('developer.id')),
+    db.Column('contract_id', db.Integer, db.ForeignKey('contract.id'))
+)
+
+developer_contract_denied = db.Table('developer_contract_denied',
     db.Column('developer_id', db.Integer, db.ForeignKey('developer.id')),
     db.Column('contract_id', db.Integer, db.ForeignKey('contract.id'))
 )
 
 # Current Company name / Dev email and type = company/developer
 session_user = {
-    'id':'',
+    'id':'4',
     'username':'',
     'type':''
 }
@@ -41,8 +47,10 @@ class Developer(db.Model):
     scaleC = db.Column(db.String(25))
     scaleGo = db.Column(db.String(25))
 
-    contracts_applied = db.relationship('Contract', secondary=developer_contract, backref='developers_applied', lazy=True)
-
+    contracts_applied = db.relationship('Contract', secondary=developer_contract_applied, backref='developers_applied', lazy=True)
+    contracts_denied = db.relationship('Contract', secondary=developer_contract_denied, backref='developers_denied', lazy=True)
+    contracts_accepted = db.relationship('Contract', backref='developer', lazy=True, foreign_keys='Contract.developer_accepted_id')
+    
     def __init__(self, name, password, email, scaleJava, scalePython, scaleC, scaleGo):
         self.name = name
         self.password = password
@@ -52,6 +60,8 @@ class Developer(db.Model):
         self.scaleC = scaleC
         self.scaleGo = scaleGo
         self.contracts_applied = []
+        self.contracts_accepted = []
+        self.contracts_denied= []
 
 class DeveloperSchema(ma.Schema):
     class Meta:
@@ -159,7 +169,7 @@ class Company(db.Model):
     password = db.Column(db.String(25))
     industry = db.Column(db.String(50))
 
-    contracts = db.relationship('Contract', backref='company', lazy=True)
+    contracts = db.relationship('Contract', backref='company', lazy=True, foreign_keys='Contract.company_id')
 
     def __init__(self, name, password, industry):
         self.name = name
@@ -265,6 +275,7 @@ class Contract(db.Model):
     location = db.Column(db.String(10))
     open = db.Column(db.Boolean, default=True)
     date = db.Column(db.DateTime, default=datetime.utcnow)
+    developer_accepted_id = db.Column(db.Integer, db.ForeignKey('developer.id'))
 
 
 
@@ -279,7 +290,7 @@ class Contract(db.Model):
 
 class ContractSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'company_id', 'contract_name', 'contract_length', 'contract_value', 'contract_description', 'programming_language', 'location', 'open', 'date')
+        fields = ('id', 'company_id', 'contract_name', 'contract_length', 'contract_value', 'contract_description', 'programming_language', 'location', 'open', 'date', 'developer_accepted_id')
 
 contract_schema = ContractSchema()
 contracts_schema = ContractSchema(many=True)
@@ -320,6 +331,31 @@ def applyContract(contract_id):
             'msg': '',
             'success':True
         }    
+
+@app.route('/acceptDeveloper/dev=<developer_id>/con=<contract_id>', methods = ['PUT']) # Company side
+@cross_origin()
+def acceptDeveloper(developer_id, contract_id):
+    accepted_dev = Developer.query.get(developer_id)
+    contract = Contract.query.get(contract_id)
+    
+
+    contract.open = False
+    accepted_dev.contracts_accepted.append(contract)
+    accepted_dev.contracts_applied.remove(contract)
+    contract.developers_denied = contract.developers_applied[:]
+    contract.developers_applied = []
+
+    # for dev in contract.developers_applied:
+    #     if dev.id != developer_id:
+    #         dev.contracts_denied.append(contract)
+    #     dev.contracts_applied.remove(contract)
+    # contract.developers_applied = []
+
+    db.session.commit()
+
+    ac_dev_ac_cons = contracts_schema.dump(accepted_dev.contracts_accepted)
+
+    return jsonify(ac_dev_ac_cons)  
 
 @app.route('/getContract/<id>', methods = ['GET'])
 @cross_origin()
