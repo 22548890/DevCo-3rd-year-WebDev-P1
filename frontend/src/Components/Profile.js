@@ -176,7 +176,6 @@ const ScaleGo = ({
     </div>
 
 const handleDelete = () => {
-    alert("bomb")
     //delete accounts
     const requestOpt = {
         method: 'DELETE',

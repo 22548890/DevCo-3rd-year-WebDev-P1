@@ -372,10 +372,10 @@ def login():
 
 
 
-@app.route('/comGetContracts<username>', methods = ['GET'])
-def comGetContracts(username):
-    company = Company.query.get(username)
-    contracts = company.contracts
+@app.route('/getContracts', methods = ['GET'])
+@cross_origin()
+def comGetContracts():
+    contracts = Contract.query.all()
     results = contracts_schema.dump(contracts)
     return jsonify(results)    
 
