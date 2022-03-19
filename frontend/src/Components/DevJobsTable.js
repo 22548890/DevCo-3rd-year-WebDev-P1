@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
 import "./CSS/Table.css"
+import ComReg from './Com_Registration'
+import { useNavigate } from "react-router-dom";
+import Profile from './Profile'
+
 
 function DevContractTable() {
 
@@ -43,7 +47,10 @@ function DevContractTable() {
             .catch(error => console.log(error));
         }
     }
-    
+   
+  const routeChange = () =>{ 
+    window.location.pathname = "/DevProfile" 
+  }
 
     return (
         <div className="tbl-container">
@@ -62,13 +69,14 @@ function DevContractTable() {
                 <tbody>
                     {data.map((d) => (
                         <tr key={d.id}>
-                            <td>{d.name}</td>
+                            <td title="CLICK TO VIEW PROFILE" className="link" onClick={routeChange}>{d.name}</td>
                             <td>{d.length}</td>
                             <td>{d.value}</td>
                             <td>{d.description}</td>
                             <td>{d.programming_language}</td>
                             <td>{d.location}</td>
                             <td>{d.date}</td>
+                            
                         </tr>
 
                     ))}

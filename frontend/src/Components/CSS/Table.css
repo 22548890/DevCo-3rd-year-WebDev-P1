@@ -17,6 +17,15 @@
     padding: 1% 10% 10% 10%;
 }
 
+.link{
+    
+}
+.link:hover{
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+    text-transform: uppercase;
+}
 
 table {
     width: 100%;
