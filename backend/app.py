@@ -151,7 +151,7 @@ contracts_schema = ContractSchema(many=True)
 @app.route('/login', methods = ['POST'])
 @cross_origin()
 def login():
-    
+    is_dev = False
     username = request.json['email']
     password = request.json['password']
 
@@ -172,6 +172,7 @@ def login():
         session_user['username'] = username
         session_user['type'] = 'dev'
         check_password = user.check_password(password)
+        is_dev = True
     else:
         user = Company.query.get(com_exist.id)
         session_user['id'] = user.id
@@ -187,8 +188,8 @@ def login():
             }
 
     return {
-        'msg':'',
-        'success':True
+        'success':True,
+        'developer':is_dev
     }
 
 @app.route('/devReg', methods = ['POST'])
@@ -222,7 +223,7 @@ def devReg():
     session_user['type'] = 'dev'
 
     return {
-        'msg': '',
+        'developer': True,
         'success':True
     }
 
@@ -253,7 +254,7 @@ def comReg():
     session_user['type'] = 'com'
 
     return {
-        'msg': '',
+        'developer': False,
         'success':True
     }
 
