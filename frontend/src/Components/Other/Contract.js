@@ -2,16 +2,18 @@ import { FaAngleDown, FaRegUser, FaAngleUp } from 'react-icons/fa'
 import React from 'react';
 import '../CSS/ContractR.css';
 import Modal from './Modal.js'
+import { useState, useEffect } from 'react'
 
-const Contract = ({ contract, onExpand }) => {
+const Contract = ({ contract}) => {
+  const [expand, setExpand] = useState(false)
 
   return (
     <div className={'contract'}>
-      {contract.expandContract ? (
+      {expand ? (
         <><h3>
           {contract.contractName}{' '}
           <FaAngleUp style={{ color: 'grey', cursor: 'pointer' }}
-            onClick={() => onExpand(contract.id)} />
+            onClick={() => setExpand(false)} />
         </h3>
           <p>Contract Length: {contract.contractLength}</p>
           <p>Contract Value: {contract.contractValue}</p>
@@ -35,7 +37,7 @@ const Contract = ({ contract, onExpand }) => {
         <><h3>
           {contract.contractName}{' '}
           <FaAngleDown style={{ color: 'grey', cursor: 'pointer' }}
-            onClick={() => onExpand(contract.id)} />
+            onClick={() => setExpand(true)} />
         </h3>
           {contract.open ? (<p>Open</p>) : (<p>Closed</p>)}
         </>

@@ -78,11 +78,11 @@ function ContractPage() {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-          'contract_name':contract.contractName,
-          'contract_length':contract.contractLength,
-          'contract_value':contract.contractValue,
-          'contract_description':contract.contractDes,
-          'programming_language':contract.contractLan,
+          'contract_name':contract.contract_name,
+          'contract_length':contract.contract_length,
+          'contract_value':contract.contract_value,
+          'contract_description':contract.contract_description,
+          'programming_language':contract.programming_language,
           'location':contract.location
       }),
     }

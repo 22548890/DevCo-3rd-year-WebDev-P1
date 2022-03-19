@@ -4,21 +4,18 @@ import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import Button from './Button';
 
 const AddContract = ({ onAdd, showAdd }) => {
-    const [contractName, setName] = useState('')
-    const [contractLength, setLength] = useState('')
-    const [contractValue, setValue] = useState('')
-    const [contractDes, setDes] = useState('')
-    const [contractLan, setLan] = useState('')
-    // const [office, setOffice] = useState(false)
-    // const [remote, setRemote] = useState(false)
+    const [contract_name, setName] = useState('')
+    const [contract_length, setLength] = useState('')
+    const [contract_value, setValue] = useState('')
+    const [contract_description, setDes] = useState('')
+    const [programming_language, setLan] = useState('')
     const [location, setLocation] = useState('')
-    const [expandContract] = useState(false)
     const [open] = useState(true)
 
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if(!contractLength || !contractName || !contractValue || !contractDes || !contractLan) {
+        if(!contract_length || !contract_name || !contract_value || !contract_description || !programming_language) {
             alert('Please fill all boxes')
             return
         }
@@ -32,7 +29,7 @@ const AddContract = ({ onAdd, showAdd }) => {
             return
         }
 
-        onAdd({ contractName: contractName,contractLength: contractLength, contractValue: contractValue, contractDes: contractDes, contractLan: contractLan, location:location , expandContract, open })
+        onAdd({ contract_name: contract_name,contract_length: contract_length, contract_value: contract_value, contract_description: contract_description, programming_language: programming_language, location:location ,  open })
         
         // let location = 'office';
         // if (remote) {
@@ -56,29 +53,29 @@ const AddContract = ({ onAdd, showAdd }) => {
     <form className='add-form' onSubmit={onSubmit}>
         <div className='form-control'>
             <label>Contract Name</label>
-            <input type='text' placeholder='Add contract name' value={contractName} onChange={(e) => setName(e.target.value)}
+            <input type='text' placeholder='Add contract name' value={contract_name} onChange={(e) => setName(e.target.value)}
             />
         </div>
         <div className='form-control'>
             <label>Contract Length</label>
-            <input type='text' placeholder='Add contract length' value={contractLength} onChange={(e) => setLength(e.target.value)}
+            <input type='text' placeholder='Add contract length' value={contract_length} onChange={(e) => setLength(e.target.value)}
             />
         </div>
         <div className='form-control'>
             <label>Contract Value(ZAR)</label>
             <input type='text' placeholder='Add contract value' 
-            value={contractValue} onChange={(e) => setValue(e.target.value)}
+            value={contract_value} onChange={(e) => setValue(e.target.value)}
             />
         </div>
         <div className='form-control'>
             <label>Contract Description</label>
             <input type='text' placeholder='Add contract description' 
-            value={contractDes} onChange={(e) => setDes(e.target.value)}
+            value={contract_description} onChange={(e) => setDes(e.target.value)}
             />
         </div>
         <div className='form-control'>
             <label>Preferred Programming Languages</label>
-            <select className="comConSelect" required value={contractLan} onChange={(e) => setLan(e.target.value)}>
+            <select className="comConSelect" required value={programming_language} onChange={(e) => setLan(e.target.value)}>
             <option value={"None"} hidden >Select preferred language</option>
             <option value={"Java"} >Java</option>
             <option value={"Python"} >Python</option>
