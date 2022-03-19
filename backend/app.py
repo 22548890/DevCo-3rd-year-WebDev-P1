@@ -1,10 +1,9 @@
-from flask import Flask, jsonify, request, json, session
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy 
 from flask_marshmallow import Marshmallow
 from flask_cors import cross_origin, CORS
 from datetime import datetime
-
-from pyparsing import null_debug_action
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 CORS(app)
@@ -28,7 +27,7 @@ developer_contract_denied = db.Table('developer_contract_denied',
 
 # Current Company name / Dev email and type = company/developer
 session_user = {
-    'id':'4',
+    'id':'',
     'username':'',
     'type':''
 }
@@ -40,7 +39,7 @@ session_user = {
 class Developer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(25))
-    password = db.Column(db.String(25))
+    password_hash = db.Column(db.String(128))
     email = db.Column(db.String(25))
     scaleJava = db.Column(db.String(25))
     scalePython = db.Column(db.String(25))
@@ -51,9 +50,14 @@ class Developer(db.Model):
     contracts_denied = db.relationship('Contract', secondary=developer_contract_denied, backref='developers_denied', lazy=True)
     contracts_accepted = db.relationship('Contract', backref='developer', lazy=True, foreign_keys='Contract.developer_accepted_id')
     
-    def __init__(self, name, password, email, scaleJava, scalePython, scaleC, scaleGo):
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def __init__(self, name, email, scaleJava, scalePython, scaleC, scaleGo):
         self.name = name
-        self.password = password
         self.email = email
         self.scaleJava = scaleJava
         self.scalePython = scalePython
@@ -65,7 +69,7 @@ class Developer(db.Model):
 
 class DeveloperSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'name', 'password', 'email', 'scaleJava', 'scalePython', 'scaleC', 'scaleGo')
+        fields = ( 'name', 'email', 'scaleJava', 'scalePython', 'scaleC', 'scaleGo')
 
 dev_schema = DeveloperSchema()
 devs_schema = DeveloperSchema(many=True)
@@ -91,7 +95,9 @@ def devReg():
             'success':False
         }
 
-    dev = Developer(name, password, email, scaleJava, scalePython, scaleC, scaleGo)
+    dev = Developer(name, email, scaleJava, scalePython, scaleC, scaleGo)
+    dev.set_password(password)
+
     db.session.add(dev)
     db.session.commit()
 
@@ -129,7 +135,7 @@ def devEdit():
     dev = Developer.query.get(session_user['id'])
 
     dev.name = name
-    dev.password = password
+    dev.set_password(password)
     dev.email = email
     dev.scaleJava = scaleJava
     dev.scalePython = scalePython
@@ -166,20 +172,25 @@ def devDelete():
 class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(25))
-    password = db.Column(db.String(25))
+    password = db.Column(db.String(128))
     industry = db.Column(db.String(50))
 
     contracts = db.relationship('Contract', backref='company', lazy=True, foreign_keys='Contract.company_id')
 
-    def __init__(self, name, password, industry):
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def __init__(self, name, industry):
         self.name = name
-        self.password = password
         self.industry = industry
         self.contracts = []
 
 class CompanySchema(ma.Schema):
     class Meta:
-        fields = ('id', 'name', 'password', 'industry')
+        fields = ('name', 'industry')
 
 com_schema = CompanySchema()
 coms_schema = CompanySchema(many=True)
@@ -201,7 +212,8 @@ def comReg():
             'success':False
         }
 
-    com = Company(name, password, industry)
+    com = Company(name, industry)
+    com.set_password(password)
     db.session.add(com)
     db.session.commit()
 
@@ -234,7 +246,7 @@ def comEdit():
     com = Company.query.get(session_user['id'])
 
     com.name = name
-    com.password = password
+    com.set_password(password)
     com.industry = industry
 
     db.session.commit()
@@ -277,8 +289,6 @@ class Contract(db.Model):
     date = db.Column(db.DateTime, default=datetime.utcnow)
     developer_accepted_id = db.Column(db.Integer, db.ForeignKey('developer.id'))
 
-
-
     def __init__(self, contract_name, contract_length, contract_value, contract_description, programming_language, location):
         self.company_id = session_user['id']
         self.contract_name = contract_name
@@ -290,7 +300,7 @@ class Contract(db.Model):
 
 class ContractSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'company_id', 'contract_name', 'contract_length', 'contract_value', 'contract_description', 'programming_language', 'location', 'open', 'date', 'developer_accepted_id')
+        fields = ('company_id', 'contract_name', 'contract_length', 'contract_value', 'contract_description', 'programming_language', 'location', 'open', 'date', 'developer_accepted_id')
 
 contract_schema = ContractSchema()
 contracts_schema = ContractSchema(many=True)
@@ -403,18 +413,20 @@ def login():
             'success':False
         }
     user = ''
+    check_password = False
     if dev_exist:
         user = Developer.query.get(dev_exist.id)
         session_user['id'] = user.id
         session_user['username'] = username
         session_user['type'] = 'dev'
+        check_password = user.check_password(password)
     else:
         user = Company.query.get(com_exist.id)
         session_user['id'] = user.id
         session_user['username'] = username
         session_user['type'] = 'com'
+        check_password = user.check_password(password)
 
-    check_password = user.password == password
 
     if not check_password:
             return {
