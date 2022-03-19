@@ -9,8 +9,6 @@ const AddContract = ({ onAdd, showAdd }) => {
     const [contractValue, setValue] = useState('')
     const [contractDes, setDes] = useState('')
     const [contractLan, setLan] = useState('')
-    // const [office, setOffice] = useState(false)
-    // const [remote, setRemote] = useState(false)
     const [location, setLocation] = useState('')
     const [expandContract] = useState(false)
     const [open] = useState(true)
@@ -23,10 +21,6 @@ const AddContract = ({ onAdd, showAdd }) => {
             return
         }
 
-        // if ((office && remote) || (!office && !remote)) {
-        //     alert('Please select one of either remote or office'+remote+' -office='+office)
-        //     return
-        // }
         if (location == '') {
             alert('Please select one of either remote or office')
             return
@@ -34,20 +28,11 @@ const AddContract = ({ onAdd, showAdd }) => {
 
         onAdd({ contractName: contractName,contractLength: contractLength, contractValue: contractValue, contractDes: contractDes, contractLan: contractLan, location:location , expandContract, open })
         
-        // let location = 'office';
-        // if (remote) {
-        //     location = 'remote';
-        // }
-
-        // window.location.pathname = "/";
-        
         setName('')
         setLength('')
         setValue('')
         setDes('')
         setLan('')
-        // setOffice(false)
-        // setRemote(false)
         setLocation('')
 
     }

@@ -27,7 +27,7 @@ developer_contract_denied = db.Table('developer_contract_denied',
 
 # Current Company name / Dev email and type = company/developer
 session_user = {
-    'id':'',
+    'id':'1',
     'username':'',
     'type':''
 }
@@ -46,6 +46,7 @@ class Developer(db.Model):
     scalePython = db.Column(db.String(25))
     scaleC = db.Column(db.String(25))
     scaleGo = db.Column(db.String(25))
+    money_made = db.Column(db.Float, default=0)
 
     contracts_applied = db.relationship('Contract', secondary=developer_contract_applied, backref='developers_applied', lazy=True)
     contracts_denied = db.relationship('Contract', secondary=developer_contract_denied, backref='developers_denied', lazy=True)
@@ -70,7 +71,7 @@ class Developer(db.Model):
 
 class DeveloperSchema(ma.Schema):
     class Meta:
-        fields = ( 'name', 'email', 'scaleJava', 'scalePython', 'scaleC', 'scaleGo')
+        fields = ( 'name', 'email', 'scaleJava', 'scalePython', 'scaleC', 'scaleGo', 'money_made')
 
 dev_schema = DeveloperSchema()
 devs_schema = DeveloperSchema(many=True)
@@ -85,6 +86,7 @@ class Company(db.Model):
     name = db.Column(db.String(25))
     password_hash = db.Column(db.String(128))
     industry = db.Column(db.String(50))
+    money_spent = db.Column(db.Float, default=0)
 
     contracts = db.relationship('Contract', backref='company', lazy=True, foreign_keys='Contract.company_id')
 
@@ -101,7 +103,7 @@ class Company(db.Model):
 
 class CompanySchema(ma.Schema):
     class Meta:
-        fields = ('name', 'industry')
+        fields = ('name', 'industry', 'money_spent')
 
 com_schema = CompanySchema()
 coms_schema = CompanySchema(many=True)
@@ -115,28 +117,28 @@ coms_schema = CompanySchema(many=True)
 class Contract(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
-    contract_name = db.Column(db.String(25))
-    contract_length = db.Column(db.String(25))
-    contract_value = db.Column(db.Float)
-    contract_description = db.Column(db.Text())
-    progamming_language = db.Column(db.String(25))
+    name = db.Column(db.String(25))
+    length = db.Column(db.String(25))
+    value = db.Column(db.Float)
+    description = db.Column(db.Text())
+    programming_language = db.Column(db.String(25))
     location = db.Column(db.String(10))
     open = db.Column(db.Boolean, default=True)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     developer_accepted_id = db.Column(db.Integer, db.ForeignKey('developer.id'))
 
-    def __init__(self, contract_name, contract_length, contract_value, contract_description, programming_language, location):
+    def __init__(self, name, length, value, description, programming_language, location):
         self.company_id = session_user['id']
-        self.contract_name = contract_name
-        self.contract_length = contract_length
-        self.contract_value = contract_value
-        self.contract_description = contract_description
-        self.progamming_language = programming_language
+        self.name = name
+        self.length = length
+        self.value = value
+        self.description = description
+        self.programming_language = programming_language
         self.location = location
 
 class ContractSchema(ma.Schema):
     class Meta:
-        fields = ('company_id', 'contract_name', 'contract_length', 'contract_value', 'contract_description', 'programming_language', 'location', 'open', 'date', 'developer_accepted_id')
+        fields = ('company_id', 'name', 'length', 'value', 'description', 'programming_language', 'location', 'open', 'date', 'developer_accepted_id')
 
 contract_schema = ContractSchema()
 contracts_schema = ContractSchema(many=True)
@@ -359,14 +361,14 @@ def comDelete():
 @app.route('/createContract', methods = ['POST'])
 @cross_origin()
 def createContract():
-    contract_name = request.json['contract_name']
-    contract_length = request.json['contract_length']
-    contract_value= request.json['contract_value']
-    contract_description = request.json['contract_description']
+    name = request.json['name']
+    length = request.json['length']
+    value= request.json['value']
+    description = request.json['description']
     programming_language = request.json['programming_language']
     location = request.json['location']
 
-    contract = Contract(contract_name, contract_length, contract_value, contract_description, programming_language, location)
+    contract = Contract(name, length, value, description, programming_language, location)
 
     company = Company.query.get(session_user['id'])
     company.contracts.append(contract)
@@ -397,6 +399,7 @@ def applyContract(contract_id):
 def acceptDeveloper(developer_id, contract_id):
     accepted_dev = Developer.query.get(developer_id)
     contract = Contract.query.get(contract_id)
+    company = Company.query.get(session_user['id'])
     
 
     contract.open = False
@@ -405,11 +408,8 @@ def acceptDeveloper(developer_id, contract_id):
     contract.developers_denied = contract.developers_applied[:]
     contract.developers_applied = []
 
-    # for dev in contract.developers_applied:
-    #     if dev.id != developer_id:
-    #         dev.contracts_denied.append(contract)
-    #     dev.contracts_applied.remove(contract)
-    # contract.developers_applied = []
+    accepted_dev.money_made += contract.value
+    company.money_spent += contract.value
 
     db.session.commit()
 
@@ -434,9 +434,9 @@ def getContracts():
     return jsonify(results)
 
 
-@app.route('/comGetContracts', methods = ['GET'])
+@app.route('/getCompanyContracts', methods = ['GET'])
 @cross_origin()
-def comGetContracts():
+def getCompanyContracts():
     company = Company.query.get(session_user['id'])
     contracts = company.contracts
     results = contracts_schema.dump(contracts)

@@ -13,6 +13,9 @@ function ContractPage() {
   const [showOpenContracts, setShowOpenContracts] = useState(false)
   const [showClosedContracts, setShowClosedContracts] = useState(false)
 
+  // extra constant needed
+  const [data, setData] = useState();
+
   useEffect(() => {
     const getContracts = async () => {
       const contractsFromServer = await fetchContracts()
@@ -23,79 +26,56 @@ function ContractPage() {
   }, [])
 
   //Fetch Contracts
-  const fetchContracts = async (contract) => {
+  const fetchContracts = async () => {
 
-    const res = await fetch('http://localhost:5000/contracts')
-    const data = await res.json()
+    const res = await fetch('http://127.0.0.1:5000/getCompanyContracts', {
+    'method':'GET',
+    headers: { 'Content-Type': 'application/json' }
+    })
+    const datas = await res.json();
 
-    return data
-
-
-    // let data = null
-    // const requestOpt = {
-    //   method: 'GET',
-    //   headers: {'Content-Type': 'application/json'},
-    // }
-    // async function fetchFunc() {
-    //     return await fetch('http://127.0.0.1:5000/comGetContracts', requestOpt)
-    //     .then(response => response.json())
-    //     .catch(error => console.log(error));
-    // }
-    // (async () => {
-    //     data = await fetchFunc();
-    // })()
-
-    // return data
+    return datas
   }
+  
+
 
   const fetchContract = async (id) => { // FIXME: What id is this???
 
-    const res = await fetch(`http://localhost:5000/contracts/${id}`)
-    const data = await res.json()
+    // const res = await fetch(`http://localhost:5000/contracts/${id}`)
+    // const data = await res.json()
+
+
+    const res = await fetch('http://127.0.0.1:5000/getCompanyContracts', {
+      'method':'GET',
+      headers: { 'Content-Type': 'application/json' }
+      })
+      const datas = await res.json();
 
     return data
-    // let data = null
-    // const requestOpt = {
-    //   method: 'GET',
-    //   headers: {'Content-Type': 'application/json'},
-    // }
-    // async function fetchFunc() {
-    //     return await fetch(`http://127.0.0.1:5000/getContract/${id}`, requestOpt)
-    //     .then(response => response.json())
-    //     .catch(error => console.log(error));
-    // }
-    // (async () => {
-    //     data = await fetchFunc();
-    // })()
-
-    // return data
   }
 
   //Add Contract
   const addContract = async (contract) => {
-    let data = null
     const requestOpt = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-          'contract_name':contract.contractName,
-          'contract_length':contract.contractLength,
-          'contract_value':contract.contractValue,
-          'contract_description':contract.contractDes,
+          'name':contract.contractName,
+          'length':contract.contractLength,
+          'value':contract.contractValue,
+          'description':contract.contractDes,
           'programming_language':contract.contractLan,
-          'location':contract.location
+          'location':contract.location,
+          'open':contract.open
       }),
     }
-    async function fetchFunc() {
-        return await fetch('http://127.0.0.1:5000/createContract', requestOpt)
-        .then(response => response.json())
-        .catch(error => console.log(error));
-    }
-    (async () => {
-        data = await fetchFunc();
-    })()
+    fetch('http://127.0.0.1:5000/createContract', requestOpt)
+    .then(response => response.json())
+    .then(response => setData(response))
+    .catch(error => console.log(error));
 
     setContracts([...contracts, data])
+
   }
 
   const showDevelopers = async (id) => {
