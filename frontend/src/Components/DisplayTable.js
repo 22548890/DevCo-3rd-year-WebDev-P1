@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import JsonData from '../contract.json'
 import "./CSS/Table.css"
 
 
 function DisplayTable() {
-  // let JsonData = '';
+  // const [data, setData] = useState([]);
+  // const [order, setOrder] = useState('ASC');
+  // let JsonData='';
   // const requestOpt = {
   //   method: 'GET',
   //   headers: { 'Content-Type': 'application/json' },
@@ -14,14 +16,22 @@ function DisplayTable() {
   //     .then(response => response.json())
   //     .catch(error => console.log(error));
   // }
-  //  (async () => {
+  // (async () => {
   //   JsonData = await fetchFunc();
-  //   JsonData=JSON.stringify(JsonData);
-  //   //alert(JSON.stringify(JsonData));
+  //   setData(JsonData);
   // })()
-  //alert(JSON.stringify(JsonData));
   
   const [data, setData] = useState(JsonData);
+
+
+  // fetch('http://127.0.0.1:5000/getContracts', {
+  //   'method':'GET',
+  //   headers: { 'Content-Type': 'application/json' }
+  // })
+  //   .then(response => response.json())
+  //   .then(response => setData(response))
+  //   .catch(error => console.log(error));
+
   const [order, setOrder] = useState('ASC');
 
   const sorting = (column) => {
