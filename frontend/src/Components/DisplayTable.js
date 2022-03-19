@@ -4,33 +4,17 @@ import "./CSS/Table.css"
 
 
 function DisplayTable() {
-  // const [data, setData] = useState([]);
-  // const [order, setOrder] = useState('ASC');
-  // let JsonData='';
-  // const requestOpt = {
-  //   method: 'GET',
-  //   headers: { 'Content-Type': 'application/json' },
-  // }
-  // async function fetchFunc() {
-  //   return await fetch('http://127.0.0.1:5000/getContracts', requestOpt)
-  //     .then(response => response.json())
-  //     .catch(error => console.log(error));
-  // }
-  // (async () => {
-  //   JsonData = await fetchFunc();
-  //   setData(JsonData);
-  // })()
   
   const [data, setData] = useState(JsonData);
 
 
-  // fetch('http://127.0.0.1:5000/getContracts', {
-  //   'method':'GET',
-  //   headers: { 'Content-Type': 'application/json' }
-  // })
-  //   .then(response => response.json())
-  //   .then(response => setData(response))
-  //   .catch(error => console.log(error));
+  fetch('http://127.0.0.1:5000/getContracts', {
+    'method':'GET',
+    headers: { 'Content-Type': 'application/json' }
+  })
+    .then(response => response.json())
+    .then(response => setData(response))
+    .catch(error => console.log(error));
 
   const [order, setOrder] = useState('ASC');
 
