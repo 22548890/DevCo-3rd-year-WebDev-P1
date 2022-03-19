@@ -138,11 +138,16 @@ class Login extends React.Component {
                 // })
                 //<Redirect to="/" />
                 localStorage.setItem("isAuthenticated", "true");
+                if (info.developer) {
+                    localStorage.setItem("isDev", "true");
+                } else {
+                    localStorage.setItem("isDev", "false");
+                }
                 window.location.pathname = "/";
 
             } else {
                 alert(info.msg);
-                
+
             }
         })()
     }

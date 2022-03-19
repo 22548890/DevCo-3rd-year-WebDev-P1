@@ -54,7 +54,7 @@ const GeneralIndustries = ({
     onChange,
     value
 }) =>
-    <div className="field" value ={value} onChange={onChange}>
+    <div className="field" value={value} onChange={onChange}>
         <label htmlFor="industry">
             General Industry:
         </label>
@@ -67,7 +67,7 @@ const GeneralIndustries = ({
             <option value={"Healthcare"} >Healthcare</option>
             <option value={"Insurance"} >Insurance</option>
             <option value={"Automobile"} >Automobile</option>
-            <option value={"Food Services"} >Healthcare</option>          
+            <option value={"Food Services"} >Healthcare</option>
         </select>
     </div>
 
@@ -76,7 +76,7 @@ const Profile = ({
     src,
     name,
     industry,
-    
+
 }) =>
     <div className="card">
         <form onSubmit={onSubmit}>
@@ -88,7 +88,7 @@ const Profile = ({
             </label>
             <div className="name">{name}</div>
             <div className="industry">{industry}</div>
-            <button type="submit" className="edit">Edit Details </button>
+            <button type="submit" className="edit" >Edit Details </button>
         </form>
     </div>
 
@@ -112,7 +112,7 @@ class ComReg extends React.Component {
         imagePreviewUrl: 'https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true',
         name: '',
         password: '',
-        industry:'',
+        industry: '',
         active: 'edit'
     }
 
@@ -155,21 +155,21 @@ class ComReg extends React.Component {
         let data = this.state;
         const requestOpt = {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                'name':data.name,
-                'password':data.password,
-                'industry':data.industry
+                'name': data.name,
+                'password': data.password,
+                'industry': data.industry
             }),
         }
         async function fetchFunc() {
             return await fetch('http://127.0.0.1:5000/comReg', requestOpt)
-            .then(response => response.json())
-            .catch(error => console.log(error));
+                .then(response => response.json())
+                .catch(error => console.log(error));
         }
         (async () => {
             let info = await fetchFunc();
-            if (info.success) { 
+            if (info.success) {
                 let activeP = data.active === 'edit' ? 'profile' : 'edit';
                 this.setState({
                     active: activeP,
@@ -178,7 +178,7 @@ class ComReg extends React.Component {
                 alert(info.msg);
             }
         })()
-
+        window.location.pathname = "/login";
     }
 
     render() {
@@ -189,7 +189,7 @@ class ComReg extends React.Component {
             active } = this.state;
         return (
             <div>
-                
+
                 {(active === 'edit') ? (
                     <Edit onSubmit={this.handleSubmit}>
                         <ImgUpload onChange={this.photoUpload} src={imagePreviewUrl} />
@@ -204,13 +204,17 @@ class ComReg extends React.Component {
                         name={name}
                         password={password}
                         industry={industry}
-                        />)}
-                        
+                    />)}
+
             </div>
         )
     }
 
 }
+
+
+
+
 // ReactDOM.render(
 //     <>
 //         <ComReg />
