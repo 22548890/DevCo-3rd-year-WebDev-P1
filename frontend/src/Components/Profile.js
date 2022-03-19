@@ -2,7 +2,7 @@ import React from 'react'
 import './CSS/DevRegCSS.css'
 import ReactDOM from 'react-dom'
 import Home from './Home'
-
+import { Component } from 'react'
 
 const ImgUpload = ({
     onChange,
@@ -176,8 +176,8 @@ const ScaleGo = ({
     </div>
 
 const handleDelete = () => {
-    alert("bomb")
     //delete accounts
+    alert(stuff)
     const requestOpt = {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json'},

@@ -4,12 +4,12 @@ import "./CSS/Table.css"
 function DevContractTable() {
 
     const [data, setData] = useState([]);
-    const [sortby, setSorby] = useState('date');
+    // const [sortby, setSorby] = useState('date');
     const [order, setOrder] = useState('DSC');
     const [onceOff, setOnceOff] = useState(true)
 
     if (onceOff) {
-        fetch(`http://127.0.0.1:5000/getContracts/${sortby}/${order}`, {
+        fetch(`http://127.0.0.1:5000/getAvailableContracts/date/DSC`, {
         'method': 'GET',
         headers: { 'Content-Type': 'application/json' }
         })
@@ -20,10 +20,10 @@ function DevContractTable() {
     }
 
     const sorting = (column) => {
+        // setSorby(column);
         if (order === 'ASC') {
-            setSorby(column);
             setOrder('DSC');
-            fetch(`http://127.0.0.1:5000/getContracts/${sortby}/${order}`, {
+            fetch(`http://127.0.0.1:5000/getAvailableContracts/${column}/ASC`, {
             'method': 'GET',
             headers: { 'Content-Type': 'application/json' }
             })
@@ -32,9 +32,8 @@ function DevContractTable() {
             .catch(error => console.log(error));
         }
         if (order === 'DSC') {
-            setSorby(column);
             setOrder('ASC');
-            fetch(`http://127.0.0.1:5000/getContracts/${sortby}/${order}`, {
+            fetch(`http://127.0.0.1:5000/getAvailableContracts/${column}/DSC`, {
             'method': 'GET',
             headers: { 'Content-Type': 'application/json' }
             })

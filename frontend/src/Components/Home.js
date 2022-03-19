@@ -13,8 +13,8 @@ function Home() {
   return (
     <>
       <nav id="navbar" class="">
-        <div class="nav-wrapper">
-          <div class="logo">
+        <div className="nav-wrapper">
+          <div className="logo">
             <label >DevCo</label>
 
           </div>
