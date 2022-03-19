@@ -36,8 +36,6 @@ function ContractPage() {
 
     return datas
   }
-  
-
 
   const fetchContract = async (id) => { // FIXME: What id is this???
 
@@ -45,13 +43,13 @@ function ContractPage() {
     // const data = await res.json()
 
 
-    const res = await fetch('http://127.0.0.1:5000/getCompanyContracts', {
-      'method':'GET',
-      headers: { 'Content-Type': 'application/json' }
-      })
-      const datas = await res.json();
+    const res = await fetch(`http://127.0.0.1:5000/getContract${id}`, {
+    'method':'GET',
+    headers: { 'Content-Type': 'application/json' }
+    })
+    const datas = await res.json();
 
-    return data
+    return datas
   }
 
   //Add Contract
