@@ -32,6 +32,7 @@ session_user = {
     'type':''
 }
 
+
 #######################################################
 #       Developers table
 #######################################################
@@ -75,6 +76,121 @@ dev_schema = DeveloperSchema()
 devs_schema = DeveloperSchema(many=True)
 
 
+#######################################################
+#       Companies table
+#######################################################
+
+class Company(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(25))
+    password_hash = db.Column(db.String(128))
+    industry = db.Column(db.String(50))
+
+    contracts = db.relationship('Contract', backref='company', lazy=True, foreign_keys='Contract.company_id')
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def __init__(self, name, industry):
+        self.name = name
+        self.industry = industry
+        self.contracts = []
+
+class CompanySchema(ma.Schema):
+    class Meta:
+        fields = ('name', 'industry')
+
+com_schema = CompanySchema()
+coms_schema = CompanySchema(many=True)
+
+
+
+#######################################################
+#           Contracts
+#######################################################
+
+class Contract(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
+    contract_name = db.Column(db.String(25))
+    contract_length = db.Column(db.String(25))
+    contract_value = db.Column(db.Float)
+    contract_description = db.Column(db.Text())
+    progamming_language = db.Column(db.String(25))
+    location = db.Column(db.String(10))
+    open = db.Column(db.Boolean, default=True)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    developer_accepted_id = db.Column(db.Integer, db.ForeignKey('developer.id'))
+
+    def __init__(self, contract_name, contract_length, contract_value, contract_description, programming_language, location):
+        self.company_id = session_user['id']
+        self.contract_name = contract_name
+        self.contract_length = contract_length
+        self.contract_value = contract_value
+        self.contract_description = contract_description
+        self.progamming_language = programming_language
+        self.location = location
+
+class ContractSchema(ma.Schema):
+    class Meta:
+        fields = ('company_id', 'contract_name', 'contract_length', 'contract_value', 'contract_description', 'programming_language', 'location', 'open', 'date', 'developer_accepted_id')
+
+contract_schema = ContractSchema()
+contracts_schema = ContractSchema(many=True)
+
+
+
+
+#######################################################
+#           Routes
+#######################################################
+
+@app.route('/login', methods = ['POST'])
+@cross_origin()
+def login():
+    
+    username = request.json['email']
+    password = request.json['password']
+
+
+    dev_exist = Developer.query.filter_by(email=username).first()
+    com_exist = Company.query.filter_by(name=username).first()
+
+    if not dev_exist and not com_exist:
+        return {
+            'msg': 'This name/email does not exist',
+            'success':False
+        }
+    user = ''
+    check_password = False
+    if dev_exist:
+        user = Developer.query.get(dev_exist.id)
+        session_user['id'] = user.id
+        session_user['username'] = username
+        session_user['type'] = 'dev'
+        check_password = user.check_password(password)
+    else:
+        user = Company.query.get(com_exist.id)
+        session_user['id'] = user.id
+        session_user['username'] = username
+        session_user['type'] = 'com'
+        check_password = user.check_password(password)
+
+
+    if not check_password:
+            return {
+                'msg': 'Incorrect password',
+                'success':False
+            }
+
+    return {
+        'msg':'',
+        'success':True
+    }
+
 @app.route('/devReg', methods = ['POST'])
 @cross_origin()
 def devReg():
@@ -110,6 +226,36 @@ def devReg():
         'success':True
     }
 
+@app.route('/comReg', methods = ['POST'])
+@cross_origin()
+def comReg():
+    name = request.json['name']
+    password = request.json['password']
+    industry = request.json['industry']
+
+    com_exist = Company.query.filter_by(name=name).first()
+    dev_exist = Developer.query.filter_by(email=name).first()
+
+    if com_exist or dev_exist:
+        return {
+            'msg': 'This name already exists',
+            'success':False
+        }
+
+    com = Company(name, industry)
+    com.set_password(password)
+
+    db.session.add(com)
+    db.session.commit()
+
+    session_user['id'] = com.id
+    session_user['username'] = name
+    session_user['type'] = 'com'
+
+    return {
+        'msg': '',
+        'success':True
+    }
 
 @app.route('/devEdit', methods = ['PUT'])
 @cross_origin()
@@ -151,81 +297,6 @@ def devEdit():
         'success':True
     }
 
-@app.route('/devDelete', methods = ['DELETE'])
-@cross_origin()
-def devDelete():
-    dev = Developer.query.get(session_user['id'])
-    db.session.delete(dev)
-    db.session.commit()
-
-    session_user['id'] = ''
-    session_user['username'] = ''
-    session_user['type'] = ''
-
-    return dev_schema.jsonify(dev) 
-
-
-#######################################################
-#       Companies table
-#######################################################
-
-class Company(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(25))
-    password = db.Column(db.String(128))
-    industry = db.Column(db.String(50))
-
-    contracts = db.relationship('Contract', backref='company', lazy=True, foreign_keys='Contract.company_id')
-
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
-    def __init__(self, name, industry):
-        self.name = name
-        self.industry = industry
-        self.contracts = []
-
-class CompanySchema(ma.Schema):
-    class Meta:
-        fields = ('name', 'industry')
-
-com_schema = CompanySchema()
-coms_schema = CompanySchema(many=True)
-
-
-@app.route('/comReg', methods = ['POST'])
-@cross_origin()
-def comReg():
-    name = request.json['name']
-    password = request.json['password']
-    industry = request.json['industry']
-
-    com_exist = Company.query.filter_by(name=name).first()
-    dev_exist = Developer.query.filter_by(email=name).first()
-
-    if com_exist or dev_exist:
-        return {
-            'msg': 'This name already exists',
-            'success':False
-        }
-
-    com = Company(name, industry)
-    com.set_password(password)
-    db.session.add(com)
-    db.session.commit()
-
-    session_user['id'] = com.id
-    session_user['username'] = name
-    session_user['type'] = 'com'
-
-    return {
-        'msg': '',
-        'success':True
-    }
-
 @app.route('/comEdit', methods = ['PUT'])
 @cross_origin()
 def comEdit():
@@ -258,6 +329,19 @@ def comEdit():
         'success':True
     }
 
+@app.route('/devDelete', methods = ['DELETE'])
+@cross_origin()
+def devDelete():
+    dev = Developer.query.get(session_user['id'])
+    db.session.delete(dev)
+    db.session.commit()
+
+    session_user['id'] = ''
+    session_user['username'] = ''
+    session_user['type'] = ''
+
+    return dev_schema.jsonify(dev) 
+
 @app.route('/comDelete', methods = ['DELETE'])
 @cross_origin()
 def comDelete():
@@ -270,41 +354,6 @@ def comDelete():
     session_user['type'] = ''
 
     return com_schema.jsonify(com)
-
-
-#######################################################
-#           Contracts
-#######################################################
-
-class Contract(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
-    contract_name = db.Column(db.String(25))
-    contract_length = db.Column(db.String(25))
-    contract_value = db.Column(db.Float)
-    contract_description = db.Column(db.Text())
-    progamming_language = db.Column(db.String(25))
-    location = db.Column(db.String(10))
-    open = db.Column(db.Boolean, default=True)
-    date = db.Column(db.DateTime, default=datetime.utcnow)
-    developer_accepted_id = db.Column(db.Integer, db.ForeignKey('developer.id'))
-
-    def __init__(self, contract_name, contract_length, contract_value, contract_description, programming_language, location):
-        self.company_id = session_user['id']
-        self.contract_name = contract_name
-        self.contract_length = contract_length
-        self.contract_value = contract_value
-        self.contract_description = contract_description
-        self.progamming_language = programming_language
-        self.location = location
-
-class ContractSchema(ma.Schema):
-    class Meta:
-        fields = ('company_id', 'contract_name', 'contract_length', 'contract_value', 'contract_description', 'programming_language', 'location', 'open', 'date', 'developer_accepted_id')
-
-contract_schema = ContractSchema()
-contracts_schema = ContractSchema(many=True)
-
 
 @app.route('/createContract', methods = ['POST'])
 @cross_origin()
@@ -367,6 +416,8 @@ def acceptDeveloper(developer_id, contract_id):
 
     return jsonify(ac_dev_ac_cons)  
 
+
+
 @app.route('/getContract/<id>', methods = ['GET'])
 @cross_origin()
 def getContract(id):
@@ -391,53 +442,6 @@ def comGetContracts():
     return jsonify(results) 
 
 
-
-#######################################################
-#           Routes
-#######################################################
-
-@app.route('/login', methods = ['POST'])
-@cross_origin()
-def login():
-    
-    username = request.json['email']
-    password = request.json['password']
-
-
-    dev_exist = Developer.query.filter_by(email=username).first()
-    com_exist = Company.query.filter_by(name=username).first()
-
-    if not dev_exist and not com_exist:
-        return {
-            'msg': 'This name/email does not exist',
-            'success':False
-        }
-    user = ''
-    check_password = False
-    if dev_exist:
-        user = Developer.query.get(dev_exist.id)
-        session_user['id'] = user.id
-        session_user['username'] = username
-        session_user['type'] = 'dev'
-        check_password = user.check_password(password)
-    else:
-        user = Company.query.get(com_exist.id)
-        session_user['id'] = user.id
-        session_user['username'] = username
-        session_user['type'] = 'com'
-        check_password = user.check_password(password)
-
-
-    if not check_password:
-            return {
-                'msg': 'Incorrect password',
-                'success':False
-            }
-
-    return {
-        'msg':'',
-        'success':True
-    }
 
 
 
