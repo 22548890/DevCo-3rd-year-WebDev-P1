@@ -1,10 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './CSS/LoginCSS.css'
-import ReactDOM from 'react-dom'
 import logo from '../DevCo.gif'
-import { Redirect } from 'react-router-dom'
-import ComReg from './Com_Registration'
-import DevReg from './Dev_Registration'
 
 const ImgUpload = ({
     onChange,

@@ -1,0 +1,47 @@
+[
+    {
+        "company_id": 1,
+        "contract_description": "Bum",
+        "contract_length": "Infinity",
+        "contract_name": "Yum",
+        "contract_value": 0.0,
+        "date": "2022-03-18T12:57:19",
+        "id": 1,
+        "location": "office",
+        "open": true
+    },
+    {
+        "company_id": 1,
+        "contract_description": "43",
+        "contract_length": "43",
+        "contract_name": "43",
+        "contract_value": 43.0,
+        "date": "2022-03-18T14:21:17",
+        "id": 2,
+        "location": "remote",
+        "open": true
+    },
+    {
+        "company_id": 1,
+        "contract_description": "24",
+        "contract_length": "42",
+        "contract_name": "42",
+        "contract_value": 42.0,
+        "date": "2022-03-18T14:38:14",
+        "id": 3,
+        "location": "office",
+        "open": true
+    },
+    {
+        "company_id": 1,
+        "contract_description": "55",
+        "contract_length": "55",
+        "contract_name": "55",
+        "contract_value": 55.0,
+        "date": "2022-03-18T14:38:42",
+        "id": 4,
+        "location": "office",
+        "open": true
+    }
+]
+

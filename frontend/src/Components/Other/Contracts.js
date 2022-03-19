@@ -11,13 +11,13 @@ const Contracts = ({ contracts, onExpand, all, open, closed }) => {
             onExpand={onExpand}
           />) : (<p></p>)))
       }
-      {contracts.filter(contract => contract.open == true).map((contract) => (
+      {contracts.filter(contract => contract.open === true).map((contract) => (
         open ? (
           <Contract key={contract.id} contract={contract}
             onExpand={onExpand}
           />) : (<p></p>)))
       }
-      {contracts.filter(contract => contract.open == false).map((contract) => (
+      {contracts.filter(contract => contract.open === false).map((contract) => (
         closed ? (
           <Contract key={contract.id} contract={contract}
             onExpand={onExpand}
