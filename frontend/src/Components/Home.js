@@ -1,21 +1,22 @@
 import React, { PureComponent } from 'react'
 import ContractPage from './ContractPage';
 import './CSS/Home.css';
+import DevJobsTable from './DevJobsTable'
+import CheckDev from './Other/CheckDev';
 
 
-function Home()
-{
-    const handleLogout = () => {
-        localStorage.clear();
-        window.location.pathname = "/login";
-    };
-    return (
-        <>
+function Home() {
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.pathname = "/login";
+  };
+  return (
+    <>
       <nav id="navbar" class="">
         <div class="nav-wrapper">
           <div class="logo">
-          <label >DevCo</label>
-          
+            <label >DevCo</label>
+
           </div>
 
           <ul id="menu">
@@ -26,21 +27,18 @@ function Home()
               <a href="/DevProfile">Profile</a>
             </li>
             <li>
-            <button className="styleBtn" onClick={handleLogout} >Logout </button>
+              <button className="styleBtn" onClick={handleLogout} >Logout </button>
             </li>
           </ul>
         </div>
-        
+
       </nav>
+      <CheckDev />
 
-
-        <ContractPage/>
-      
-      
     </>
-            
-    
-    )
+
+
+  )
 }
 
 export default Home;

@@ -76,6 +76,36 @@ function ContractPage() {
 
   }
 
+
+  // Delete Contract
+  const deleteContract = async (id) => {
+    await fetch(`http://localhost:5000/contracts/${id}`, {
+      method: 'DELETE',
+    })
+    setContracts(contracts.filter((contract) => contract.id !== id))
+  }
+
+  // Expand Contract
+  const expandContract = async (id) => {
+    const contractToExpand = await fetchContract(id)
+    const updContract = {
+      ...contractToExpand,
+      expandContract: !contractToExpand.expandContract
+    }
+
+    const res = await fetch(`http://localhost:5000/contracts/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(updContract)
+    })
+
+    const data = await res.json()
+
+    setContracts(contracts.map((contract) => contract.id === id ? { ...contract, expandContract: data.expandContract } : contract))
+  }
+
   const showDevelopers = async (id) => {
     const devsToShow = await fetchContract(id)
     const showDev = {
@@ -96,6 +126,27 @@ function ContractPage() {
     setContracts(contracts.map((contract) => contract.id === id ? { ...contract, showDevs: data.showDevs } : contract))
   }
 
+  // Toggle Reminder
+  const toggleExpand = async (id) => {
+    const contractToToggle = await fetchContract(id)
+    const updContract = {
+      ...contractToToggle,
+      expandContract: !contractToToggle.expandContract
+    }
+
+    const res = await fetch(`http://localhost:5000/contracts/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(updContract)
+    })
+
+    const data = await res.json()
+
+    setContracts(contracts.map((contract) => contract.id === id ? { ...contract, expandContract: data.expandContract } : contract))
+  }
+
   return (
     <Router>
       <div className="container">
@@ -112,7 +163,7 @@ function ContractPage() {
             closed={() => { setShowAllContracts(false); setShowOpenContracts(false); setShowClosedContracts(true) } }
           >
           </Menu>
-        {contracts.length > 0 ? (<Contracts contracts={contracts} all={showAllContracts} open={showOpenContracts} closed={showClosedContracts}
+        {contracts.length > 0 ? (<Contracts contracts={contracts} onExpand={expandContract} all={showAllContracts} open={showOpenContracts} closed={showClosedContracts}
         />) : ('No Contracts to Show')}</>
         ) : (
           <p></p>

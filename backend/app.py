@@ -1,5 +1,6 @@
-from flask import Flask, jsonify, request
-from flask_sqlalchemy import SQLAlchemy 
+from flask import Flask, jsonify, request, session
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
 from flask_marshmallow import Marshmallow
 from flask_cors import cross_origin, CORS
 from datetime import datetime
@@ -117,6 +118,7 @@ coms_schema = CompanySchema(many=True)
 class Contract(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
+    company_name = db.Column(db.String(25))
     name = db.Column(db.String(25))
     length = db.Column(db.String(25))
     value = db.Column(db.Float)
@@ -127,8 +129,9 @@ class Contract(db.Model):
     date = db.Column(db.DateTime, default=datetime.utcnow)
     developer_accepted_id = db.Column(db.Integer, db.ForeignKey('developer.id'))
 
-    def __init__(self, name, length, value, description, programming_language, location):
+    def __init__(self, company_name, name, length, value, description, programming_language, location):
         self.company_id = session_user['id']
+        self.company_name = company_name
         self.name = name
         self.length = length
         self.value = value
@@ -138,7 +141,7 @@ class Contract(db.Model):
 
 class ContractSchema(ma.Schema):
     class Meta:
-        fields = ('company_id', 'name', 'length', 'value', 'description', 'programming_language', 'location', 'open', 'date', 'developer_accepted_id')
+        fields = ('company_name', 'name', 'length', 'value', 'description', 'programming_language', 'location', 'open', 'date')
 
 contract_schema = ContractSchema()
 contracts_schema = ContractSchema(many=True)
@@ -310,14 +313,21 @@ def comEdit():
     com_exist = Company.query.filter_by(name=name).first()
     dev_exist = Developer.query.filter_by(email=name).first()
 
+    is_name_change = False
+
     if session_user['username'] != name:
         if com_exist or dev_exist:
             return {
                 'msg': 'This name already exists',
                 'success':False
             }
+        is_name_change = True
 
     com = Company.query.get(session_user['id'])
+
+    if is_name_change:
+        for contract in com.contracts:
+            contract.company_name = name
 
     com.name = name
     com.set_password(password)
@@ -361,6 +371,7 @@ def comDelete():
 @app.route('/createContract', methods = ['POST'])
 @cross_origin()
 def createContract():
+    company_name = session_user['username']
     name = request.json['name']
     length = request.json['length']
     value= request.json['value']
@@ -368,7 +379,7 @@ def createContract():
     programming_language = request.json['programming_language']
     location = request.json['location']
 
-    contract = Contract(name, length, value, description, programming_language, location)
+    contract = Contract(company_name, name, length, value, description, programming_language, location)
 
     company = Company.query.get(session_user['id'])
     company.contracts.append(contract)
@@ -426,10 +437,14 @@ def getContract(id):
     results = contract_schema.dump(contract)
     return jsonify(results)
 
-@app.route('/getContracts', methods = ['GET'])
+@app.route('/getContracts/<sortby>/<order>', methods = ['GET'])
 @cross_origin()
-def getContracts():
-    contracts = Contract.query.all()
+def getContracts(sortby, order):
+    contracts = ''
+    if order == 'ASC':
+        contracts = Contract.query.order_by(sortby)
+    else:
+        contracts = Contract.query.order_by(desc(sortby))
     results = contracts_schema.dump(contracts)
     return jsonify(results)
 

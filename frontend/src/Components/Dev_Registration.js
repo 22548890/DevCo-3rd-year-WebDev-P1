@@ -323,6 +323,7 @@ class DevReg extends React.Component {
                 alert(info.msg);
             }
         })()
+        window.location.pathname = "/login";
     }
 
     render() {
