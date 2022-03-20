@@ -72,14 +72,14 @@ function DevContractTable() {
 
     const handleDevTable = (status) => {
         if (status === "available") {
-            localStorage.setItem("DevJobsTable_status", "available");
+            localStorage.setItem("table_status", "available");
             window.location.reload();
         }
         else if (status === "pending") {
-            localStorage.setItem("DevJobsTable_status", "pending");
+            localStorage.setItem("table_status", "pending");
             window.location.reload();
         } else {
-            localStorage.setItem("DevJobsTable_status", "accepted");
+            localStorage.setItem("table_status", "accepted");
             window.location.reload();
         }
     }
@@ -98,9 +98,9 @@ function DevContractTable() {
         .catch(error => console.log(error));
     }
 
-    const routeViewComProfile = (ComName) => {
+    const routeViewComProfile = (ComID) => {
         // alert(ComName);
-        localStorage.setItem("ComNameView", ComName);
+        localStorage.setItem("ComNameView", ComID);
     }
 
     const applyContract = async (id) => {

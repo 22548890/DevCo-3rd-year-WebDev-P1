@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 from flask_marshmallow import Marshmallow
@@ -72,7 +72,7 @@ class Developer(db.Model):
 
 class DeveloperSchema(ma.Schema):
     class Meta:
-        fields = ( 'name', 'email', 'scaleJava', 'scalePython', 'scaleC', 'scaleGo', 'money_made')
+        fields = ('id', 'name', 'email', 'scaleJava', 'scalePython', 'scaleC', 'scaleGo', 'money_made')
 
 dev_schema = DeveloperSchema()
 devs_schema = DeveloperSchema(many=True)
@@ -438,9 +438,11 @@ def applyContract(contract_id):
             'success':True
         }    
 
-@app.route('/acceptDeveloper/dev=<developer_id>/con=<contract_id>', methods = ['PUT']) # Company side
+@app.route('/acceptDeveloper', methods = ['PUT']) # Company side
 @cross_origin()
-def acceptDeveloper(developer_id, contract_id):
+def acceptDeveloper():
+    developer_id = request.json['developer_id']
+    contract_id = request.json['contract_id']
     accepted_dev = Developer.query.get(developer_id)
     contract = Contract.query.get(contract_id)
     company = Company.query.get(session_user['id'])
@@ -457,11 +459,10 @@ def acceptDeveloper(developer_id, contract_id):
 
     db.session.commit()
 
-    ac_dev_ac_cons = contracts_schema.dump(accepted_dev.contracts_accepted)
-
-    return jsonify(ac_dev_ac_cons)  
-
-
+    return {
+            'msg': '',
+            'success':True
+        }
 
 @app.route('/getContract/<id>', methods = ['GET'])
 @cross_origin()
@@ -498,11 +499,14 @@ def getAcceptedContracts():
     return jsonify(results)
 
 
-@app.route('/getCompanyContracts', methods = ['GET'])
+@app.route('/getCompanyContracts/<sortby>/<order>', methods = ['GET'])
 @cross_origin()
-def getCompanyContracts():
-    company = Company.query.get(session_user['id'])
-    contracts = company.contracts
+def getCompanyContracts(sortby, order):
+    contracts = []
+    if order == 'ASC':
+        contracts = Contract.query.filter_by(company_id=session_user['id']).order_by(sortby)
+    else:
+        contracts = Contract.query.filter_by(company_id=session_user['id']).order_by(desc(sortby))
     results = contracts_schema.dump(contracts)
     return jsonify(results) 
 
@@ -528,7 +532,17 @@ def searchCompany(search, sortby, order):
     results = contracts_schema.dump(contracts)
     return jsonify(results) 
 
-
+@app.route('/getApplicants/<contract_id>', methods = ['GET'])
+def getApplicants(contract_id):
+    contract = Contract.query.get(contract_id)
+    if contract.open == True:
+        devs = contract.developers_applied
+        results = devs_schema.dump(devs)
+        return jsonify(results) 
+    else:
+        dev = Developer.query.get(contract.developer_accepted_id)
+        results = dev_schema.dump(dev)
+        return jsonify([results]) 
 
 
 

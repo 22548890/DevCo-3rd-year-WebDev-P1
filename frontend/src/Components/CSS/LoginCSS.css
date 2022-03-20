@@ -36,10 +36,6 @@ body{
   text-align: center;
 }
 
-.img-wrap{
-  display: flex;
-}
-
 .field{
   margin: 5px;
   display: flex;
