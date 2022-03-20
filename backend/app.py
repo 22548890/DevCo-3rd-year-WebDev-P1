@@ -536,9 +536,14 @@ def searchCompany(search, sortby, order):
 @app.route('/getApplicants/<contract_id>', methods = ['GET'])
 def getApplicants(contract_id):
     contract = Contract.query.get(contract_id)
-    devs = contract.developers_applied
-    results = devs_schema.dump(devs)
-    return jsonify(results) 
+    if contract.open == True:
+        devs = contract.developers_applied
+        results = devs_schema.dump(devs)
+        return jsonify(results) 
+    else:
+        dev = Developer.query.get(contract.developer_accepted_id)
+        results = dev_schema.dump(dev)
+        return jsonify([results]) 
 
 
 

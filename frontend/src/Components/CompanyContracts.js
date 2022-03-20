@@ -52,9 +52,10 @@ function CompanyContractTable() {
         alert('making...');
     }
 
-    const viewApplicants = async (id, d.open) => {
+    const viewApplicants = async (id, open) => {
         localStorage.setItem("table_status", 'applicants');
         localStorage.setItem('contract_id', id);
+        localStorage.setItem('contract_open', open)
         window.location.reload();
       }
 

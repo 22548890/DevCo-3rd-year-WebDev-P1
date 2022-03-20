@@ -9,6 +9,7 @@ function ApplicantsTable() {
     const [data, setData] = useState([]);
     const [order, setOrder] = useState('DSC');
     const [onceOff, setOnceOff] = useState(true);
+    const open = localStorage.getItem('contract_open');
 
     if (onceOff) {
         fetch(`http://127.0.0.1:5000/getApplicants/${localStorage.getItem('contract_id')}`, {
@@ -29,6 +30,7 @@ function ApplicantsTable() {
     const backToHome = () => {
         localStorage.setItem("table_status", 'companyContracts');
         localStorage.removeItem('contract_id');
+        localStorage.removeItem('contract_open');
         window.location.reload();
     }
 
@@ -38,7 +40,6 @@ function ApplicantsTable() {
     }
 
     const acceptApplicant = async (id) => {
-        alert(id);
         fetch(`http://127.0.0.1:5000/acceptDeveloper`, {
         'method': 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -51,6 +52,7 @@ function ApplicantsTable() {
         .catch(error => console.log(error));
         localStorage.setItem("table_status", 'companyHome');
         localStorage.removeItem('contract_id');
+        localStorage.removeItem('contract_open');
         alert('An Applicant has been Accepted!')
         window.location.reload();
       }
@@ -83,7 +85,8 @@ function ApplicantsTable() {
                             <td>{d.scalePython}</td>
                             <td>{d.scaleC}</td>
                             <td>{d.scaleGo}</td>
-                            <td className="link-apply" onClick={() => acceptApplicant(d.id)}>Accept</td>
+                            {/* <td {true ? ('Applicants'):('Accepted Applicant')}> </td> */}
+                            <td className={open == 'true' ? ("link-apply"):("")} onClick={open == 'true' ? (() => acceptApplicant(d.id)):("")}>{open == 'true' ? ('Accept'):('Accepted')}</td>
                         </tr>
                     ))}
                 </tbody>
