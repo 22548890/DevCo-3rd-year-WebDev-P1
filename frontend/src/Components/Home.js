@@ -10,6 +10,9 @@ function Home() {
     localStorage.clear();
     window.location.pathname = "/login";
   };
+  const handleViewProfile = () => {
+    window.location.pathname = "/ViewProfile";
+  };
   return (
     <>
       <nav id="navbar" class="">
@@ -21,7 +24,7 @@ function Home() {
 
           <ul id="menu">
             <li>
-              <a href="/DevProfile">Profile</a>
+              <a onClick={handleViewProfile}>Profile</a>
             </li>
             <li>
               <button className="styleBtn" onClick={handleLogout} >Logout </button>

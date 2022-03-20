@@ -8,7 +8,7 @@ function AcceptedContractTable() {
     const [onceOff, setOnceOff] = useState(true)
 
     if (onceOff) {
-        fetch(`http://127.0.0.1:5000/getAccpetedContracts`, {
+        fetch(`http://127.0.0.1:5000/getAcceptedContracts`, {
             'method': 'GET',
             headers: { 'Content-Type': 'application/json' }
         })

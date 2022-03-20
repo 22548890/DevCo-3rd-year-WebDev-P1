@@ -2,7 +2,7 @@ import React from 'react'
 import './CSS/DevRegCSS.css'
 import ReactDOM from 'react-dom'
 import Home from './Home'
-import { Component } from 'react'
+import { useState } from 'react'  
 
 const ImgUpload = ({
     onChange,
@@ -175,60 +175,9 @@ const ScaleGo = ({
 
     </div>
 
-const handleDelete = () => {
-    //delete accounts
-    const requestOpt = {
-        method: 'DELETE',
-        headers: {'Content-Type': 'application/json'},
-    }
-    async function fetchFunc() {
-        return await fetch('http://127.0.0.1:5000/devDelete', requestOpt)
-        .then(response => response.json())
-        .catch(error => console.log(error));
-    }
-    (async () => {
-        let info = await fetchFunc();
-    })()
-    alert("Deleted Account");
-    localStorage.clear();
-    window.location.pathname = "/login";
-
-};
-
-const Profile = ({
-    onSubmit,
-    src,
-    name,
-    email,
-    scaleJava,
-    scalePython,
-    scaleC,
-    scaleGo,
-}) =>
-    <div className="card">
-        <form onSubmit={onSubmit}>
-            <h1>Profile Preview</h1>
-            <label className="custom-file-upload fas">
-                <div className="img-wrap" >
-                    <img for="photo-upload" src={src} alt="Upload" />
-                </div>
-            </label>
-            <div className="name">{name}</div>
-            <div className="email">{email}</div>
-            <div className="scale">JavaScript - {scaleJava}</div>
-            <div className="scale">Python - {scalePython}</div>
-            <div className="scale">C/C++ - {scaleC}</div>
-            <div className="scale">Go - {scaleGo}</div>
-            <button type="submit" className="styleBtn edit">Edit Details </button>
-            <button className="deleteBtn" onClick={handleDelete}>Delete Account </button>
-        </form>
-    </div>
-
-const handleHome = () => {
-    if (localStorage.getItem("isAuthenticated")) {
-        window.location.pathname = "/";
-    }
-
+const handleHome = (e) => {
+    e.preventDefault();
+    window.location.pathname = "/";
 };
 
 const Edit = ({
@@ -239,11 +188,13 @@ const Edit = ({
         <form onSubmit={onSubmit}>
             <h1>Edit Profile Details</h1>
             {children}
-            <button /*type="submit"*/ className="styleBtn save" onClick={handleHome}>Save & Exit </button>
+            <button type="submit" className="styleBtn save" >Save & Exit </button>
+            <button className="btn" onClick={handleHome}> Back Home</button>
         </form>
     </div>
 
-class DevProfile extends React.Component {
+class EditProfile extends React.Component {
+
     state = {
         file: '',
         imagePreviewUrl: 'https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true',
@@ -256,6 +207,7 @@ class DevProfile extends React.Component {
         scaleGo: 'None',
         active: 'edit'
     }
+
 
     photoUpload = e => {
         e.preventDefault();
@@ -324,7 +276,7 @@ class DevProfile extends React.Component {
         let data = this.state;
         const requestOpt = {
             method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 'name': data.name,
                 'password': data.password,
@@ -337,33 +289,17 @@ class DevProfile extends React.Component {
         }
         async function fetchFunc() {
             return await fetch('http://127.0.0.1:5000/devEdit', requestOpt)
-            .then(response => response.json())
-            .catch(error => console.log(error));
+                .then(response => response.json())
+                .catch(error => console.log(error));
         }
         (async () => {
             let info = await fetchFunc();
-            if (info.success) { 
-                if (localStorage.getItem("isAuthenticated")) {
-                    let activeP = this.state.active === 'edit' ? 'profile' : 'edit';
-                    this.setState({
-                        active: activeP,
-                    });
-                }
+            if (info.success) {
+                window.location.pathname = "/";
             } else {
                 alert(info.msg);
             }
         })()
-    }
-
-    handleEdit = e => {
-        e.preventDefault();
-
-        if (localStorage.getItem("isAuthenticated")) {
-            let activeP = this.state.active === 'edit' ? 'profile' : 'edit';
-            this.setState({
-                active: activeP,
-            });
-        }
     }
 
     render() {
@@ -375,23 +311,10 @@ class DevProfile extends React.Component {
             scalePython,
             scaleC,
             scaleGo,
-            active } = this.state;
+             } = this.state;
         return (
             <div>
-
-                {(active === 'edit') ? (
-                    <Profile
-                        onSubmit={this.handleEdit}
-                        src={imagePreviewUrl}
-                        name={name}
-                        email={email}
-                        password={password}
-                        scaleJava={scaleJava}
-                        scalePython={scalePython}
-                        scaleC={scaleC}
-                        scaleGo={scaleGo}
-                    />
-                ) : (<Edit onSubmit={this.handleSubmit}>
+                 <Edit onSubmit={this.handleSubmit}>
                     <ImgUpload onChange={this.photoUpload} src={imagePreviewUrl} />
                     <FullName onChange={this.editName} value={name} />
                     <Email onChange={this.editEmail} value={email} />
@@ -399,12 +322,12 @@ class DevProfile extends React.Component {
                     <ScaleJava onChange={this.editScaleJava} value={scaleJava} />
                     <ScalePython onChange={this.editScalePython} value={scalePython} />
                     <ScaleC onChange={this.editScaleC} value={scaleC} />
-                    <ScaleGo onChange={this.editScaleGo} value={scaleGo} />
-                </Edit>)}
+                    <ScaleGo onChange={this.editScaleGo} value={scaleGo} />                    
+                </Edit>
             </div>
         )
     }
 
 }
 
-export default DevProfile;
+export default EditProfile;

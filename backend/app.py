@@ -120,7 +120,7 @@ class Contract(db.Model):
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
     company_name = db.Column(db.String(25))
     name = db.Column(db.String(25))
-    length = db.Column(db.String(25))
+    length = db.Column(db.Integer)
     value = db.Column(db.Float)
     description = db.Column(db.Text())
     programming_language = db.Column(db.String(25))
@@ -239,6 +239,12 @@ def comReg():
     password = request.json['password']
     industry = request.json['industry']
 
+    if name == '@':
+        return {
+            'msg': 'This name already exists',
+            'success':False
+        }
+
     com_exist = Company.query.filter_by(name=name).first()
     dev_exist = Developer.query.filter_by(email=name).first()
 
@@ -262,6 +268,20 @@ def comReg():
         'developer': False,
         'success':True
     }
+
+@app.route('/getMyProfile', methods = ['GET'])
+@cross_origin()
+def getMyProfile():
+    result = ''
+    if session_user['type'] == 'dev':
+        dev = Developer.query.get(session_user['id'])
+        result = dev_schema.dump(dev)
+    else:
+        com = Company.query.get(session_user['id'])
+        result = com_schema.dump(com)
+
+    return jsonify([result])
+
 
 @app.route('/devEdit', methods = ['PUT'])
 @cross_origin()
@@ -309,6 +329,12 @@ def comEdit():
     name = request.json['name']
     password = request.json['password']
     industry = request.json['industry']
+
+    if name == '@':
+        return {
+            'msg': 'This name already exists',
+            'success':False
+        }
 
     com_exist = Company.query.filter_by(name=name).first()
     dev_exist = Developer.query.filter_by(email=name).first()
@@ -441,7 +467,6 @@ def getContract(id):
 @cross_origin()
 def getAvailableContracts(sortby, order):
     contracts = []
-    # contracts = Contract.query.filter(Contract.name.like("G%")).all()
     if order == 'ASC':
         contracts = Contract.query.filter_by(open=True).order_by(sortby)
     else:
@@ -457,7 +482,7 @@ def getPendingContracts():
     results = contracts_schema.dump(contracts)
     return jsonify(results)
 
-@app.route('/getAccpetedContracts', methods = ['GET'])
+@app.route('/getAcceptedContracts', methods = ['GET'])
 @cross_origin()
 def getAcceptedContracts():
     developer = Developer.query.get(session_user['id'])
@@ -474,8 +499,27 @@ def getCompanyContracts():
     results = contracts_schema.dump(contracts)
     return jsonify(results) 
 
+@app.route('/searchCompany/<search>/<sortby>/<order>', methods = ['GET'])
+@cross_origin()
+def searchCompany(search, sortby, order):
+    string = ''
+    contracts = []
 
+    if order == 'ASC':
+        if search == '@':
+            contracts = Contract.query.filter(Contract.open==True).order_by(sortby)
+        else: 
+            string = search + "%"
+            contracts = Contract.query.filter(Contract.open==True, Contract.company_name.like(string)).order_by(sortby)
+    else:
+        if search == '@':
+            contracts = Contract.query.filter(Contract.open==True).order_by(desc(sortby))
+        else: 
+            string = search + "%"
+            contracts = Contract.query.filter(Contract.open==True, Contract.company_name.like(string)).order_by(desc(sortby))
 
+    results = contracts_schema.dump(contracts)
+    return jsonify(results) 
 
 
 

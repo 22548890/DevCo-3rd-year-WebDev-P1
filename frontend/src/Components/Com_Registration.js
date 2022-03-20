@@ -174,11 +174,11 @@ class ComReg extends React.Component {
                 this.setState({
                     active: activeP,
                 })
+                window.location.pathname = "/login";
             } else {
                 alert(info.msg);
             }
         })()
-        window.location.pathname = "/login";
     }
 
     render() {

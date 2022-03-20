@@ -7,9 +7,8 @@ import Swal from 'sweetalert2'
 function DevContractTable() {
 
     const [data, setData] = useState([]);
-    // const [sortby, setSorby] = useState('date');
     const [order, setOrder] = useState('DSC');
-    const [onceOff, setOnceOff] = useState(true)
+    const [onceOff, setOnceOff] = useState(true);
 
     if (onceOff) {
         fetch(`http://127.0.0.1:5000/getAvailableContracts/date/DSC`, {
@@ -23,26 +22,46 @@ function DevContractTable() {
     }
 
     const sorting = (column) => {
-        // setSorby(column);
+        let search = document.querySelector('input').value;
         if (order === 'ASC') {
             setOrder('DSC');
-            fetch(`http://127.0.0.1:5000/getAvailableContracts/${column}/ASC`, {
-            'method': 'GET',
-            headers: { 'Content-Type': 'application/json' }
-            })
+            if (search != '') {
+                fetch(`http://127.0.0.1:5000/searchCompany/${search}/${column}/ASC`, {
+                'method': 'GET',
+                headers: { 'Content-Type': 'application/json' }
+                })
                 .then(response => response.json())
                 .then(response => setData(response))
                 .catch(error => console.log(error));
+            } else {
+                fetch(`http://127.0.0.1:5000/getAvailableContracts/${column}/ASC`, {
+                'method': 'GET',
+                headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => response.json())
+                .then(response => setData(response))
+                .catch(error => console.log(error));
+            }
         }
         if (order === 'DSC') {
             setOrder('ASC');
-            fetch(`http://127.0.0.1:5000/getAvailableContracts/${column}/DSC`, {
-            'method': 'GET',
-            headers: { 'Content-Type': 'application/json' }
-            })
+            if (search !== '') {
+                fetch(`http://127.0.0.1:5000/searchCompany/${search}/${column}/DSC`, {
+                'method': 'GET',
+                headers: { 'Content-Type': 'application/json' }
+                })
                 .then(response => response.json())
                 .then(response => setData(response))
                 .catch(error => console.log(error));
+            } else {
+                fetch(`http://127.0.0.1:5000/getAvailableContracts/${column}/DSC`, {
+                'method': 'GET',
+                headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => response.json())
+                .then(response => setData(response))
+                .catch(error => console.log(error));
+            }
         }
     }
     const routeChange = (status) => {
@@ -64,10 +83,23 @@ function DevContractTable() {
         }
     }
 
+    const handleChange = () => {
+        let search = document.querySelector('input').value;
+        if (search === '') {
+            search = '@';
+        } 
+        fetch(`http://127.0.0.1:5000/searchCompany/${search}/date/DSC`, {
+        'method': 'GET',
+        headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => response.json())
+        .then(response => setData(response))
+        .catch(error => console.log(error));
+    }
+
     const routeViewComProfile = (ComName) => {
         alert(ComName);
         localStorage.setItem("ComNameView", ComName);
-        // alert(localStorage.getItem("ComNameView"));
     }
 
     const applyContract = async (id) => {
@@ -98,7 +130,7 @@ function DevContractTable() {
             <table id="myTable" className="table table-available">
 
                 <thead >
-                    <input type="text" placeholder="Search for company name.." />
+                    <input type="text" placeholder="Search Company Name..." onChange={() => handleChange()}/>
 
                     <tr>
                         <th title="CLICK TO SORT" onClick={() => sorting("company_name")}>Company Name</th>
