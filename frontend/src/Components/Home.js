@@ -21,9 +21,6 @@ function Home() {
 
           <ul id="menu">
             <li>
-              <a href="#my-contracts">My Contracts</a>
-            </li>
-            <li>
               <a href="/DevProfile">Profile</a>
             </li>
             <li>
