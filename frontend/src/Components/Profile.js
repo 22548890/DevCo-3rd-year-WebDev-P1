@@ -177,7 +177,6 @@ const ScaleGo = ({
 
 const handleDelete = () => {
     //delete accounts
-    alert(stuff)
     const requestOpt = {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json'},
