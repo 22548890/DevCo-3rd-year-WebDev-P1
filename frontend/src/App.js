@@ -9,6 +9,9 @@ import ProtectedRoute from './Components/ProtectedRoute';
 import DevProfile from './Components/Profile';
 import ContractPage from './Components/ContractPage';
 import './Components/CSS/LoginCSS.css';
+import DevJobsTable from './Components/DevJobsTable'
+import PendingContractTable from './Components/PendingJobsTable';
+import AcceptedContractTable from './Components/AcceptedJobsTable';
 
 function App() {
   return (

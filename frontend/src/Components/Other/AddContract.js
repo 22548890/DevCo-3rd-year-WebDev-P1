@@ -34,7 +34,7 @@ const AddContract = ({ onAdd, showAdd }) => {
         setDes('')
         setLan('')
         setLocation('')
-
+        window.location.reload();
     }
   return (
       
@@ -45,8 +45,8 @@ const AddContract = ({ onAdd, showAdd }) => {
             />
         </div>
         <div className='form-control'>
-            <label>Contract Length</label>
-            <input type='text' placeholder='Add contract length' value={contractLength} onChange={(e) => setLength(e.target.value)}
+            <label>Contract Length (Months)</label>
+            <input type='number' placeholder='Add contract length' value={contractLength} onChange={(e) => setLength(e.target.value)}
             />
         </div>
         <div className='form-control'>

@@ -67,7 +67,7 @@ const GeneralIndustries = ({
             <option value={"Healthcare"} >Healthcare</option>
             <option value={"Insurance"} >Insurance</option>
             <option value={"Automobile"} >Automobile</option>
-            <option value={"Food Services"} >Healthcare</option>
+            <option value={"Food Services"} >Food Services</option>
         </select>
     </div>
 
