@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from numpy import sort
 from sqlalchemy import desc
 from flask_marshmallow import Marshmallow
 from flask_cors import cross_origin, CORS
