@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import "./CSS/Table.css"
-import ComReg from './Com_Registration'
-import { useNavigate } from "react-router-dom";
-import Profile from './Profile'
 import moment from 'moment'
+import Swal from 'sweetalert2'
 
 
 function DevContractTable() {
@@ -66,10 +64,23 @@ function DevContractTable() {
             }
         }
     }
+    const routeChange = (status) => {
+        alert(status);
 
-    const routeChange = (entry) => {
-        alert(entry);
+    }
 
+    const handleDevTable = (status) => {
+        if (status === "available") {
+            localStorage.setItem("DevJobsTable_status", "available");
+            window.location.reload();
+        }
+        else if (status === "pending") {
+            localStorage.setItem("DevJobsTable_status", "pending");
+            window.location.reload();
+        } else {
+            localStorage.setItem("DevJobsTable_status", "accepted");
+            window.location.reload();
+        }
     }
 
     const handleChange = () => {
@@ -91,27 +102,44 @@ function DevContractTable() {
         localStorage.setItem("ComNameView", ComName);
     }
 
+    const applyContract = async (id) => {
+        const requestOpt = {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'}
+          }
+    
+        fetch(`http://127.0.0.1:5000/applyContract${id}`, requestOpt)
+        .then(response => response.json())
+        .catch(error => console.log(error));
+
+        Swal.fire(
+            'Successfully Applied!',
+            '',
+            'success',
+          )
+      }
+
     return (
         <div className="tbl-container">
             <div>
-                <button className="btn view-av">Available Contracts</button>
-                <button className="btn view-pen">Pending Contracts</button>
-                <button className="btn view-ac">Accepted Contracts</button>
+                <button onClick={()=>handleDevTable("available")} className="btn view-av">Available Contracts</button>
+                <button onClick={()=>handleDevTable("pending")} className="btn view-pen">Pending Contracts</button>
+                <button onClick={()=>handleDevTable("accepted")} className="btn view-ac">Accepted Contracts</button>
             </div>
 
-            <table id="myTable" class="table table-striped">
+            <table id="myTable" className="table table-available">
 
                 <thead >
-                    <input type="text" placeholder="Search..." onChange={() => handleChange()}/>
+                    <input type="text" placeholder="Search Company Name..." onChange={() => handleChange()}/>
 
                     <tr>
-                        <th onClick={() => sorting("company_name")}>Company Name</th>
-                        <th onClick={() => sorting("length")}>Contract Length</th>
-                        <th onClick={() => sorting("value")}>Contract Value</th>
+                        <th title="CLICK TO SORT" onClick={() => sorting("company_name")}>Company Name</th>
+                        <th title="CLICK TO SORT" onClick={() => sorting("length")}>Contract Length</th>
+                        <th title="CLICK TO SORT" onClick={() => sorting("value")}>Contract Value</th>
                         <th >Contract Description</th>
-                        <th onClick={() => sorting("programming_language")}>Programming Language</th>
-                        <th onClick={() => sorting("location")}>Location</th>
-                        <th onClick={() => sorting("date")}>Date</th>
+                        <th title="CLICK TO SORT" onClick={() => sorting("programming_language")}>Programming Language</th>
+                        <th title="CLICK TO SORT" onClick={() => sorting("location")}>Location</th>
+                        <th title="CLICK TO SORT" onClick={() => sorting("date")}>Date</th>
                         <th> Status </th>
                     </tr>
                 </thead>
@@ -125,7 +153,7 @@ function DevContractTable() {
                             <td>{d.programming_language}</td>
                             <td>{d.location}</td>
                             <td>{moment(d.date).format("MM/DD/YYYY")}</td>
-                            <td className="link-apply" onClick={() => routeChange("APPLIED - " + d.id)}>APPLY</td>
+                            <td className="link-apply" onClick={() => applyContract(d.id)}>APPLY</td>
                         </tr>
 
                     ))}

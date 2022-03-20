@@ -9,7 +9,7 @@
     /* box-shadow: 0px 0px 10px 0px  #373838;  */
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     text-align: center;
     min-height: 100vh;
     overflow: auto;
@@ -57,10 +57,14 @@
 .link-apply{
     text-decoration: underline;
 }
+.table-available{
+    cursor: pointer;
+}
 
 table {
     width: 100%;
-    border-collapse: collapse;    
+    border-collapse: collapse;   
+     
 }
 table th,
 table td {
@@ -69,13 +73,16 @@ table td {
     background-color: #a6b3b2;
     color: rgb(0, 0, 0);
   /* border-left: ; */
+  
 }
+
+
 
 table th {
     padding: 25px 20px;
     background-color: #77d5d4;
     position: relative;
-    cursor: pointer;
+    /* cursor: pointer; */
     color: #f2fbfa;
     
     /* border-bottom: solid 15px; */

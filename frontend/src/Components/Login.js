@@ -140,6 +140,7 @@ class Login extends React.Component {
                 localStorage.setItem("isAuthenticated", "true");
                 if (info.developer) {
                     localStorage.setItem("isDev", "true");
+                    localStorage.setItem("DevJobsTable_status", "available");
                 } else {
                     localStorage.setItem("isDev", "false");
                 }

@@ -67,7 +67,7 @@ const GeneralIndustries = ({
             <option value={"Healthcare"} >Healthcare</option>
             <option value={"Insurance"} >Insurance</option>
             <option value={"Automobile"} >Automobile</option>
-            <option value={"Food Services"} >Healthcare</option>
+            <option value={"Food Services"} >Food Services</option>
         </select>
     </div>
 
@@ -170,14 +170,10 @@ class ComReg extends React.Component {
         (async () => {
             let info = await fetchFunc();
             if (info.success) {
-                let activeP = data.active === 'edit' ? 'profile' : 'edit';
-                this.setState({
-                    active: activeP,
-                })
+                window.location.pathname = "/login";
             } else {
                 alert(info.msg);
             }
-            window.location.pathname = "/login";
         })()
     }
 

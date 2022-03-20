@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 from flask_marshmallow import Marshmallow
@@ -28,7 +28,7 @@ developer_contract_denied = db.Table('developer_contract_denied',
 
 # Current Company name / Dev email and type = company/developer
 session_user = {
-    'id':'1',
+    'id':'',
     'username':'',
     'type':''
 }
@@ -268,6 +268,19 @@ def comReg():
         'developer': False,
         'success':True
     }
+
+@app.route('/getMyProfile', methods = ['GET'])
+@cross_origin()
+def getMyProfile():
+    result = ''
+    if session_user['type'] == 'dev':
+        dev = Developer.query.get(session_user['id'])
+        result = dev_schema.dump(dev)
+    else:
+        com = Company.query.get(session_user['id'])
+        result = com_schema.dump(com)
+
+    return jsonify(result)
 
 @app.route('/devEdit', methods = ['PUT'])
 @cross_origin()

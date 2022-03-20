@@ -343,12 +343,7 @@ class DevProfile extends React.Component {
         (async () => {
             let info = await fetchFunc();
             if (info.success) { 
-                if (localStorage.getItem("isAuthenticated")) {
-                    let activeP = this.state.active === 'edit' ? 'profile' : 'edit';
-                    this.setState({
-                        active: activeP,
-                    });
-                }
+                window.location.pathname="/"
             } else {
                 alert(info.msg);
             }

@@ -3,6 +3,7 @@ import ContractPage from './ContractPage';
 import './CSS/Home.css';
 import DevJobsTable from './DevJobsTable'
 import CheckDev from './Other/CheckDev';
+import Modal from './Other/Modal';
 
 
 function Home() {
@@ -10,6 +11,7 @@ function Home() {
     localStorage.clear();
     window.location.pathname = "/login";
   };
+
   return (
     <>
       <nav id="navbar" class="">
@@ -31,6 +33,7 @@ function Home() {
 
       </nav>
       <CheckDev />
+      <Modal />
 
     </>
 
