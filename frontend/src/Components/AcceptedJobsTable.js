@@ -8,7 +8,7 @@ function AcceptedContractTable() {
     const [onceOff, setOnceOff] = useState(true)
 
     if (onceOff) {
-        fetch(`http://127.0.0.1:5000/getAccpetedContracts`, {
+        fetch(`http://127.0.0.1:5000/getAcceptedContracts`, {
             'method': 'GET',
             headers: { 'Content-Type': 'application/json' }
         })
@@ -25,14 +25,14 @@ function AcceptedContractTable() {
 
     const handleDevTable = (status) => {
         if (status === "available") {
-            localStorage.setItem("DevJobsTable_status", "available");
+            localStorage.setItem("table_status", "available");
             window.location.reload();
         }
         else if (status === "pending") {
-            localStorage.setItem("DevJobsTable_status", "pending");
+            localStorage.setItem("table_status", "pending");
             window.location.reload();
         } else {
-            localStorage.setItem("DevJobsTable_status", "accepted");
+            localStorage.setItem("table_status", "accepted");
             window.location.reload();
         }
     }

@@ -11,14 +11,14 @@
     width: 100vw;
     height: 60px;
     border: 1px solid rgb(153, 143, 143);
-    border-bottom: 3px solid rgb(153, 143, 143)b4;
+    border-bottom: 3px solid rgb(153, 143, 143);
   }
   
   .nav-wrapper {
     margin: auto;
     text-align: center;
     width: 90%;
-      } 
+  } 
   
   .logo {
     float: left;
@@ -27,7 +27,6 @@
     height: 40px;
     letter-spacing: 3px;
     text-transform: uppercase;
- 
   } 
   
   #navbar ul {
@@ -66,6 +65,10 @@
     text-transform: uppercase;
     transition: all 0.5s ease;
     -webkit-transition: all 0.5s ease;
+    cursor: pointer;
+  }
+  .home {
+   margin-top:1%;
   }
   
   #navbar li a:hover {

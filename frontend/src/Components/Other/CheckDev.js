@@ -3,17 +3,24 @@ import AcceptedContractTable from '../AcceptedJobsTable';
 import ContractPage from '../ContractPage'
 import DevJobsTable from '../DevJobsTable'
 import PendingContractTable from '../PendingJobsTable';
+import CompanyContractTable from '../CompanyContracts';
+import ApplicantsTable from '../ApplicantsTable'
 
 export default function CheckDev() {
     const isDev = localStorage.getItem("isDev");
-    const DevTableStatus = localStorage.getItem("DevJobsTable_status");
+    const tableStatus = localStorage.getItem("table_status");
     if (isDev === "false") {
-        return <ContractPage />;
+        if (tableStatus === 'applicants') {
+            // const contract_id = localStorage.getItem("contract_id");
+            return <ApplicantsTable />
+        } else {
+            return <CompanyContractTable />;
+        }
     }
-     if (DevTableStatus==="pending") {
+     if (tableStatus==="pending") {
         return <PendingContractTable/>
     }
-    else if (DevTableStatus==="accepted") {
+    else if (tableStatus==="accepted") {
         return <AcceptedContractTable/>
     } else{
         return <DevJobsTable/>

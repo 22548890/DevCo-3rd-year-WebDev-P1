@@ -12,6 +12,8 @@ import './Components/CSS/LoginCSS.css';
 import DevJobsTable from './Components/DevJobsTable'
 import PendingContractTable from './Components/PendingJobsTable';
 import AcceptedContractTable from './Components/AcceptedJobsTable';
+import ViewProfile from './Components/ViewProfile';
+import EditProfile from './Components/Profile';
 
 function App() {
   return (
@@ -21,7 +23,8 @@ function App() {
           <Route exact path='/login' component={Login} />
           <Route exact path='/DevReg' component={DevReg} />
           <Route exact path='/ComReg' component={ComReg} />
-          <ProtectedRoute exact path='/DevProfile' component={DevProfile} />
+          <ProtectedRoute exact path='/ViewProfile' component={ViewProfile} />
+          <ProtectedRoute exact path='/EditProfile' component={EditProfile} />
           <ProtectedRoute exact path='/' component={Home} />
           <ProtectedRoute exact path='/contracts' component={ContractPage} />
         </Router>

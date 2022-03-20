@@ -21,7 +21,7 @@ const AddContract = ({ onAdd, showAdd }) => {
             return
         }
 
-        if (location == '') {
+        if (location === '') {
             alert('Please select one of either remote or office')
             return
         }

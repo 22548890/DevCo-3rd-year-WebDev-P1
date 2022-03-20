@@ -45,7 +45,7 @@ function DevContractTable() {
         }
         if (order === 'DSC') {
             setOrder('ASC');
-            if (search != '') {
+            if (search !== '') {
                 fetch(`http://127.0.0.1:5000/searchCompany/${search}/${column}/DSC`, {
                 'method': 'GET',
                 headers: { 'Content-Type': 'application/json' }
@@ -71,14 +71,14 @@ function DevContractTable() {
 
     const handleDevTable = (status) => {
         if (status === "available") {
-            localStorage.setItem("DevJobsTable_status", "available");
+            localStorage.setItem("table_status", "available");
             window.location.reload();
         }
         else if (status === "pending") {
-            localStorage.setItem("DevJobsTable_status", "pending");
+            localStorage.setItem("table_status", "pending");
             window.location.reload();
         } else {
-            localStorage.setItem("DevJobsTable_status", "accepted");
+            localStorage.setItem("table_status", "accepted");
             window.location.reload();
         }
     }
