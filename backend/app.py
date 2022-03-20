@@ -141,7 +141,7 @@ class Contract(db.Model):
 
 class ContractSchema(ma.Schema):
     class Meta:
-        fields = ('company_name', 'name', 'length', 'value', 'description', 'programming_language', 'location', 'open', 'date')
+        fields = ('id','company_name', 'name', 'length', 'value', 'description', 'programming_language', 'location', 'open', 'date')
 
 contract_schema = ContractSchema()
 contracts_schema = ContractSchema(many=True)
