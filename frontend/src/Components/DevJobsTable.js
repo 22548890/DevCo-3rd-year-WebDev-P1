@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import "./CSS/Table.css"
 import moment from 'moment'
 import Swal from 'sweetalert2'
+import Modal from './Other/Modal';
 
 
 function DevContractTable() {
@@ -98,7 +99,7 @@ function DevContractTable() {
     }
 
     const routeViewComProfile = (ComName) => {
-        alert(ComName);
+        // alert(ComName);
         localStorage.setItem("ComNameView", ComName);
     }
 
@@ -146,7 +147,7 @@ function DevContractTable() {
                 <tbody>
                     {data.map((d) => (
                         <tr key={d.id}>
-                            <td title="CLICK TO VIEW PROFILE" className="link" onClick={() => routeViewComProfile(d.company_name)}>{d.company_name}</td>
+                            <td title="CLICK TO VIEW PROFILE" className="link" onClick={() => routeViewComProfile(d.id)}><Modal text = {d.company_name}> </Modal></td>
                             <td>{d.length}</td>
                             <td>{d.value}</td>
                             <td>{d.description}</td>
@@ -154,7 +155,7 @@ function DevContractTable() {
                             <td>{d.location}</td>
                             <td>{moment(d.date).format("MM/DD/YYYY")}</td>
                             <td className="link-apply" onClick={() => applyContract(d.id)}>APPLY</td>
-                        </tr>
+                        </tr>//<Modal text = { <td title="CLICK TO VIEW PROFILE" className="link">{d.company_name}</td>}> </Modal>
 
                     ))}
                 </tbody>

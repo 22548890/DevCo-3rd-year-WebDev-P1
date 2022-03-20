@@ -14,6 +14,7 @@ import PendingContractTable from './Components/PendingJobsTable';
 import AcceptedContractTable from './Components/AcceptedJobsTable';
 import ViewProfile from './Components/ViewProfile';
 import EditProfile from './Components/Profile';
+import Modal from './Components/Other/Modal';
 
 function App() {
   return (

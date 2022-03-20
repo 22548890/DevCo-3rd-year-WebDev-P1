@@ -170,10 +170,6 @@ class ComReg extends React.Component {
         (async () => {
             let info = await fetchFunc();
             if (info.success) {
-                let activeP = data.active === 'edit' ? 'profile' : 'edit';
-                this.setState({
-                    active: activeP,
-                })
                 window.location.pathname = "/login";
             } else {
                 alert(info.msg);

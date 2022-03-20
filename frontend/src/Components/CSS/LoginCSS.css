@@ -32,6 +32,13 @@ body{
   margin-right: 10px;
   margin-left: 10px;
 }
+.industry{
+  text-align: center;
+}
+
+.img-wrap{
+  display: flex;
+}
 
 .field{
   margin: 5px;

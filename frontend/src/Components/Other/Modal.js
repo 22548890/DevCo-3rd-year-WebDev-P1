@@ -1,12 +1,14 @@
 import React from 'react';
 import Popup from 'reactjs-popup';
 import { FaRegUser } from 'react-icons/fa'
+import Developer from './Developer'
+import ViewProfile from '../ViewProfile';
+import PreviewComProfile from '../PreviewComProfile';
 
-const Modal = (contract) => {
-  
+const Modal = ({text}) => {
   return (
     <Popup
-      trigger={<button className="button"> <FaRegUser style={{ color: 'green', cursor: 'pointer' }} /> </button>}
+    trigger={<div className="modal-item"> {text} </div>}
       modal
       nested
     >
@@ -15,30 +17,11 @@ const Modal = (contract) => {
           <button className="close" onClick={close}>
             &times;
           </button>
-          <div className="header"> Developers interested in this contract </div>
-          <div className={`contract `}>
-            {' '}
-
+          <div className={'content'}>
+            {<PreviewComProfile/>}
+            
             <br />
 
-          </div>
-          <div className="actions">
-            <Popup
-              
-            >
-              <span>
-
-              </span>
-            </Popup>
-            <button
-              className="button"
-              onClick={() => {
-                console.log('modal closed ');
-                close();
-              }}
-            >
-              close modal
-            </button>
           </div>
         </div>
       )}
@@ -46,4 +29,4 @@ const Modal = (contract) => {
   )
 }
 
-export default Modal
+export default Modal;
