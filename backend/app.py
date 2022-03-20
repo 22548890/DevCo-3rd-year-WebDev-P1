@@ -489,7 +489,7 @@ def getPendingContracts():
     results = contracts_schema.dump(contracts)
     return jsonify(results)
 
-@app.route('/getAccpetedContracts', methods = ['GET'])
+@app.route('/getAcceptedContracts', methods = ['GET'])
 @cross_origin()
 def getAcceptedContracts():
     developer = Developer.query.get(session_user['id'])
