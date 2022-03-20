@@ -28,7 +28,7 @@ developer_contract_denied = db.Table('developer_contract_denied',
 
 # Current Company name / Dev email and type = company/developer
 session_user = {
-    'id':'',
+    'id':'2',
     'username':'',
     'type':''
 }
@@ -440,11 +440,28 @@ def getContract(id):
 @app.route('/getAvailableContracts/<sortby>/<order>', methods = ['GET'])
 @cross_origin()
 def getAvailableContracts(sortby, order):
-    contracts = ''
+    contracts = []
+    # contracts = Contract.query.filter(Contract.name.like("G%")).all()
     if order == 'ASC':
         contracts = Contract.query.filter_by(open=True).order_by(sortby)
     else:
         contracts = Contract.query.filter_by(open=True).order_by(desc(sortby))
+    results = contracts_schema.dump(contracts)
+    return jsonify(results)
+
+@app.route('/getPendingContracts', methods = ['GET'])
+@cross_origin()
+def getPendingContracts(sortby, order):
+    developer = Developer.query.get(session_user['id'])
+    contracts = developer.contracts_applied
+    results = contracts_schema.dump(contracts)
+    return jsonify(results)
+
+@app.route('/getAccpetedContracts', methods = ['GET'])
+@cross_origin()
+def getAcceptedContracts(sortby, order):
+    developer = Developer.query.get(session_user['id'])
+    contracts = developer.contracts_accepted
     results = contracts_schema.dump(contracts)
     return jsonify(results)
 
