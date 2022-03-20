@@ -14,14 +14,53 @@
     min-height: 100vh;
     overflow: auto;
     min-height: 100%;
-    padding: 1% 10% 10% 10%;
+    margin-left: 0%;
+    padding: 1% 10% 10% 5%;
 }
-
+.view-av{
+    width:60%;
+    background-color: rgb(128, 128, 128);
+    display: flex;
+    
+}
+.view-ac{
+    width:60%;
+    background-color: rgb(24, 141, 54);
+    display: flex;  
+}
+.view-pen{
+    width:60%;
+    /* background-color: rgb(128, 128, 128); */
+    display: flex;
+    
+}
+.apply:hover{
+    color: #fff;
+    width: 63%
+}
+.apply:active{
+    transition:none;
+    background-color: #268f47;
+    
+}
+.link:hover{
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+.link-apply:hover{
+    text-decoration: underline;
+    color: rgb(31, 134, 48);
+    cursor: pointer;
+}
+.link-apply{
+    text-decoration: underline;
+}
 
 table {
     width: 100%;
-    border-collapse: collapse;
-    
+    border-collapse: collapse;    
 }
 table th,
 table td {

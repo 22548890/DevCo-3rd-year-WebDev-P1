@@ -51,7 +51,7 @@ const AddContract = ({ onAdd, showAdd }) => {
         </div>
         <div className='form-control'>
             <label>Contract Value(ZAR)</label>
-            <input type='text' placeholder='Add contract value' 
+            <input type='number' placeholder='Add contract value' 
             value={contractValue} onChange={(e) => setValue(e.target.value)}
             />
         </div>

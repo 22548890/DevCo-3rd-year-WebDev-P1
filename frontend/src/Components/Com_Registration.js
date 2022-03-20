@@ -177,8 +177,8 @@ class ComReg extends React.Component {
             } else {
                 alert(info.msg);
             }
+            window.location.pathname = "/login";
         })()
-        window.location.pathname = "/login";
     }
 
     render() {

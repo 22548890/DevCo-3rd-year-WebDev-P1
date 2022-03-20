@@ -28,7 +28,7 @@ developer_contract_denied = db.Table('developer_contract_denied',
 
 # Current Company name / Dev email and type = company/developer
 session_user = {
-    'id':'2',
+    'id':'1',
     'username':'',
     'type':''
 }
@@ -120,7 +120,7 @@ class Contract(db.Model):
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
     company_name = db.Column(db.String(25))
     name = db.Column(db.String(25))
-    length = db.Column(db.String(25))
+    length = db.Column(db.Integer)
     value = db.Column(db.Float)
     description = db.Column(db.Text())
     programming_language = db.Column(db.String(25))
@@ -141,7 +141,7 @@ class Contract(db.Model):
 
 class ContractSchema(ma.Schema):
     class Meta:
-        fields = ('company_name', 'name', 'length', 'value', 'description', 'programming_language', 'location', 'open', 'date')
+        fields = ('id','company_name', 'name', 'length', 'value', 'description', 'programming_language', 'location', 'open', 'date')
 
 contract_schema = ContractSchema()
 contracts_schema = ContractSchema(many=True)
@@ -239,6 +239,12 @@ def comReg():
     password = request.json['password']
     industry = request.json['industry']
 
+    if name == '@':
+        return {
+            'msg': 'This name already exists',
+            'success':False
+        }
+
     com_exist = Company.query.filter_by(name=name).first()
     dev_exist = Developer.query.filter_by(email=name).first()
 
@@ -309,6 +315,12 @@ def comEdit():
     name = request.json['name']
     password = request.json['password']
     industry = request.json['industry']
+
+    if name == '@':
+        return {
+            'msg': 'This name already exists',
+            'success':False
+        }
 
     com_exist = Company.query.filter_by(name=name).first()
     dev_exist = Developer.query.filter_by(email=name).first()
@@ -441,7 +453,6 @@ def getContract(id):
 @cross_origin()
 def getAvailableContracts(sortby, order):
     contracts = []
-    # contracts = Contract.query.filter(Contract.name.like("G%")).all()
     if order == 'ASC':
         contracts = Contract.query.filter_by(open=True).order_by(sortby)
     else:
@@ -451,7 +462,7 @@ def getAvailableContracts(sortby, order):
 
 @app.route('/getPendingContracts', methods = ['GET'])
 @cross_origin()
-def getPendingContracts(sortby, order):
+def getPendingContracts():
     developer = Developer.query.get(session_user['id'])
     contracts = developer.contracts_applied
     results = contracts_schema.dump(contracts)
@@ -459,7 +470,7 @@ def getPendingContracts(sortby, order):
 
 @app.route('/getAccpetedContracts', methods = ['GET'])
 @cross_origin()
-def getAcceptedContracts(sortby, order):
+def getAcceptedContracts():
     developer = Developer.query.get(session_user['id'])
     contracts = developer.contracts_accepted
     results = contracts_schema.dump(contracts)
@@ -474,8 +485,27 @@ def getCompanyContracts():
     results = contracts_schema.dump(contracts)
     return jsonify(results) 
 
+@app.route('/searchCompany/<search>/<sortby>/<order>', methods = ['GET'])
+@cross_origin()
+def searchCompany(search, sortby, order):
+    string = ''
+    contracts = []
 
+    if order == 'ASC':
+        if search == '@':
+            contracts = Contract.query.filter(Contract.open==True).order_by(sortby)
+        else: 
+            string = search + "%"
+            contracts = Contract.query.filter(Contract.open==True, Contract.company_name.like(string)).order_by(sortby)
+    else:
+        if search == '@':
+            contracts = Contract.query.filter(Contract.open==True).order_by(desc(sortby))
+        else: 
+            string = search + "%"
+            contracts = Contract.query.filter(Contract.open==True, Contract.company_name.like(string)).order_by(desc(sortby))
 
+    results = contracts_schema.dump(contracts)
+    return jsonify(results) 
 
 
 
