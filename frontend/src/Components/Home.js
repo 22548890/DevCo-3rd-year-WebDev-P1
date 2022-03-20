@@ -33,7 +33,6 @@ function Home() {
 
       </nav>
       <CheckDev />
-      <Modal />
 
     </>
 

@@ -280,7 +280,15 @@ def getMyProfile():
         com = Company.query.get(session_user['id'])
         result = com_schema.dump(com)
 
-    return jsonify(result)
+    return jsonify([result])
+
+@app.route('/getCompanyProfile/<id>', methods = ['GET'])
+@cross_origin()
+def getCompanyProfile(id):
+    com = Company.query.get(id)
+    result = com_schema.dump(com)
+
+    return jsonify([result])
 
 @app.route('/devEdit', methods = ['PUT'])
 @cross_origin()
