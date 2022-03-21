@@ -26,7 +26,7 @@ function DevContractTable() {
         let search = document.querySelector('input').value;
         if (order === 'ASC') {
             setOrder('DSC');
-            if (search != '') {
+            if (search !== '') {
                 fetch(`http://127.0.0.1:5000/searchCompany/${search}/${column}/ASC`, {
                 'method': 'GET',
                 headers: { 'Content-Type': 'application/json' }
@@ -64,10 +64,6 @@ function DevContractTable() {
                 .catch(error => console.log(error));
             }
         }
-    }
-    const routeChange = (status) => {
-        alert(status);
-
     }
 
     const handleDevTable = (status) => {

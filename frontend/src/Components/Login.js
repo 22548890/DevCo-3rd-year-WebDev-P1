@@ -1,10 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './CSS/LoginCSS.css'
-import ReactDOM from 'react-dom'
 import logo from '../DevCo.gif'
-import { Redirect } from 'react-router-dom'
-import ComReg from './Com_Registration'
-import DevReg from './Dev_Registration'
+import Swal from 'sweetalert2'
 
 const ImgUpload = ({
     onChange,
@@ -114,7 +111,6 @@ class Login extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
 
-
         let data = this.state;
         const requestOpt = {
             method: 'POST',
@@ -132,11 +128,6 @@ class Login extends React.Component {
         (async () => {
             let info = await fetchFunc();
             if (info.success) { // correct login info
-                // let activeP = data.active === 'edit' ? 'profile' : 'edit';
-                // this.setState({
-                //     active: activeP,
-                // })
-                //<Redirect to="/" />
                 localStorage.setItem("isAuthenticated", "true");
                 if (info.developer) {
                     localStorage.setItem("isDev", "true");
@@ -147,7 +138,12 @@ class Login extends React.Component {
                 window.location.pathname = "/";
 
             } else {
-                alert(info.msg);
+                // alert(info.msg);
+                Swal.fire(
+                    info.msg,
+                    'Try again!',
+                    'warning',
+                  )
 
             }
         })()

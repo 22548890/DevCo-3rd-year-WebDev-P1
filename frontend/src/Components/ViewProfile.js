@@ -8,7 +8,7 @@ export default function ViewProfile() {
 
     const handleDelete = () => {
         let typeDel = 'com';
-        if (isDev == 'true') {
+        if (isDev === 'true') {
             typeDel = 'dev'
         }
         const requestOpt = {
@@ -21,7 +21,7 @@ export default function ViewProfile() {
                 .catch(error => console.log(error));
         }
         (async () => {
-            let info = await fetchFunc();
+            await fetchFunc();
         })()
         alert("Deleted Account");
         localStorage.clear();
@@ -31,7 +31,12 @@ export default function ViewProfile() {
 
     const handleEdit = (e) => {
         e.preventDefault();
-        window.location.pathname = "/EditProfile";
+        const isDev = localStorage.getItem("isDev");
+        if (isDev === "false") {
+            window.location.pathname = "/EditComProfile";
+        } else{
+            window.location.pathname = "/EditDevProfile";
+        }
     };
 
     const handleHome = (e) => {
@@ -61,13 +66,13 @@ export default function ViewProfile() {
                 {data.map((d) => (
                     <>
                         <div className="name">{d.name}</div>
-                        <div className="email">{isDev == 'true' ? (d.email) : (d.industry)}</div>
-                        <div className="scale">{isDev == 'true' ? ('JavaScript - '+d.scaleJava) : ('')}</div>
-                        <div className="scale">{isDev == 'true' ? ('Python - '+d.scalePython) : ('')}</div>
-                        <div className="scale">{isDev == 'true' ? ('C/C++ - '+d.scaleC) : ('')}</div>
-                        <div className="scale">{isDev == 'true' ? ('Go - '+d.scaleGo) : ('')}</div>
-                        <div className="open">{isDev == 'true' ? ('Open to Contracts - '+d.open_to_contracts) : ('')}</div>
-                        <div className="Money made:">{isDev == 'true' ? ('Money made: R'+d.money_made) : ('Money spent: R'+d.money_spent)}</div>
+                        <div className="email">{isDev === 'true' ? (d.email) : (d.industry)}</div>
+                        <div className="scale">{isDev === 'true' ? ('JavaScript - ' + d.scaleJava) : ('')}</div>
+                        <div className="scale">{isDev === 'true' ? ('Python - ' + d.scalePython) : ('')}</div>
+                        <div className="scale">{isDev === 'true' ? ('C/C++ - ' + d.scaleC) : ('')}</div>
+                        <div className="scale">{isDev === 'true' ? ('Go - ' + d.scaleGo) : ('')}</div>
+                        <div className="open">{isDev === 'true' ? ('Open to Contracts - ' + d.open_to_contracts) : ('')}</div>
+                        <div className="Money made:">{isDev === 'true' ? ('Money made: R' + d.money_made) : ('Money spent: R' + d.money_spent)}</div>
                     </>
                 ))
                 }

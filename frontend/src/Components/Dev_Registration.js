@@ -1,6 +1,6 @@
 import React from 'react'
 import './CSS/DevRegCSS.css'
-import ReactDOM from 'react-dom'
+import Swal from 'sweetalert2'
 
 
 const ImgUpload = ({
@@ -325,7 +325,11 @@ class DevReg extends React.Component {
             if (info.success) { 
                 window.location.pathname = "/login";
             } else {
-                alert(info.msg);
+                Swal.fire(
+                    info.msg,
+                    'Try again!',
+                    'warning',
+                  )
             }
         })()
     }

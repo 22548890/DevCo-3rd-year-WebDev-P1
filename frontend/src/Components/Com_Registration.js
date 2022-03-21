@@ -1,6 +1,6 @@
 import React from 'react'
+import Swal from 'sweetalert2'
 import './CSS/DevRegCSS.css'
-import ReactDOM from 'react-dom'
 
 const ImgUpload = ({
     onChange,
@@ -177,7 +177,11 @@ class ComReg extends React.Component {
             if (info.success) {
                 window.location.pathname = "/login";
             } else {
-                alert(info.msg);
+                Swal.fire(
+                    info.msg,
+                    'Try again!',
+                    'warning',
+                  )
             }
         })()
     }
@@ -213,14 +217,4 @@ class ComReg extends React.Component {
 
 }
 
-
-
-
-// ReactDOM.render(
-//     <>
-//         <ComReg />
-//     </>
-//     ,
-//     document.getElementById('root')
-// )
 export default ComReg;

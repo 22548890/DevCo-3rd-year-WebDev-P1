@@ -1,8 +1,6 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import './CSS/Home.css';
-import DevJobsTable from './DevJobsTable'
 import CheckDev from './Other/CheckDev';
-import Modal from './Other/Modal';
 
 
 function Home() {
@@ -24,7 +22,7 @@ function Home() {
 
           <ul id="menu">
             <li>
-              <a onClick={handleViewProfile}>Profile</a>
+              <a onClick={handleViewProfile}> Profile</a>
             </li>
             <li>
               <button className="styleBtn" onClick={handleLogout} >Logout </button>

@@ -1,8 +1,6 @@
 import React from 'react'
-import './CSS/DevRegCSS.css'
-import ReactDOM from 'react-dom'
-import Home from './Home'
-import { useState } from 'react'  
+import Swal from 'sweetalert2'
+import './CSS/DevRegCSS.css' 
 
 const ImgUpload = ({
     onChange,
@@ -193,7 +191,7 @@ const Edit = ({
         </form>
     </div>
 
-class EditProfile extends React.Component {
+class EditDevProfile extends React.Component {
 
     state = {
         file: '',
@@ -297,7 +295,11 @@ class EditProfile extends React.Component {
             if (info.success) {
                 window.location.pathname = "/";
             } else {
-                alert(info.msg);
+                Swal.fire(
+                    info.msg,
+                    'Try again!',
+                    'warning',
+                  )
             }
         })()
     }
@@ -335,4 +337,4 @@ class EditProfile extends React.Component {
 
 }
 
-export default EditProfile;
+export default EditDevProfile;
