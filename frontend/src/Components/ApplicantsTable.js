@@ -73,6 +73,7 @@ function ApplicantsTable() {
                         <th>Python Experience</th>
                         <th>C Experience</th>
                         <th>Go Experience</th>
+                        <th>Open to Contracts</th>
                         <th> </th>
                     </tr>
                 </thead>
@@ -85,8 +86,8 @@ function ApplicantsTable() {
                             <td>{d.scalePython}</td>
                             <td>{d.scaleC}</td>
                             <td>{d.scaleGo}</td>
-                            {/* <td {true ? ('Applicants'):('Accepted Applicant')}> </td> */}
-                            <td className={open == 'true' ? ("link-apply"):("")} onClick={open == 'true' ? (() => acceptApplicant(d.id)):("")}>{open == 'true' ? ('Accept'):('Accepted')}</td>
+                            <td>{d.open_to_contracts ? ('Yes') : ('No')}</td>
+                            <td className={open === 'true' ? ("link-apply"):("")} onClick={open === 'true' ? (() => acceptApplicant(d.id)):("")}>{open === 'true' ? ('Accept'):('Accepted')}</td>
                         </tr>
                     ))}
                 </tbody>

@@ -4,14 +4,19 @@ import React from 'react'
 export default function ViewProfile() {
     const [data, setData] = useState([]);
     const [onceOff, setOnceOff] = useState(true);
+    const isDev = localStorage.getItem('isDev');
 
     const handleDelete = () => {
+        let typeDel = 'com';
+        if (isDev == 'true') {
+            typeDel = 'dev'
+        }
         const requestOpt = {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
         }
         async function fetchFunc() {
-            return await fetch('http://127.0.0.1:5000/devDelete', requestOpt)
+            return await fetch(`http://127.0.0.1:5000/${typeDel}Delete`, requestOpt)
                 .then(response => response.json())
                 .catch(error => console.log(error));
         }
@@ -56,12 +61,13 @@ export default function ViewProfile() {
                 {data.map((d) => (
                     <>
                         <div className="name">{d.name}</div>
-                        <div className="email">{d.email}</div>
-                        <div className="scale">JavaScript - {d.scaleC}</div>
-                        <div className="scale">Python - {d.scaleGo}</div>
-                        <div className="scale">C/C++ - {d.scaleJava}</div>
-                        <div className="scale">Go - {d.scalePython}</div>
-                        <div className="Money made:">Money made: R{d.money_made}</div>
+                        <div className="email">{isDev == 'true' ? (d.email) : (d.industry)}</div>
+                        <div className="scale">{isDev == 'true' ? ('JavaScript - '+d.scaleJava) : ('')}</div>
+                        <div className="scale">{isDev == 'true' ? ('Python - '+d.scalePython) : ('')}</div>
+                        <div className="scale">{isDev == 'true' ? ('C/C++ - '+d.scaleC) : ('')}</div>
+                        <div className="scale">{isDev == 'true' ? ('Go - '+d.scaleGo) : ('')}</div>
+                        <div className="open">{isDev == 'true' ? ('Open to Contracts - '+d.open_to_contracts) : ('')}</div>
+                        <div className="Money made:">{isDev == 'true' ? ('Money made: R'+d.money_made) : ('Money spent: R'+d.money_spent)}</div>
                     </>
                 ))
                 }

@@ -147,6 +147,7 @@
     height: 20px;
     
   }
+ 
   
   footer {
     margin-top: 30px;
@@ -154,6 +155,7 @@
   }
   .modal {
     /* font-size: 12px; */
+    
   }
   .modal > .header {
     width: auto;
