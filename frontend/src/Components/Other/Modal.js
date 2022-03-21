@@ -1,8 +1,5 @@
 import React from 'react';
 import Popup from 'reactjs-popup';
-import { FaRegUser } from 'react-icons/fa'
-import Developer from './Developer'
-import ViewProfile from '../ViewProfile';
 import PreviewComProfile from '../PreviewComProfile';
 
 const Modal = ({text}) => {
@@ -18,7 +15,7 @@ const Modal = ({text}) => {
             &times;
           </button>
           <div className={'content'}>
-            {<PreviewComProfile/>}
+            {<PreviewComProfile/>} 
             
             <br />
 

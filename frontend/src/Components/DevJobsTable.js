@@ -127,10 +127,9 @@ function DevContractTable() {
 
                 <thead >
                     <input type="text" placeholder="Search Company Name..." onChange={() => handleChange()}/>
-
                     <tr>
                         <th title="CLICK TO SORT" onClick={() => sorting("company_name")}>Company Name</th>
-                        <th title="CLICK TO SORT" onClick={() => sorting("length")}>Contract Length</th>
+                        <th title="CLICK TO SORT" onClick={() => sorting("length")}>Contract Length (Months)</th>
                         <th title="CLICK TO SORT" onClick={() => sorting("value")}>Contract Value</th>
                         <th >Contract Description</th>
                         <th title="CLICK TO SORT" onClick={() => sorting("programming_language")}>Programming Language</th>

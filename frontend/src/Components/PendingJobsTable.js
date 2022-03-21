@@ -19,11 +19,6 @@ function PendingContractTable() {
         setOnceOff(false);
     }
 
-    const routeChange = (entry) => {
-        alert(entry);
-
-    }
-
     const handleDevTable = (status) => {
         if (status === "available") {
             localStorage.setItem("table_status", "available");
@@ -55,7 +50,7 @@ function PendingContractTable() {
                 <thead >
                     <tr>
                         <th >Company Name</th>
-                        <th >Contract Length</th>
+                        <th >Contract Length (Months)</th>
                         <th >Contract Value</th>
                         <th >Contract Description</th>
                         <th >Programming Language</th>

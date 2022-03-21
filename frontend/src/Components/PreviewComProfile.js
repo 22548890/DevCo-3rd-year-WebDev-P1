@@ -6,7 +6,6 @@ export default function PreviewComProfile() {
     const [data, setData] = useState([]);
     const [onceOff, setOnceOff] = useState(true);
     const id = localStorage.getItem("ComID");
-    // alert(id);
 
     if (onceOff) {
         fetch(`http://127.0.0.1:5000/getCompanyProfile/${id}`, {//get com profile

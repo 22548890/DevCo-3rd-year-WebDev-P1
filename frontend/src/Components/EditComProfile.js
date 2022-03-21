@@ -73,7 +73,7 @@ const GeneralIndustries = ({
 
     const handleHome = (e) => {
         e.preventDefault();
-        window.location.pathname = "/login";
+        window.location.pathname = "/";
     };
 
 
