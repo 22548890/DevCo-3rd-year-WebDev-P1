@@ -30,7 +30,6 @@ function App() {
         </Router>
       </div>
     </Router>
-    // <Modal text = {<p>Company</p>}> </Modal>
   );
 }
 
