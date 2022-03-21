@@ -1,11 +1,12 @@
 import { useState } from "react";
 import React from 'react'
 import "./CSS/DevRegCSS.css"
+import Popup from "reactjs-popup";
 
 export default function PreviewComProfile() {
     const [data, setData] = useState([]);
     const [onceOff, setOnceOff] = useState(true);
-    const id = localStorage.getItem("ComID");
+    var id = localStorage.getItem("ComID");
 
     if (onceOff) {
         fetch(`http://127.0.0.1:5000/getCompanyProfile/${id}`, {//get com profile
@@ -17,8 +18,18 @@ export default function PreviewComProfile() {
             .catch(error => console.log(error));
         setOnceOff(false);
     }
+
+    const handleClose = () => {
+        window.location.pathname="/";
+    }
     return (
-        <div className="card">
+      
+        <div className="modal">
+          <button className="close" onClick={handleClose}>
+            &times;
+          </button>
+          <div className={'content'}>
+            {<div className="card">
             <span>
                 <h1>Profile Preview</h1>
                 <label className="custom-file-upload fas">
@@ -34,6 +45,13 @@ export default function PreviewComProfile() {
                 ))
                 }
             </span>
+        </div>} 
+            
+            <br />
+
+          </div>
         </div>
+    
+
     )
 }

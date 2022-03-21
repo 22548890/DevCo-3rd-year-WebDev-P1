@@ -12,6 +12,7 @@ import ViewProfile from './Components/ViewProfile';
 import EditDevProfile from './Components/Profile';
 import AddContract from './Components/Other/AddContract';
 import EditComProfile from './Components/EditComProfile';
+import PreviewComProfile from './Components/PreviewComProfile';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route exact path='/ComReg' component={ComReg} />
           <Route exact path='/AddContract' component={AddContract} />
           <ProtectedRoute exact path='/EditComProfile' component={EditComProfile} />
+          <ProtectedRoute exact path='/viewComProfile' component={PreviewComProfile} />
           <ProtectedRoute exact path='/ViewProfile' component={ViewProfile} />
           <ProtectedRoute exact path='/EditDevProfile' component={EditDevProfile} />
           <ProtectedRoute exact path='/' component={Home} />

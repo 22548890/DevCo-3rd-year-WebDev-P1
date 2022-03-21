@@ -35,6 +35,7 @@ function PendingContractTable() {
 
     const routeViewComProfile = (company_id) => {
         localStorage.setItem("ComID", company_id);
+        window.location.pathname="/viewComProfile";
     }
 
     return (
@@ -62,7 +63,7 @@ function PendingContractTable() {
                 <tbody>
                     {data.map((d) => (
                         <tr key={d.id}>
-                            <td title="CLICK TO VIEW PROFILE" className="link" onClick={routeViewComProfile(d.company_id)}><Modal text={d.company_name}> </Modal></td>
+                            <td title="CLICK TO VIEW PROFILE" className="link" onClick={() => routeViewComProfile(d.company_id)}>{d.company_name}</td>
                             <td>{d.length}</td>
                             <td>{d.value}</td>
                             <td>{d.description}</td>
