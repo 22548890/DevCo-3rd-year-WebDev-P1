@@ -13,9 +13,6 @@ function ContractPage() {
   const [showOpenContracts, setShowOpenContracts] = useState(false)
   const [showClosedContracts, setShowClosedContracts] = useState(false)
 
-  // extra constant needed
-  const [data, setData] = useState();
-
   useEffect(() => {
     const getContracts = async () => {
       const contractsFromServer = await fetchContracts()
@@ -27,53 +24,44 @@ function ContractPage() {
 
   //Fetch Contracts
   const fetchContracts = async () => {
+    const res = await fetch('http://localhost:5000/contracts')
+    const data = await res.json()
 
-    const res = await fetch('http://127.0.0.1:5000/getCompanyContracts', {
-    'method':'GET',
-    headers: { 'Content-Type': 'application/json' }
-    })
-    const datas = await res.json();
-
-    return datas
+    return data
   }
 
-  const fetchContract = async (id) => { // FIXME: What id is this???
+  const fetchContract = async (id) => {
+    const res = await fetch(`http://localhost:5000/contracts/${id}`)
+    const data = await res.json()
 
-    // const res = await fetch(`http://localhost:5000/contracts/${id}`)
-    // const data = await res.json()
-
-
-    const res = await fetch(`http://127.0.0.1:5000/getContract${id}`, {
-    'method':'GET',
-    headers: { 'Content-Type': 'application/json' }
-    })
-    const datas = await res.json();
-
-    return datas
+    return data
   }
 
   //Add Contract
   const addContract = async (contract) => {
+    let data = null
     const requestOpt = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-          'name':contract.contractName,
-          'length':contract.contractLength,
-          'value':contract.contractValue,
-          'description':contract.contractDes,
+          'contract_name':contract.contractName,
+          'contract_length':contract.contractLength,
+          'contract_value':contract.contractValue,
+          'contract_description':contract.contractDes,
           'programming_language':contract.contractLan,
-          'location':contract.location,
-          'open':contract.open
+          'location':contract.location
       }),
     }
-    fetch('http://127.0.0.1:5000/createContract', requestOpt)
-    .then(response => response.json())
-    .then(response => setData(response))
-    .catch(error => console.log(error));
+    async function fetchFunc() {
+        return await fetch('http://127.0.0.1:5000/createContract', requestOpt)
+        .then(response => response.json())
+        .catch(error => console.log(error));
+    }
+    (async () => {
+        data = await fetchFunc();
+    })()
 
     setContracts([...contracts, data])
-
   }
 
 
@@ -149,27 +137,7 @@ function ContractPage() {
 
   return (
     <Router>
-      <div className="container">
-        <Header
-          onAdd={() => setShowAddContract(!showAddContract)}
-          showAdd={showAddContract}
-        />
-        {showAddContract && <AddContract onAdd=
-          {addContract} showAdd={() => setShowAddContract(!showAddContract)}/>}
-        {!showAddContract ? (
-          <><h2>Listed Contracts{' '}</h2><Menu
-            all={() => { setShowAllContracts(true); setShowOpenContracts(false); setShowClosedContracts(false) } }
-            open={() => { setShowAllContracts(false); setShowOpenContracts(true); setShowClosedContracts(false) } }
-            closed={() => { setShowAllContracts(false); setShowOpenContracts(false); setShowClosedContracts(true) } }
-          >
-          </Menu>
-        {contracts.length > 0 ? (<Contracts contracts={contracts} onExpand={expandContract} all={showAllContracts} open={showOpenContracts} closed={showClosedContracts}
-        />) : ('No Contracts to Show')}</>
-        ) : (
-          <p></p>
-        )}
-        
-      </div>
+
       
     </Router>
   )

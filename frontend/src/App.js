@@ -15,6 +15,7 @@ import AcceptedContractTable from './Components/AcceptedJobsTable';
 import ViewProfile from './Components/ViewProfile';
 import EditProfile from './Components/Profile';
 import Modal from './Components/Other/Modal';
+import AddContract from './Components/Other/AddContract';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route exact path='/login' component={Login} />
           <Route exact path='/DevReg' component={DevReg} />
           <Route exact path='/ComReg' component={ComReg} />
+          <Route exact path='/AddContract' component={AddContract} />
           <ProtectedRoute exact path='/ViewProfile' component={ViewProfile} />
           <ProtectedRoute exact path='/EditProfile' component={EditProfile} />
           <ProtectedRoute exact path='/' component={Home} />

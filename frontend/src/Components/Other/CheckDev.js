@@ -1,6 +1,5 @@
 import React from 'react'
 import AcceptedContractTable from '../AcceptedJobsTable';
-import ContractPage from '../ContractPage'
 import DevJobsTable from '../DevJobsTable'
 import PendingContractTable from '../PendingJobsTable';
 import CompanyContractTable from '../CompanyContracts';
@@ -11,12 +10,11 @@ export default function CheckDev() {
     const tableStatus = localStorage.getItem("table_status");
     if (isDev === "false") {
         if (tableStatus === 'applicants') {
-            // const contract_id = localStorage.getItem("contract_id");
             return <ApplicantsTable />
-        } else {
-            return <CompanyContractTable />;
-        }
-    }
+       } else {
+           return  <CompanyContractTable />;
+       }
+    } 
      if (tableStatus==="pending") {
         return <PendingContractTable/>
     }

@@ -91,6 +91,10 @@ const Profile = ({
             <button type="submit" className="edit" >Edit Details </button>
         </form>
     </div>
+    const handleHome = (e) => {
+        e.preventDefault();
+        window.location.pathname = "/login";
+    };
 
 
 const Edit = ({
@@ -102,6 +106,7 @@ const Edit = ({
             <h1>Company Registration</h1>
             {children}
             <button type="submit" className="styleBtn save">Save </button>
+            <button className="btn" onClick={handleHome}> Back </button>
         </form>
     </div>
 

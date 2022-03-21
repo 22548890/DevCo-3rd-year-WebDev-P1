@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import ContractPage from './ContractPage';
 import './CSS/Home.css';
 import DevJobsTable from './DevJobsTable'
 import CheckDev from './Other/CheckDev';

@@ -174,6 +174,11 @@ const ScaleGo = ({
 
     </div>
 
+    const handleHome = (e) => {
+        e.preventDefault();
+        window.location.pathname = "/login";
+    };
+
 const Profile = ({
     onSubmit,
     src,
@@ -199,6 +204,7 @@ const Profile = ({
             <div className="scale">C/C++ - {scaleC}</div>
             <div className="scale">Go - {scaleGo}</div>
             <button type="submit" className="styleBtn edit">Edit Details </button>
+            
         </form>
     </div>
 
@@ -211,6 +217,7 @@ const Edit = ({
             <h1>Developer Registration</h1>
             {children}
             <button type="submit" className="styleBtn save">Save </button>
+            <button className="btn" onClick={handleHome}> Back </button>
         </form>
     </div>
 

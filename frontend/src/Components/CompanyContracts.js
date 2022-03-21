@@ -4,6 +4,7 @@ import moment from 'moment'
 import Swal from 'sweetalert2'
 
 
+
 function CompanyContractTable() {
 
     const [data, setData] = useState([]);
@@ -49,7 +50,7 @@ function CompanyContractTable() {
     }
 
     const makeContract = () => {
-        alert('making...');
+        window.location.pathname = "/AddContract"
     }
 
     const viewApplicants = async (id, open) => {
@@ -62,7 +63,7 @@ function CompanyContractTable() {
     return (
         <div className="tbl-container">
             <div>
-                <button onClick={()=>makeContract()} className="btn view-av">Make Contract</button>
+                <button onClick={()=>makeContract()} className="btn view-av">Add Contract</button>
             </div>
 
             <table id="myTable" className="table table-available">
