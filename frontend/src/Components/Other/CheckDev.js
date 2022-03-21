@@ -11,7 +11,6 @@ export default function CheckDev() {
     const tableStatus = localStorage.getItem("table_status");
     if (isDev === "false") {
         if (tableStatus === 'applicants') {
-            // const contract_id = localStorage.getItem("contract_id");
             return <ApplicantsTable />
         } else {
             return <CompanyContractTable />;

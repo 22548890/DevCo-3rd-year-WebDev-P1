@@ -272,7 +272,6 @@ class EditProfile extends React.Component {
 
     handleSubmit = e => {
         e.preventDefault();
-
         let data = this.state;
         const requestOpt = {
             method: 'PUT',
@@ -284,7 +283,8 @@ class EditProfile extends React.Component {
                 'scaleJava': data.scaleJava,
                 'scalePython': data.scalePython,
                 'scaleC': data.scaleC,
-                'scaleGo': data.scaleGo
+                'scaleGo': data.scaleGo,
+                'open_to_contracts':document.getElementById('openCheckbox').checked
             }),
         }
         async function fetchFunc() {
@@ -322,7 +322,12 @@ class EditProfile extends React.Component {
                     <ScaleJava onChange={this.editScaleJava} value={scaleJava} />
                     <ScalePython onChange={this.editScalePython} value={scalePython} />
                     <ScaleC onChange={this.editScaleC} value={scaleC} />
-                    <ScaleGo onChange={this.editScaleGo} value={scaleGo} />                    
+                    <ScaleGo onChange={this.editScaleGo} value={scaleGo} /> 
+                    <div>
+                    <label>Open to contracts:</label>
+                        <input type="checkbox" id="openCheckbox"/>
+                    </div>
+                                     
                 </Edit>
             </div>
         )

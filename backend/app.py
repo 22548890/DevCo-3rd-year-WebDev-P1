@@ -9,7 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/DevCo'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:1234@localhost/DevCo'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -47,6 +47,7 @@ class Developer(db.Model):
     scalePython = db.Column(db.String(25))
     scaleC = db.Column(db.String(25))
     scaleGo = db.Column(db.String(25))
+    open_to_contracts = db.Column(db.Boolean, default = True)
     money_made = db.Column(db.Float, default=0)
 
     contracts_applied = db.relationship('Contract', secondary=developer_contract_applied, backref='developers_applied', lazy=True)
@@ -59,20 +60,21 @@ class Developer(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def __init__(self, name, email, scaleJava, scalePython, scaleC, scaleGo):
+    def __init__(self, name, email, scaleJava, scalePython, scaleC, scaleGo, open_to_contracts):
         self.name = name
         self.email = email
         self.scaleJava = scaleJava
         self.scalePython = scalePython
         self.scaleC = scaleC
         self.scaleGo = scaleGo
+        self.open_to_contracts = open_to_contracts
         self.contracts_applied = []
         self.contracts_accepted = []
         self.contracts_denied= []
 
 class DeveloperSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'name', 'email', 'scaleJava', 'scalePython', 'scaleC', 'scaleGo', 'money_made')
+        fields = ('id', 'name', 'email', 'scaleJava', 'scalePython', 'scaleC', 'scaleGo', 'open_to_contracts', 'money_made')
 
 dev_schema = DeveloperSchema()
 devs_schema = DeveloperSchema(many=True)
@@ -207,6 +209,7 @@ def devReg():
     scalePython = request.json['scalePython']
     scaleC = request.json['scaleC']
     scaleGo = request.json['scaleGo']
+    open_to_contracts = request.json['open_to_contracts']
 
     dev_exist = Developer.query.filter_by(email=email).first()
     com_exist = Company.query.filter_by(name=email).first()
@@ -217,7 +220,7 @@ def devReg():
             'success':False
         }
 
-    dev = Developer(name, email, scaleJava, scalePython, scaleC, scaleGo)
+    dev = Developer(name, email, scaleJava, scalePython, scaleC, scaleGo, open_to_contracts)
     dev.set_password(password)
 
     db.session.add(dev)
@@ -300,6 +303,7 @@ def devEdit():
     scalePython = request.json['scalePython']
     scaleC = request.json['scaleC']
     scaleGo = request.json['scaleGo']
+    open_to_contracts = request.json['open_to_contracts']
 
     if session_user['username'] != email:
         dev_exist = Developer.query.filter_by(email=email).first()
@@ -320,6 +324,7 @@ def devEdit():
     dev.scalePython = scalePython
     dev.scaleC = scaleC
     dev.scaleGo = scaleGo
+    dev.open_to_contracts = open_to_contracts
     
     db.session.commit()
 

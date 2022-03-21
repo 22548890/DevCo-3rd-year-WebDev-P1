@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import "./CSS/Table.css"
 import moment from 'moment'
 import Swal from 'sweetalert2'
+import AddContract from './Other/AddContract'
 
 
 function CompanyContractTable() {
@@ -62,7 +63,7 @@ function CompanyContractTable() {
     return (
         <div className="tbl-container">
             <div>
-                <button onClick={()=>makeContract()} className="btn view-av">Make Contract</button>
+                <button onClick={()=>makeContract()} className="btn view-av">Add Contract</button>
             </div>
 
             <table id="myTable" className="table table-available">
