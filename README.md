@@ -25,5 +25,5 @@ https://stellenbosch-my.sharepoint.com/:v:/g/personal/22548890_sun_ac_za/EbAKZmI
 
 
 ## Project Report link:
-https://stellenbosch-my.sharepoint.com/:w:/g/personal/22548890_sun_ac_za/EaaSIO4YblNJgGjx7pqtvhwBrBdG7JcqhGMFBRRPsxf2GQ?e=caaR7f
+https://stellenbosch-my.sharepoint.com/personal/22548890_sun_ac_za/Documents/CS334_Report.pdf
 
