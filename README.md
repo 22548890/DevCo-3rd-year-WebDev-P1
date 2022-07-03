@@ -1,3 +1,5 @@
+This was my 3rd year CS project in 2022. We achieved 100% for the project.
+
 # Web-development project spec:
 We were required to create a web-based developer contracting platform that is focused on
 connecting companies that require developers for set-term contracting work. There was two
