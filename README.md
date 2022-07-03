@@ -8,15 +8,15 @@ developer that they want. On the other hand, developers can view the company and
 about the contract and decide whether or not they would like to apply for that contract.
 
 
-##Things to note:
+## Things to note:
 - This was a group project of 6 developers
 - I was responsible for most of the front-end development using React as our stack
 
 
-## Project Demo link:
+### Project Demo link:
 https://stellenbosch-my.sharepoint.com/:v:/g/personal/22548890_sun_ac_za/EbAKZmI0AGtLlySNRXidp_0B3eIKcQizzCKIi9opirlnTQ?e=8cntwC
 
 
-## Project Report link:
+### Project Report link:
 https://stellenbosch-my.sharepoint.com/:b:/g/personal/22548890_sun_ac_za/EcBOF6sUb8BFhoemINKOpdkB5ETMEHskhOnTcCka1hyiFQ?e=3ZDbw7
 
