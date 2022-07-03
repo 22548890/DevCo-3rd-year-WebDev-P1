@@ -10,7 +10,12 @@ about the contract and decide whether or not they would like to apply for that c
 
 ## Things to note:
 - This was a group project of 6 developers
-- I was responsible for most of the front-end development using React as our stack
+- I was responsible for most of the front-end development
+
+## Stack:
+Frontend: React
+Backend: Flask
+Database: MySQL
 
 
 ### Project Demo link *: 
